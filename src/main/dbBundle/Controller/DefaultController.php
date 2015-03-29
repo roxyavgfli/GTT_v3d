@@ -2121,7 +2121,7 @@ class DefaultController extends Controller {
                     $query = $em->createQuery(
                             'SELECT  e
                                     FROM  maindbBundle:Version e, maindbBundle:ProduitVersion a
-                                    WHERE e.id = a.versionId AND a.produitId = ?1
+                                    WHERE e.id = a.versionId AND a.produitId = ?1 AND e.actif = 1
                                     ORDER BY e.numero'
                     );
                     $query->setParameter(1, $request->get('Id'));

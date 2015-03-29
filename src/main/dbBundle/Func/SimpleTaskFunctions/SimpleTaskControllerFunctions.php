@@ -331,7 +331,7 @@ class SimpleTaskControllerFunctions {
         $produits = GlobalFunctions::getFromRepository($em, 'Produit');
         $produitsAvecComposants = Array();
         foreach ($produits as $produit) {
-            if ($produit['id'] != 0) {
+            if ($produit['id'] != 1) {
                 $repository = $em->getRepository('maindbBundle:ProduitVersion');
                 $idversion = $produit['id'];
                 $produitsversions = $repository->findBy(array('produitId' => $idversion));
