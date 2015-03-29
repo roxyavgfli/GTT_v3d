@@ -186,7 +186,7 @@ class DuplicateSimpleTaskController extends Controller {
                                 $tacheDup->setComposantId(1);
                             }
                         }
-                        if ($tacheModif->getNature() == 'Pre Sale' || $tacheDup->getNature() == 'Project') {
+                        if ($tacheModif->getNature() == 'Pre Sale' || $tacheModif->getNature() == 'Project') {
                             if ($request->get('editcustomer')) {
                                 if ($request->get('finalcustomer')) {
                                     $tacheDup->setClientId($request->get('finalcustomer'));
@@ -517,7 +517,6 @@ class DuplicateSimpleTaskController extends Controller {
                             array_push($produitComp, $plateformes);
                             array_push($produitsAvecComposants, $produitComp);
                         }
-                        //print_r($produitsAvecComposants);
                         $repository = $em->getRepository('maindbBundle:Version');
                         $versions = $repository->findBy(array('actif' => 1));
                         $repository = $em->getRepository('maindbBundle:Plateforme');
@@ -837,6 +836,7 @@ class DuplicateSimpleTaskController extends Controller {
                                     'oldcompid' => $oldcompid,
                                     'oldcustomer' => $oldcustomera,
                                     'oldcustomerid' => $oldcustomerid,
+                                    'oldCiD' => $oldcustomerid,
                                     'oldpartenaire' => $oldpartenairea,
                                     'oldpartenaireid' => $oldpartenaireid,
                                     'clientsa' => json_encode($clientsa),
@@ -1023,9 +1023,7 @@ class DuplicateSimpleTaskController extends Controller {
                         array_push($tachestodisplay, $tachetoadd);
                     }
                 }
-
-
-
+                
                 return $this->render('maindbBundle:Default:simpletimereport2.php.twig', array('roles' => $roles,
                             'name' => $user->getNom(),
                             'startdatesearch' => $startdate,
