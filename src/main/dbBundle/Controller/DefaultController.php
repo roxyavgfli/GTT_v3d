@@ -777,14 +777,8 @@ class DefaultController extends Controller {
                 );
 
                 $phases = $query->getArrayResult();
-                $query = $em->createQuery(
-                        'SELECT  e.nom AS, e.id
-                                    FROM  maindbBundle:Activite e
-                                    WHERE e.actif = 1
-                                    ORDER BY e.nom'
-                );
 
-                $activites = $query->getArrayResult();
+                $activites = GlobalFunctions::getFromRepository($em, 'Activite');
                 return $this->render('maindbBundle:Default:gestionactivite.html.twig', array('natures' => $this->natures, 'roles' => $roles, 'name' => $user->getNom(), 'surname' => $user->getPrenom(), 'mail' => $user->getMail(), 'trigramme' => $user->getTrigramme(), 'activites' => $activites, 'phases' => $phases, 'ssphases' => $ssphases));
             }
         }
@@ -1841,14 +1835,7 @@ class DefaultController extends Controller {
         );
 
         $phases = $query->getArrayResult();
-        $query = $em->createQuery(
-                'SELECT  e.nom AS, e.id
-                                    FROM  maindbBundle:Activite e
-                                    WHERE e.actif = 1
-                                    ORDER BY e.nom'
-        );
-
-        $activites = $query->getArrayResult();
+        $activites = GlobalFunctions::getFromRepository($em, 'Activite');
         if ($session->has('login')) {
             $login = $session->get('login');
             $usermail = $login->getMail();
