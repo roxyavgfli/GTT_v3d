@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="main\dbBundle\Entity\ProduitPlateforme" table="produit_plateforme">
+    <unique-constraints>
+      <unique-constraint name="id" columns="id"/>
+    </unique-constraints>
+    <id name="produitId" type="integer" column="produit_id"/>
+    <id name="plateformeId" type="integer" column="plateforme_id"/>
+    <field name="id" type="integer" column="id" nullable="false"/>
+  </entity>
+</doctrine-mapping>

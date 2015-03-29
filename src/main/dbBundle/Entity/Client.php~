@@ -1,0 +1,111 @@
+<?php
+
+namespace main\dbBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Client
+ */
+class Client
+{
+    /**
+     * @var integer
+     */
+    private $partenaireId;
+
+    /**
+     * @var string
+     */
+    private $nom;
+
+    /**
+     * @var boolean
+     */
+    private $actif;
+
+    /**
+     * @var integer
+     */
+    private $id;
+
+
+    /**
+     * Set partenaireId
+     *
+     * @param integer $partenaireId
+     * @return Client
+     */
+    public function setPartenaireId($partenaireId)
+    {
+        $this->partenaireId = $partenaireId;
+
+        return $this;
+    }
+
+    /**
+     * Get partenaireId
+     *
+     * @return integer 
+     */
+    public function getPartenaireId()
+    {
+        return $this->partenaireId;
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     * @return Client
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string 
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * Set actif
+     *
+     * @param boolean $actif
+     * @return Client
+     */
+    public function setActif($actif)
+    {
+        $this->actif = $actif;
+
+        return $this;
+    }
+
+    /**
+     * Get actif
+     *
+     * @return boolean 
+     */
+    public function getActif()
+    {
+        return $this->actif;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}

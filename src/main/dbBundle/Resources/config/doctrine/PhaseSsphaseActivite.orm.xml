@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="main\dbBundle\Entity\PhaseSsphaseActivite" table="phase_ssphase_activite">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="phaseId" type="integer" column="phase_id" nullable="false"/>
+    <field name="ssphaseId" type="integer" column="ssphase_id" nullable="false"/>
+    <field name="activiteId" type="integer" column="activite_id" nullable="false"/>
+  </entity>
+</doctrine-mapping>

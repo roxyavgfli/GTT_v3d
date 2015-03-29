@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="main\dbBundle\Entity\Tachesimple" table="tacheSimple">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="userId" type="integer" column="user_id" nullable="false"/>
+    <field name="nom" type="string" column="nom" length="150" nullable="false"/>
+    <field name="actif" type="boolean" column="actif" nullable="false"/>
+    <field name="tempsPasse" type="float" column="temps_passe" precision="10" scale="0" nullable="false"/>
+    <field name="commentaire" type="string" column="commentaire" length="500" nullable="true"/>
+    <field name="date" type="string" column="date" length="10" nullable="false"/>
+    <field name="nature" type="string" column="nature" length="30" nullable="false"/>
+    <field name="activiteId" type="integer" column="activite_id" nullable="true"/>
+    <field name="clientId" type="integer" column="client_id" nullable="true"/>
+    <field name="partenaireId" type="integer" column="partenaire_id" nullable="true"/>
+    <field name="plateformeId" type="integer" column="plateforme_id" nullable="true"/>
+    <field name="produitId" type="integer" column="produit_id" nullable="true"/>
+    <field name="versionId" type="integer" column="version_id" nullable="true"/>
+    <field name="ssphaseId" type="integer" column="ssphase_id" nullable="true"/>
+    <field name="composantId" type="integer" column="composant_id" nullable="true"/>
+    <field name="editable" type="boolean" column="editable" nullable="false"/>
+  </entity>
+</doctrine-mapping>

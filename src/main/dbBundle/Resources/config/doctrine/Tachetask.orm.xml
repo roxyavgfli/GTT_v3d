@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="main\dbBundle\Entity\Tachetask" table="tacheTask">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="userId" type="integer" column="user_id" nullable="false"/>
+    <field name="ssphaseId" type="integer" column="ssphase_id" nullable="false"/>
+    <field name="produitComposantId" type="integer" column="produit_composant_id" nullable="false"/>
+    <field name="produitPlateformeId" type="integer" column="produit_plateforme_id" nullable="false"/>
+    <field name="produitVersionId" type="integer" column="produit_version_id" nullable="false"/>
+    <field name="natureClientId" type="integer" column="nature_client_id" nullable="false"/>
+    <field name="nom" type="string" column="nom" length="30" nullable="false"/>
+    <field name="actif" type="boolean" column="actif" nullable="false"/>
+    <field name="suivi" type="boolean" column="suivi" nullable="false"/>
+    <field name="chargeInit" type="integer" column="charge_init" nullable="false"/>
+    <field name="chargeAttr" type="integer" column="charge_attr" nullable="false"/>
+    <field name="etat" type="integer" column="etat" nullable="false"/>
+  </entity>
+</doctrine-mapping>

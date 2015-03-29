@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="../../favicon.ico">
+
+        <title>User management</title>
+
+        <!-- Bootstrap core CSS  -->
+
+
+        <link href="{{asset('bundles/maindb/css/bootstrap.min.css')}}" rel="stylesheet">
+        <link href="{{asset('bundles/maindb/css/bootstrap-theme.min.css')}}" rel="stylesheet">
+        <link href="{{asset('bundles/maindb/css/parsley/parsley.css')}}" rel="stylesheet">
+
+        <style type="text/css">
+            .navbar{
+                margin-top: 20px;
+            }
+        </style>
+
+
+
+        <!-- Custom styles for this template -->
+
+
+        <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+        <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+        <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        <div class="container">
+            <nav role="navigation" class="navbar navbar-default">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="#" class="navbar-brand"><img src="{{asset('bundles/maindb/images/v3d.png')}}" alt="Smiley face" height="20" ></a>
+                </div>
+                <!-- Collection of nav links, forms, and other content for toggling -->
+                <div id="navbarCollapse" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="{{path('maindb_homepage')}}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li><a href="{{path('maindb_profile')}}"><span class="glyphicon glyphicon-cog"></span> Profile</a></li>
+
+                    </ul>
+                    <!-- search
+                    <form role="search" class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text" placeholder="Search" class="form-control">
+                        </div>
+                    </form>
+                    --> 
+                    <ul class="nav navbar-nav">
+                        {%if roles is iterable%}
+                            {%for role in roles%}
+                                {%if role.nom == 'user' %}
+                                    <li class="dropdown">
+                                        <a  class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-ok"></span> Time Report <span class="caret"></span></a>
+                                        <ul role="menu" class="dropdown-menu">
+                                            <li><a href="{{path('maindb_gestionsimplereport')}}">Simple time report</a></li>
+                                        </ul>
+                                    </li>
+                                {%endif%}
+                            {%endfor%}
+                        {%endif%}
+                    </ul>
+                    <ul class="nav navbar-nav navbar-left">
+                        {%if roles is iterable%}
+                            {%for role in roles%}
+                                {%if role.nom == 'administrator' %}
+                                    <li class="dropdown">
+                                        <a  class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-download-alt"></span> Export <span class="caret"></span></a>
+                                        <ul role="menu" class="dropdown-menu">
+                                            <li><a href="{{path('maindb_exportsimpletask')}}">Export Simple Tasks</a></li>
+                                        </ul>
+                                    </li>
+                                {%endif%}
+                            {%endfor%}
+                        {%endif%}
+                    </ul> 
+                    <ul class="nav navbar-nav navbar-right">
+                        {%if roles is iterable%}
+                            {%for role in roles%}
+                                {%if role.nom == 'administrator' %}
+                                    <li class="dropdown">
+                                        <a  class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-fire"></span> Admin panel <span class="caret"></span></a>
+                                        <ul role="menu" class="dropdown-menu">
+                                            <li class="active"><a href="{{path('maindb_gestionuserlist',{'firstload':1})}}">Users management</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="{{path('maindb_gestionactivite')}}">Categories management</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="{{path('maindb_gestionteamlist')}}">Team management</a></li>
+                                        </ul>
+                                    </li>
+                                {%endif%}
+                            {%endfor%}
+                        {%endif%}
+                        <li><a href="{{path('maindb_profile')}}"><span class="glyphicon glyphicon-check"></span> connected as {{name}} {{surname}}</a></li>
+                        <li><a href="{{path('maindb_logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </ul>
+
+                </div>
+            </nav>
+        </div>
+
+        <div class="container">
+
+            <ul class="nav nav-tabs " role="tablist">
+                <li class="active"><a href="#">User Management</a></li>
+                <li><a href="{{path('maindb_gestionusercreate')}}">Create user</a></li>
+            </ul>
+
+
+            <!-- Button trigger modal 
+            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                Launch demo modal
+            </button>
+            -->
+            <!-- Modal 
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            -->
+
+            <!-- Search -->
+            <div>
+                <table class="borderless" style="width: 100%; margin-top: 10px;">
+                    <form class="navbar-from navbar-left" id="filter" name="filter" action="{{path('maindb_gestionuserlist')}}">
+                        <tr>
+                            <td>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="lastname" value="lastname" style="width: initial;" onchange="document.getElementById('filter').submit()" {%if lastnamefilter == 1%} checked {%endif%}> 
+                                    <p style="margin-left: 20px;">Last name</p>
+                            </td>
+                            <td>
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="firstname" value="firstname" style="width: initial;" onchange="document.getElementById('filter').submit()" {%if firstnamefilter == 1%} checked {%endif%}> 
+                                    <p style="margin-left: 20px;">First name</p>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="trigram" value="trigram" style="width: initial;" onchange="document.getElementById('filter').submit()" {%if trigramfilter == 1%} checked {%endif%}> 
+                                    <p style="margin-left: 20px;">Trigram</p>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="mail" value="mail" style="width: initial;" onchange="document.getElementById('filter').submit()" {%if mailfilter == 1%} checked {%endif%}> 
+                                    <p style="margin-left: 20px;">Mail</p>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="group" value="group" style="width: initial;" onchange="document.getElementById('filter').submit()" {%if groupfilter == 1%} checked {%endif%}> 
+                                    <p style="margin-left: 20px;">Team</p>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="actif" value="actif" style="width: initial;" onchange="document.getElementById('filter').submit()" {%if actiffilter == 1%} checked {%endif%}> 
+                                    <p style="margin-left: 20px;">Show inactive users</p>
+                                </label>
+                            </td>
+                            <td>
+                                <form class="navbar-form navbar-right" role="search" action="{{path('maindb_gestionuserlist')}}" method="POST">
+                                    <div class="form-group" style="display: flex;">
+                                        <input type="text" class="form-control" {%if search is defined%}placeholder="{{search}}"{%else%}placeholder="Search for user"{%endif%} name="search" style="width: 85%;display: table-row;">
+
+                                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    </form> 
+                </table>
+            </div>
+
+
+            {% if users is defined%}
+                <table class="table table-striped ">
+                    <thead>
+                        <tr>
+                            {%if lastnamefilter == 1%}
+                                <th>Last Name</th>   
+                                {%endif%}
+                                {%if firstnamefilter == 1%}
+                                <th>First Name</th>
+                                {%endif%}
+                                {%if trigramfilter == 1%}
+                                <th>Trigram</th>
+                                {%endif%}
+                                {%if mailfilter == 1%}
+                                <th>Mail</th>
+                                {%endif%}
+                                {%if groupfilter == 1%}
+                                <th>Team</th>
+                                {%endif%}
+                            <th>Edit</th>
+                            <th>Disable</th>
+                        </tr>
+                    </thead>     
+                    <tbody>
+                        {%for user in users%}
+                            {%if actiffilter == 1%}
+                                {%if user.actif != 1 %}
+                                    <tr style="color: red;">
+                                    {%elseif user.roleId is defined%}
+                                        {%if user.roleId == 3%}
+                                        <tr style="color: blue;">
+                                        {%else%}
+                                        <tr>
+                                        {%endif%}    
+                                    {%endif%}
+                                    {%if user is iterable%}
+                                        {%if lastnamefilter == 1%}
+                                            <td>{{user.nom}}</td>
+                                        {%endif%}
+                                        {%if firstnamefilter == 1%}
+                                            <td>{{user.prenom}}</td>
+                                        {%endif%}
+                                        {%if trigramfilter == 1%}
+                                            <td>{{user.trigramme}}</td>
+                                        {%endif%}
+                                        {%if mailfilter == 1%}
+                                            <td>{{user.mail}}</td>
+                                        {%endif%}
+                                        {%if groupfilter == 1%}
+                                            {%if user.team is defined%}
+                                                <td>{{user.team}}</td>
+                                            {%else%}
+                                                <td>Not assigned</td>
+                                            {%endif%}
+                                        {%endif%}
+                                        <td>
+                                            <a class="open-AddBookDialog3 btn" data-toggle="modal" href="#addBookDialog3" data-id="{{user.nom}}" data-id2="{{user.prenom}}" data-id3="{{user.id}}" ><span class="glyphicon glyphicon-pencil"></span></a>
+
+                                        </td>
+                                        {%if user.actif != 1 %}
+                                            <td>
+                                                <a class="btn" data-toggle="modal" href="#myModal4" disabled="disabled" ><span class="glyphicon glyphicon-remove"></span></a>
+                                            </td>
+                                        {%else%}
+                                            <td>
+                                                <a data-id="{{user.nom}} {{user.prenom}}" data-id2="{{user.id}}" title="Disable this user" class="open-AddBookDialog btn" href="#addBookDialog"><span class="glyphicon glyphicon-remove"></span></a>
+                                                <div class="modal fade" id="addBookDialog">
+                                                    <div class="modal-dialog" >
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                                <h4 class="modal-title">Are you sure?</h4>
+                                                            </div>
+                                                            <form role="form" data-validate="parsley" method="POST" action="{{path('maindb_gestionuserlist')}}">
+                                                                <div class="modal-body">
+                                                                    <p>Do you really want to set this user inactive : </p>
+                                                                    <input readonly type="text" id="bookId" value="" style="border: none;"/>
+                                                                    <input hidden readonly type="text" name="todelete" id="bookId2" value=""/>
+                                                                    <input hidden readonly type="text" name="firstload" value="1"/>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                                    <button type="submit" class="btn btn-primary">Delete</button>
+                                                                </div>
+                                                            </form>
+                                                        </div><!-- /.modal-content -->
+                                                    </div><!-- /.modal-dialog -->
+                                                </div>
+                                            </td>
+                                        {%endif%}
+                                    {%endif%}
+                                </tr>
+                            {%else%}
+                                {%if user.actif == 1%}
+                                    <tr>
+                                        {%if user is iterable%}
+                                            {%if lastnamefilter == 1%}
+                                                <td>{{user.nom}}</td>
+                                            {%endif%}
+                                            {%if firstnamefilter == 1%}
+                                                <td>{{user.prenom}}</td>
+                                            {%endif%}
+                                            {%if trigramfilter == 1%}
+                                                <td>{{user.trigramme}}</td>
+                                            {%endif%}
+                                            {%if mailfilter == 1%}
+                                                <td>{{user.mail}}</td>
+                                            {%endif%}
+                                            {%if groupfilter == 1%}
+                                                {%if user.team is defined%}
+                                                    <td>{{user.team}}</td>
+                                                {%else%}
+                                                    <td>Not assigned</td>
+                                                {%endif%}
+                                            {%endif%}
+                                            <td>
+                                                <a class="open-AddBookDialog3 btn" data-toggle="modal" href="#addBookDialog3" data-id="{{user.nom}}" data-id2="{{user.prenom}}" data-id3="{{user.id}}" ><span class="glyphicon glyphicon-pencil"></span></a>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                                <h4 class="modal-title" id="myModalLabel">Editing user : Username here</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ...
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a data-id="{{user.nom}} {{user.prenom}}" data-id2="{{user.id}}" title="Delete this item" class="open-AddBookDialog btn" href="#addBookDialog"><span class="glyphicon glyphicon-remove"></span></a>
+                                                <div class="modal fade" id="addBookDialog">
+                                                    <div class="modal-dialog" >
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                                <h4 class="modal-title">Are you sure?</h4>
+                                                            </div>
+                                                            <form role="form" data-validate="parsley" method="POST" action="{{path('maindb_gestionuserlist')}}">
+                                                                <div class="modal-body">
+                                                                    <p>Do you really want to set this user inactive : </p>
+                                                                    <input readonly type="text" id="bookId" value="" style="border: none;"/>
+                                                                    <input hidden readonly type="text" name="todelete" id="bookId2" value=""/>
+                                                                    <input hidden readonly type="text" name="firstload" value="1"/>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                                    <button type="submit" class="btn btn-primary">Delete</button>
+                                                                </div>
+                                                            </form>
+                                                        </div><!-- /.modal-content -->
+                                                    </div><!-- /.modal-dialog -->
+                                                </div>
+                                                <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ...
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        {%endif%}
+                                    </tr>
+                                {%endif%}
+                            {%endif%}
+                        {%endfor%}
+                    </tbody>
+                </table>
+                <!--
+                <div class="row">
+                    <div class="span4">
+                {%if totalpages > 1%}
+                    <ul class="pagination">
+                    {%for i in 1..totalpages%}
+                        {%if loop.first %}
+                            {%if currentpage==1%}
+                                <li class=" disabled"><a href="#">&laquo;</a></li>
+                            {% else %}
+                            <li><a href="{{path('maindb_gestionuserlist',{'page':currentpage-1})}}">&laquo;</a></li>
+                            {%endif%}
+                        {%endif%}
+                    <li {%if currentpage==loop.index%} class="active"{%endif%}><a href="{{path('maindb_gestionuserlist',{'page':loop.index})}}">{{loop.index}}</a></li> 
+
+                        {%if loop.last %}
+                            {%if currentpage==totalpages%}
+                                <li class=" disabled "><a href="#">&raquo;</a></li>
+                            {% else %}
+                            <li><a href="{{path('maindb_gestionuserlist',{'page':currentpage+1})}}">&raquo;</a></li>
+                            {%endif%}
+                        {%endif%}
+                    {%endfor%}
+            </ul>
+                {%endif%}
+            </div>
+        </div>
+                -->
+                {%if error is defined and error is not empty%}
+                    <div class="alert alert-danger" style="margin-top: 20px; text-align: center;">
+                        <strong style="text-align: center;">{{error}}</strong>
+                    </div>
+                {%endif%} 
+                <div class="modal fade" id="addBookDialog3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form role="form" data-validate="parsley" method="POST" action="{{path('maindb_useredition')}}">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Are you sure ?</h4>
+                                </div>
+                                <div class="modal-body">
+                                    Do you really want to edit : 
+
+                                    <input name="lastNameToEdit" readonly type="text" id="bookIds" value="" style="border: none; width : auto;"/>
+                                    <input name="firstNameToEdit" readonly type="text" id="bookIds2" value="" style="border: none; width : auto;"/>
+                                    <input name="idToEdit" hidden readonly type="text" id="idteamtomodify" value="" style="border: none; width : auto;"/>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                    <button type="submit" class="btn btn-primary">Yes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div> 
+            </div> 
+        {%else%}
+            <div class="alert alert-warning" style="margin-top: 65px; text-align: center;">
+                <strong style="text-align: center;">No user found for {{search}}</strong>
+            </div>
+        {%endif%}
+        {%if search is defined%}
+            <div style="text-align: center;">
+                <p><a href="{{path('maindb_gestionuserlist',{'firstload':1})}}" class="btn btn-primary btn-lg" role="button">Go back to full list</a></p>
+            </div>
+        {%endif%}
+
+        <!-- Small modal -->
+
+
+        <!-- /container -->
+        <!-- Modal -->
+
+
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <script src="{{asset('bundles/maindb/js/jquery.min.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/bootstrap.min.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/bootstrap.js')}}"></script>
+
+        <script src="{{asset('bundles/maindb/js/parsley/parsley-standalone.min.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/parsley/parsley.extend.min.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/parsley/parsley.min.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/dropdown.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/affix.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/alert.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/button.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/jquery.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/scrollspy.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/tab.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/tooltip.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/transition.js')}}"></script>
+
+        <script>
+                                        $(document).on("click", ".open-AddBookDialog", function (e) {
+
+                                            e.preventDefault();
+
+                                            var _self = $(this);
+
+                                            var myBookId = _self.data('id');
+                                            var myBookId2 = _self.data('id2');
+                                            $("#bookId").val(myBookId);
+                                            $("#bookId2").val(myBookId2);
+
+                                            $(_self.attr('href')).modal('show');
+                                        });
+        </script>
+        <script type="text/javascript">
+            $(function() {
+            $(document).ready(function(){
+            $("filter").on("change", "input:checkbox", function(){
+            $("filter").submit();
+            });
+            });</script>
+        <script>
+                    $(document).on("click", ".open-AddBookDialog3", function (e) {
+
+            e.preventDefault();
+                    var _self = $(this);
+                    var myBookId = _self.data('id');
+                    var myBookId2 = _self.data('id2');
+                    var myBookId3 = _self.data('id3');
+                    var myBookId4 = _self.data('id3');
+                    $("#bookIds").val(myBookId);
+                    $("#bookIds2").val(myBookId2);
+                    $("#nametopromote").val(myBookId);
+                    $("#idteamtomodify").val(myBookId3);
+                    $("#equipeid").val(myBookId4);
+                    $(_self.attr('href')).modal('show');
+            });
+        </script>
+        <!-- Placed at the end of the document so the pages load faster -->
+    </body>
+</html>

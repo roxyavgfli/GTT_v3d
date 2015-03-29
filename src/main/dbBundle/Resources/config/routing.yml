@@ -1,0 +1,159 @@
+homepage:
+    pattern:   /
+    defaults:  { _controller: maindbBundle:Default:index }
+
+maindb_homepage:
+    path:     /home
+    defaults: { _controller: maindbBundle:Default:index }
+    
+maindb_logout:
+    path:     /logout
+    defaults: { _controller: maindbBundle:Default:logout }
+    
+maindb_profile:
+    path :  /profile
+    defaults: { _controller: maindbBundle:Default:profile }
+
+maindb_gestionuserlist:
+    path: /usermanagement
+    defaults: { _controller: maindbBundle:Default:gestionuserlist }
+    
+maindb_gestionusercreate:
+    path: /usercreate
+    defaults: { _controller: maindbBundle:Default:gestionusercreate }
+    
+maindb_gestionactivite:
+    path: /activitemanagement
+    defaults: { _controller: maindbBundle:Default:gestionactivite }
+    
+maindb_usercreation:
+    path: /usercreated
+    defaults: { _controller: maindbBundle:Default:usercreation }
+    
+maindb_errorpermission:
+    path: /permissionerror
+    defaults: {_controller: maindbBundle:Default:errorpermission }
+    
+maindb_errorpermission2:
+    path: /permissionerror2
+    defaults: {_controller: maindbBundle:Default:errorpermission2 }
+    
+maindb_gestioncomposants:
+    path: /composantmanagement
+    defaults: {_controller: maindbBundle:Default:gestioncomposant}
+    
+maindb_gestionplateformes:
+    path: /plateformemanagement
+    defaults: {_controller: maindbBundle:Default:gestionplateformes}
+    
+maindb_gestionversions:
+    path: /versionsmanagement
+    defaults: {_controller: maindbBundle:Default:gestionversions}
+    
+maindb_gestionpartenaires:
+    path: /partenairesmanagement
+    defaults: {_controller: maindbBundle:Default:gestionpartenaires}   
+    
+maindb_gestionsocietes:
+    path: /societesmanagement
+    defaults: {_controller: maindbBundle:Default:gestionsocietes}   
+    
+maindb_gestionphases:
+    path: /phasesmanagement
+    defaults: {_controller: maindbBundle:Default:gestionphases}       
+    
+maindb_gestionproduits:
+    path: /produitsmanagement
+    defaults: {_controller: maindbBundle:Default:gestionproduits}  
+    
+maindb_gestionclients:
+    path: /clientsmanagement
+    defaults: {_controller: maindbBundle:Default:gestionclients}
+    
+maindb_gestionssphases:
+    path: /ssphasesmanagement
+    defaults: {_controller: maindbBundle:Default:gestionssphases}
+    
+maindb_gestionservices:
+    path: /servicesmanagement
+    defaults: {_controller: maindbBundle:Default:gestionservices}
+
+maindb_detailsactivite:
+    path: /actdetails
+    defaults: {_controller: maindbBundle:Default:activitedetails}
+    
+maindb_detailsprod:
+    path: /proddetails
+    defaults: {_controller: maindbBundle:Default:produitsdetails}
+    
+maindb_gestionteamlist:
+    path: /teammanagement
+    defaults: { _controller: maindbBundle:Default:gestionteamlist }
+    
+maindb_gestionteamcreate:
+    path: /teamcreate
+    defaults: { _controller: maindbBundle:Default:gestionteamcreate }
+    
+maindb_teamdetails:
+    path: /teamdetails
+    defaults: { _controller: maindbBundle:Default:gestionteamdetails }
+    
+maindb_useredition:
+    path: /useredit
+    defaults: { _controller: maindbBundle:Default:gestionuseredition }
+    
+maindb_installAction:
+    path: /install
+    defaults: { _controller: maindbBundle:Default:install }
+    
+maindb_gestionsimplereport:
+    path: /simpletimereport
+    defaults: { _controller: maindbBundle:SimpleTask:gestionsimpletimereport }
+    
+maindb_newsimplereport:
+    path: /newsimpletimereport
+    defaults: { _controller: maindbBundle:NewSimpleTask:gestionnewsimpletimereport }
+    
+maindb_savenewsimplereport:
+    path: /savenewsimpletimereport
+    defaults: { _controller: maindbBundle:SaveNewSimpleTask:save }
+    
+maindb_editsimplereport:
+    path: /editsimpletimereport
+    defaults: { _controller: maindbBundle:EditSimpleTask:gestioneditsimplereport }
+    
+maindb_duplicatesimplereport:
+    path: /clonesimpletimereport
+    defaults: { _controller: maindbBundle:DuplicateSimpleTask:gestionduplicatesimplereport }
+    
+maindb_gestionsimplereportadministration:
+    path: /simpletimereportadministration
+    defaults: { _controller: maindbBundle:SimpleTaskAdministration:gestionsimpletimereport }
+    
+maindb_newsimplereportadministration:
+    path: /newsimpletimereportadministration
+    defaults: { _controller: maindbBundle:NewSimpleTaskAdministration:gestionnewsimpletimereport }
+    
+maindb_savenewsimplereportadministration:
+    path: /savenewsimpletimereportadministration
+    defaults: { _controller: maindbBundle:SaveNewSimpleTaskAdministration:save }
+    
+maindb_editsimplereportadministration:
+    path: /editsimpletimereportadministration
+    defaults: { _controller: maindbBundle:EditSimpleTaskAdministration:gestioneditsimplereport }
+    
+maindb_duplicatesimplereportadministration:
+    path: /clonesimpletimereportadministration
+    defaults: { _controller: maindbBundle:DuplicateSimpleTaskAdministration:gestionduplicatesimplereport }
+    
+maindb_exportsimpletask:
+    path: /exportsimpletask
+    defaults: { _controller: maindbBundle:ExportSimpleTask:gestionexportsimpletask }
+    
+maindb_exportaction:
+    path: /exportaction
+    defaults: { _controller: maindbBundle:ExportAction:gestionexport }
+    
+maindb_update:
+    path: /update
+    defaults: { _controller: maindbBundle:Update:gestionupdate }

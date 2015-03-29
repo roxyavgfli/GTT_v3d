@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="../../favicon.ico">
+
+        <title>User management</title>
+
+        <!-- Bootstrap core CSS -->
+
+        <link href="{{asset('bundles/maindb/css/bootstrap.min.css')}}" rel="stylesheet">
+        <link href="{{asset('bundles/maindb/css/bootstrap-theme.min.css')}}" rel="stylesheet">
+        <link href="{{asset('bundles/maindb/css/parsley/parsley.css')}}" rel="stylesheet">
+        <style type="text/css">
+            .navbar{
+                margin-top: 20px;
+            }
+
+        </style>
+
+
+
+        <!-- Custom styles for this template -->
+
+
+        <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+        <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+        <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        <div class="container">
+            <nav role="navigation" class="navbar navbar-default">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="#" class="navbar-brand"><img src="{{asset('bundles/maindb/images/v3d.png')}}" alt="Smiley face" height="20" ></a>
+                </div>
+                <!-- Collection of nav links, forms, and other content for toggling -->
+                <div id="navbarCollapse" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="{{path('maindb_homepage')}}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li><a href="{{path('maindb_profile')}}"><span class="glyphicon glyphicon-cog"></span> Profile</a></li>
+
+                    </ul>
+                    <!-- search
+                    <form role="search" class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text" placeholder="Search" class="form-control">
+                        </div>
+                    </form>
+                    --> 
+                    <ul class="nav navbar-nav">
+                        {%if roles is iterable%}
+                            {%for role in roles%}
+                                {%if role.nom == 'user' %}
+                                    <li class="dropdown">
+                                        <a  class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-ok"></span> Time Report <span class="caret"></span></a>
+                                        <ul role="menu" class="dropdown-menu">
+                                            <li><a href="{{path('maindb_gestionsimplereport')}}">Simple time report</a></li>
+                                        </ul>
+                                    </li>
+                                {%endif%}
+                            {%endfor%}
+                        {%endif%}
+                    </ul>
+                    <ul class="nav navbar-nav navbar-left">
+                        {%if roles is iterable%}
+                            {%for role in roles%}
+                                {%if role.nom == 'administrator' %}
+                                    <li class="dropdown">
+                                        <a  class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-download-alt"></span> Export <span class="caret"></span></a>
+                                        <ul role="menu" class="dropdown-menu">
+                                            <li><a href="{{path('maindb_exportsimpletask')}}">Export Simple Tasks</a></li>
+                                        </ul>
+                                    </li>
+                                {%endif%}
+                            {%endfor%}
+                        {%endif%}
+                    </ul> 
+                    <ul class="nav navbar-nav navbar-right">
+                        {%if roles is iterable%}
+                            {%for role in roles%}
+                                {%if role.nom == 'administrator' %}
+                                    <li class="dropdown">
+                                        <a  class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-fire"></span> Admin panel <span class="caret"></span></a>
+                                        <ul role="menu" class="dropdown-menu">
+                                            <li><a href="{{path('maindb_gestionuserlist',{'firstload':1})}}">Users management</a></li>
+                                            <li class="divider"></li>
+                                            <li class="active"><a href="{{path('maindb_gestionactivite')}}">Categories management</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="{{path('maindb_gestionteamlist')}}">Team management</a></li>
+                                        </ul>
+                                    </li>
+                                {%endif%}
+                            {%endfor%}
+                        {%endif%}
+                        <li><a href="{{path('maindb_profile')}}"><span class="glyphicon glyphicon-check"></span> connected as {{name}} {{surname}}</a></li>
+                        <li><a href="{{path('maindb_logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </ul>
+
+                </div>
+            </nav>
+        </div>
+
+        <div class="container">
+
+            <ul class="nav nav-tabs" role="tablist">
+                <li><a href="{{path('maindb_gestionactivite')}}">Activite</a></li>
+                <li><a href="{{path('maindb_gestionclients')}}">Client</a></li>
+                <li><a href="{{path('maindb_gestioncomposants')}}">Composants</a></li>
+                <li><a href="{{path('maindb_gestionpartenaires')}}">Partenaire</a></li>
+                <li><a href="{{path('maindb_gestionphases')}}">Phase</a></li>
+                <li><a href="{{path('maindb_gestionssphases')}}">Sous phase</a></li>
+                <li><a href="{{path('maindb_gestionplateformes')}}">Plateforme</a></li>
+                <li><a href="{{path('maindb_gestionproduits')}}">Produit</a></li>
+                <li><a href="{{path('maindb_gestionservices')}}">Service</a></li>
+                <li><a href="{{path('maindb_gestionsocietes')}}">Societe</a></li>
+                <li class="active"><a href="{{path('maindb_gestionversions')}}">Version</a></li>
+
+            </ul>
+            {%if versions is defined%}
+                <ul class="list-group" style="margin-top: 20px; display: block;
+                    margin-left: auto;
+                    margin-right: auto; text-align: center; width: 40%; ">
+                    <li class="list-group-item list-group-item" style="background-image: -webkit-linear-gradient(top,#428bca 0,#2d6ca2 100%);
+                        background-image: -o-linear-gradient(top,#428bca 0,#2d6ca2 100%);
+                        background-image: -webkit-gradient(linear,left top,left bottom,from(#428bca),to(#2d6ca2));
+                        background-image: linear-gradient(to bottom,#428bca 0,#2d6ca2 100%);
+                        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff428bca', endColorstr='#ff2d6ca2', GradientType=0);
+                        filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+                        background-repeat: repeat-x;
+                        border-color: #2b669a; color: white;">
+                        Versions
+                    </li>
+                    {%if versions is iterable%}
+                        {%for version in versions%}
+                            <li class="list-group-item ">{{version.numero}}<a data-id="{{version.numero}}" data-id2="{{version.id}}" title="Edit this item" class="open-AddBookDialog2 btn" href="#addBookDialog2"><span class="glyphicon glyphicon-pencil" style="margin-left : 20px;"></span></a> <a data-id="{{version.numero}}" data-id2="{{version.id}}" title="Delete this item" class="open-AddBookDialog btn" href="#addBookDialog"><span class="glyphicon glyphicon-remove"></span></a></li>
+                                {%endfor%}
+                            {%endif%}
+                </ul>
+            {%endif%}
+            <div class="modal fade" id="addBookDialog">
+                <div class="modal-dialog" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Are you sure?</h4>
+                        </div>
+                        <form role="form" data-validate="parsley" method="POST" action="{{path('maindb_gestionversions')}}">
+                            <div class="modal-body">
+                                <p>Do you really want to delete : </p>
+                                <input readonly type="text" id="bookId" value="" style="border: none; width:100%;"/>
+                                <input hidden readonly type="text" name="todelete" id="bookId2" value=""/>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Delete</button>
+                            </div>
+                        </form>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" align="center" style="margin-left: auto; margin-right: auto; display: block"><span class="glyphicon glyphicon-plus"></span>  Version</button>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form class="form-horizontal" role="form" data-validate="parsley" method="POST" action="{{path('maindb_gestionversions')}}">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Add a version</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div style="margin-top: 30px;">
+
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Name : </label>
+                                        <div class="col-sm-10">
+                                            <input name="namenewversion" type="text" class="form-control" id="inputPassword3" placeholder="Version number" required autofocus data-trigger="change" data-required="true">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Modal box to edit -->
+            <div class="modal fade" id="addBookDialog2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width: 40%;">
+                    <form class="form-horizontal" role="form" data-validate="parsley" method="POST" action="{{path('maindb_gestionversions')}}">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Edit version : <input readonly type="text" id="bookIsd" value="" style="border: none; width : 100%;"/> </h4>
+                                <input readonly hidden type="text" name="idToEdit" id="bookIsd2" value="" style="border: none; width : 100%;"/>
+                            </div>
+                            <div class="modal-body">
+                                <div style="margin-top: 30px;">
+
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Name : </label>
+                                        <div class="col-sm-10">
+                                            <input name="itemToEdit" id="nameversionedit" type="text" class="form-control" id="inputPassword3" placeholder="Version number" required autofocus data-trigger="change" data-required="true">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /container -->
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <script src="{{asset('bundles/maindb/js/jquery.min.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/bootstrap.min.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/bootstrap.js')}}"></script>
+
+        <script src="{{asset('bundles/maindb/js/parsley/parsley-standalone.min.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/parsley/parsley.extend.min.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/parsley/parsley.min.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/dropdown.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/affix.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/alert.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/button.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/jquery.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/scrollspy.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/tab.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/tooltip.js')}}"></script>
+        <script src="{{asset('bundles/maindb/js/transition.js')}}"></script>
+        <script>
+            $(document).on("click", ".open-AddBookDialog", function (e) {
+
+                e.preventDefault();
+
+                var _self = $(this);
+
+                var myBookId = _self.data('id');
+                var myBookId2 = _self.data('id2');
+                $("#bookId").val(myBookId);
+                $("#bookId2").val(myBookId2);
+
+                $(_self.attr('href')).modal('show');
+            });
+        </script>
+        <script>
+            $(document).on("click", ".open-AddBookDialog2", function (e) {
+
+                e.preventDefault();
+
+                var _self = $(this);
+
+                var myBookId = _self.data('id');
+                var myBookId2 = _self.data('id2');
+                $("#bookIsd").val(myBookId);
+                $("#bookIsd2").val(myBookId2);
+                $("#nameversionedit").val(myBookId);
+
+                $(_self.attr('href')).modal('show');
+            });
+        </script>
+        <!-- Placed at the end of the document so the pages load faster -->
+    </body>
+</html>

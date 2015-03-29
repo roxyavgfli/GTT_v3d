@@ -1,0 +1,4 @@
+maindb:
+    resource: "@maindbBundle/Resources/config/routing.yml"
+    prefix:   /
+

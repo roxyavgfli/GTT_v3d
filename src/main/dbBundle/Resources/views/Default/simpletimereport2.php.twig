@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="../../favicon.ico">
+
+        <title>Welcome</title>
+
+        <!-- Bootstrap core CSS -->
+
+
+        <link href="{{asset('bundles/maindb/css/bootstrap.min.css')}}" rel="stylesheet">
+        <link href="{{asset('bundles/maindb/css/bootstrap-theme.min.css')}}" rel="stylesheet">
+        <link href="{{asset('bundles/maindb/css/parsley/parsley.css')}}" rel="stylesheet">
+        <link href="{{asset('bundles/maindb/css/datepicker.css')}}" rel="stylesheet">
+
+
+        <!-- Custom styles for this template -->
+        <link href="{{asset('bundles/maindb/css/signin.css')}}" rel="stylesheet">
+        <style type="text/css">
+            .navbar{
+                margin-top: 20px;
+            }
+        </style>
+
+
+
+        <!-- Custom styles for this template -->
+
+
+        <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+        <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+        <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body style="height: 100%;">
+          <div class="container" style="height: 90%">
+            <nav role="navigation" class="navbar navbar-default">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="#" class="navbar-brand"><img src="{{asset('bundles/maindb/images/v3d.png')}}" alt="Smiley face" height="20" ></a>
+                </div>
+                <!-- Collection of nav links, forms, and other content for toggling -->
+                <div id="navbarCollapse" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="{{path('maindb_homepage')}}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li><a href="{{path('maindb_profile')}}"><span class="glyphicon glyphicon-cog"></span> Profile</a></li>
+                    </ul>
+                    <!-- search
+                    <form role="search" class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text" placeholder="Search" class="form-control">
+                        </div>
+                    </form>
+                    --> 
+                    <ul class="nav navbar-nav">
+                        {%if roles is iterable%}
+                            {%for role in roles%}
+                                {%if role.nom == 'user' %}
+                                    <li class="dropdown">
+                                        <a  class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-ok"></span> Time Report <span class="caret"></span></a>
+                                        <ul role="menu" class="dropdown-menu">
+                                            <li class="active"><a href="{{path('maindb_gestionsimplereport')}}">Simple time report</a></li>
+                                        </ul>
+                                    </li>
+                                {%endif%}
+                            {%endfor%}
+                        {%endif%}
+                    </ul>
+                    <ul class="nav navbar-nav navbar-left">
+                        {%if roles is iterable%}
+                            {%for role in roles%}
+                                {%if role.nom == 'administrator' %}
+                                    <li class="dropdown">
+                                        <a  class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-download-alt"></span> Export <span class="caret"></span></a>
+                                        <ul role="menu" class="dropdown-menu">
+                                            <li><a href="{{path('maindb_exportsimpletask')}}">Export Simple Tasks</a></li>
+                                        </ul>
+                                    </li>
+                                {%endif%}
+                            {%endfor%}
+                        {%endif%}
+                    </ul> 
+                    <ul class="nav navbar-nav navbar-right">
+                        {%if roles is iterable%}
+                            {%for role in roles%}
+                                {%if role.nom == 'administrator' %}
+                                    <li class="dropdown">
+                                        <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-fire"></span> Admin panel <span class="caret"></span></a>
+                                        <ul role="menu" class="dropdown-menu">
+                                            <li><a href="{{path('maindb_gestionuserlist',{'firstload':1})}}">Users management</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="{{path('maindb_gestionactivite')}}">Categories management</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="{{path('maindb_gestionteamlist')}}">Team management</a></li>
+                                        </ul>
+                                    </li>
+                                {%endif%}
+                            {%endfor%}
+                        {%endif%}
+                        <li><a href="{{path('maindb_profile')}}"><span class="glyphicon glyphicon-check"></span> connected as {{name}} {{surname}}</a></li>
+                        <li><a href="{{path('maindb_logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </ul>
+
+                </div>
+            </nav>
+
+            <form class="navbar-form navbar-right" role="search" action="#" method="GET">
+                <div class="form-group" style="display: flex;">
+                    <input name="startdate"  type="text" placeholder="select start date" {%if startdatesearch is defined%}{%if startdatesearch == '0000/00/00'%}{%else%}value="{{startdatesearch}}"{%endif%}{%endif%}  id="example1" style="font-size: 15px; width : auto;">
+                    <input  name="endate" type="text" placeholder="select end date" {%if endatesearch is defined%}{%if endatesearch == '9999/12/30'%}{%else%}value="{{endatesearch}}"{%endif%}{%endif%} id="example2" style="font-size: 15px; width : auto;">
+                    <select class="form-control" name="natureshearched">
+                        {%if natures is defined%}
+                            <option  value="">-- Select nature --</option>
+                            {%for nature in natures%}
+                                {%if naturesearch is defined%}
+                                    {%if nature == naturesearch%}
+                                        <option selected  value="{{nature}}">{{nature}}</option>
+                                    {%else%}
+                                        <option value="{{nature}}">{{nature}}</option>
+                                    {%endif%}
+                                {%else%}
+                                    <option  value="{{nature}}">{{nature}}</option>
+                                {%endif%}
+                            {%endfor%}
+                        {%endif%}
+                    </select>
+                    <button type="submit" class="btn btn-default">Refresh</button>
+                </div>
+            </form>
+            <p style="color:#888888; font-size: 18px;"><span class="glyphicon glyphicon-arrow-right"></span> Simple Time Report</p>           
+            <p id="log"></p>
+            <br>
+            {%if message is defined%}
+                <div class="alert alert-danger" style="margin-top: 20px; text-align: center;">
+                    <strong style="text-align: center;">{{message}}</strong>
+                </div>
+            {%endif%}
+
+            <div class="wrap" style="height: 60% !important; border: 2px solid; border-color: #e7e7e7;border-radius: 5px;
+                 display: block;
+                 box-shadow: 10px 10px 5px #888888;">
+                <table class="table table-condensed" style="border-collapse:collapse; margin-bottom: 0px;">
+                    <tr>
+                        <th style="width:33%;">&nbsp;</th>
+                        <th style="width:33%;">Date</th>
+                        <th style="width:34%;">Time Reported</th>
+                    </tr>
+                </table>
+                <div class="span3" style="table-layout: fixed; height:90%; overflow-y: auto;">
+                    <table class="table table-condensed" style="border-collapse:collapse;">
+                        {%if tachestodisplay is defined%}
+                            {% set i = 0 %}
+                            {%for task in tachestodisplay|reverse%}
+                                {%if task[1] != 1%}
+                                    {%if task[3] is defined and task[3] == "WE"%}
+                                        <tr class="accordion-toggle" style="background-color: grey;"> 
+                                        {%elseif task[1] == 0 %}
+                                        <tr data-toggle="accordion-toggle" data-target="#demo{{i}}" class="accordion-toggle" style="background-color: red;">
+                                        {%else%}
+                                        <tr data-toggle="collapse" data-target="#demo{{i}}" class="accordion-toggle" style="background-color: red;">
+                                        {%endif%}
+                                    {%else%}
+                                    <tr data-toggle="collapse" data-target="#demo{{i}}" class="accordion-toggle">
+                                    {%endif%}
+                                    {%if task[3] is defined and task[3] == "WE"%}
+                                        <td style="width:33%;"></td>
+
+                                    {%else%}
+                                        {%if task[1] != 1%}
+                                            {%if task[1] == 0%}
+                                                <td style="width:33%;"><img src="{{asset('bundles/maindb/images/warning.gif')}}" alt="Smiley face" height="20" ><a class="open-AddBookDialog btn btn-default btn-xs" data-id="{{task[0]}}"  href="#AddBookDialog2" ><span class="glyphicon glyphicon-plus"></span></a></td>
+                                                    {%else%}
+                                                <td style="width:33%;"><img src="{{asset('bundles/maindb/images/warning.gif')}}" alt="Smiley face" height="20" ><a class="open-AddBookDialog btn btn-default btn-xs" data-id="{{task[0]}}"  href="#AddBookDialog2" ><span class="glyphicon glyphicon-plus"></span></a><button class="btn btn-default btn-xs" style="margin-left:5px;"><span class="glyphicon glyphicon-eye-open"></span></button></td>
+                                                    {%endif%}
+                                                {%else%}
+                                            <td style="width:33%;"><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></td>
+                                                {%endif%}
+                                            {%endif%}
+
+                                    <td>{{task[0]}}</td>
+                                    {%if task[3] is defined and task[3] == "WE"%}
+                                        <td style="width:34%;">Week End</td>
+                                    {%else%}
+                                        <td style="width:34%;">{{task[1]}}</td>
+                                    {%endif%}
+                                </tr>
+                                <tr>
+                                    <td colspan="12" class="hiddenRow">
+                                        <div class="accordian-body collapse" id="demo{{i}}"> 
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 110px;">Nature</th>
+                                                        <th style="width: 350px;">Title</th>
+                                                        <th style="width: 250px;">Activity</th>
+                                                        <th style="width: 80px;"><span class="glyphicon glyphicon-time" style="margin-top: 9px; color: black;"></span></th>
+                                                        <th style="width: 80px;">Edit</th>
+                                                        <th style="width: 80px;">Delete</th>
+                                                        <th style="width: 80px;">Clone</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {%for ta in task[2]%}
+                                                        <tr>
+                                                            <td>{{ta.nature}}</td>
+                                                            <td>{{ta.nom}}</td>
+                                                            <td>
+                                                                {%for activite in activites2%}
+                                                                    {%if activite.id == ta.activiteId%}
+                                                                        {{activite.nom}}
+                                                                    {%endif%}
+                                                                {%endfor%}
+                                                            </td>
+                                                            <td>{{ta.tempsPasse}}</td>
+                                                            <td>
+                                                                {%if ta.editable == 1%}
+                                                                    <a title="Edit this item" href="{{ path('maindb_editsimplereport', {'idToEdit': ta.id}) }}"><span class="glyphicon glyphicon-edit" style="margin-right: 10px; margin-left: 10px; margin-top: 8px;"></span></a>
+                                                                    {%else%}
+                                                                    <a><span class="glyphicon glyphicon-edit" style="margin-right: 10px; margin-left: 10px; margin-top: 9px; color: black;"></span></a>
+                                                                    {%endif%}
+                                                            </td>      
+                                                            <td>
+                                                                {%if ta.editable == 1%}
+                                                                    <a data-id="{{ta.nom}}" data-id2="{{ta.id}}" title="Delete this item" class="open-AddBookDialog btn" href="#addBookDialog"><span class="glyphicon glyphicon-remove"></span></a>
+                                                                    {%else%}
+                                                                    <a><span class="glyphicon glyphicon-remove" style="margin-right: 10px; margin-left: 13px; margin-top: 9px; color: black;"></span></a>
+                                                                    {%endif%}
+                                                            </td> 
+                                                            <td>
+                                                                <a title="Edit this item" href="{{ path('maindb_duplicatesimplereport', {'idToEdit': ta.id}) }}"><span class="glyphicon glyphicon-plus" style="margin-right: 10px; margin-left: 10px; margin-top: 8px;"></span></a>
+                                                            </td>
+                                                        </tr>
+                                                    {%endfor%}
+                                                </tbody>
+                                            </table>
+                                        </div> 
+                                    </td>
+                                </tr>
+                                {% set i = i+1 %}    
+                            {%endfor%}
+                        {%endif%}
+                    </table>
+                </div>   
+            </div>
+            <div class="modal fade" id="AddBookDialog2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width: 40%;">
+                    <form class="form-horizontal" role="form" data-validate="parsley" method="POST" action="{{path('maindb_newsimplereport')}}">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title" id="myModalLabel">New report : <input readonly type="text" id="bookIsd" value="" style="border: none; width : 100%;"/> </h4>
+                                <input readonly hidden type="text" name="idToEdit" id="bookIsd2" value="" style="border: none; width : 100%;"/>
+                            </div>
+                            <div class="modal-body">
+                                <div style="margin-top: 30px;">
+
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Nature : </label>
+                                        <div class="col-sm-10">
+                                            <select required class="form-control" name="nature" id="nature" onchange="test()">
+                                                {%if natures is defined%}
+                                                    <option  value="">-- Select nature --</option>
+                                                    {%for nature in natures%}
+                                                        <option  value="{{nature}}">{{nature}}</option>
+                                                    {%endfor%}
+                                                {%endif%}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='InputPassword3' class='col-sm-2 control-label'>Title : </label>
+                                        <div class='col-sm-10'>
+                                            <input class='form-control parsley-validated' type='text' name='fname' required>
+                                            <br>
+                                            </input>
+                                        </div>
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='InputPassword3' class='col-sm-2 control-label'>Date : </label>
+                                        <div class='col-sm-10'>
+                                            <input readonly required type='text' value="" name='date' id='date' style='font-size: 15px; width : auto; required'>
+                                        </div>
+                                    </div>
+                                    <div id="lsld">
+
+                                    </div>
+                                    <div id="demo">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" id="submit" class="btn btn-primary">Next</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width: 60%;">
+                    <form class="form-horizontal" role="form" data-validate="parsley" method="POST" action="{{path('maindb_savenewsimplereport')}}">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title" id="myModalLabel">New report : {%if date is defined%}{%if date is not empty%}{{date}}{%endif%}{%endif%} : {%if label is defined%}{%if label is not empty%}{{label}}{%endif%}{%endif%} {%if natureselected is defined%}{%if natureselected is not empty%}{{natureselected}}{%endif%}{%endif%}<input readonly type="text" id="bookIsd" value="" style="border: none; width : 100%;"/> </h4>
+                                <input readonly hidden type="text" name="date" id="bookIsd2" value="{%if date is defined%}{%if date is not empty%}{{date}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                                <input readonly hidden type="text" name="label" id="bookIsd2" value="{%if label is defined%}{%if label is not empty%}{{label}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                                <input readonly hidden type="text" name="naturetosave" id="bookIsd2" value="{%if natureselected is defined%}{%if natureselected is not empty%}{{natureselected}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                                <div class="form-group" style="display: none;">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Final Customer : </label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control" name="finalcustomer" id="finalcustomer">
+                                            {%if clients is defined%}
+                                                <option  value="">-- Select Custommer --</option>
+                                                {%for client in clients%}
+                                                    {%if client.nom == 'V3D' or client.nom == 'v3d'%}
+                                                        <option selected value="{{client.id}}">{{client.nom}}</option>
+                                                    {%else%}
+                                                        <option value="{{client.id}}">{{client.nom}}</option>
+                                                    {%endif%}    
+                                                {%endfor%}
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
+                                <div style="margin-top: 30px;">
+
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Activité : </label>
+                                        <div class="col-sm-10">
+                                            <select required class="form-control" name="activite" id="activite">
+                                                {%if activites is defined%}
+                                                    <option  value="">-- Select activite --</option>
+                                                    {%for activite in activites%}
+                                                        {%if activite.nom == 'produit' or activite.nom == 'Produit' or activite.nom == 'product' or activite.nom == 'Product' %}
+                                                            <option selected value="{{activite.id}}">{{activite.nom}}</option>
+                                                        {%else%}
+                                                            <option value="{{activite.id}}">{{activite.nom}}</option>
+                                                        {%endif%}
+                                                    {%endfor%}
+                                                {%endif%}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Time spent : </label>
+                                        <div class="col-sm-10">
+                                            <select required class="form-control" name="temps" id="temps">
+                                                {%if times is defined%}
+                                                    <option  value="">-- Select Time Spent --</option>
+                                                    {%for time in times%}
+                                                        {%if time == '0.25' %}
+                                                            <option  value="{{time}}">1/4 day</option>
+                                                        {%elseif time == '0.5' %}
+                                                            <option  value="{{time}}">1/2 day</option>
+                                                        {%elseif time == '0.75' %}
+                                                            <option  value="{{time}}">3/4 day</option>
+                                                        {%elseif time == '1.0' %}
+                                                            <option  value="{{time}}">Full day</option>
+                                                        {%else%}
+                                                            <option  value="{{time}}">{{time}}</option>
+                                                        {%endif%}
+                                                    {%endfor%}
+                                                {%endif%}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Product : </label>
+                                        <div class="col-sm-10">
+                                            <select required class="form-control" name="product" id="productnormal"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Versions : </label>
+                                        <div class="col-sm-10">                                   
+                                            <select  class="form-control" name="version" id="versionsnormal"></select>  
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Plateforme : </label>
+                                        <div class="col-sm-10">
+                                            <select  class="form-control" name="plateforme" id="plateformesnormal"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Component : </label>
+                                        <div class="col-sm-10">
+                                            <select  class="form-control" name="component" id="composantsnormal"></select> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Comment : </label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" rows="3" name="comment"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {%if tacheedit is defined%}
+                <div class="modal fade" id="modal2Edition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="width: 60%;">
+                        {%if tacheedit is defined and dup is not defined%}
+                            <form class="form-horizontal" role="form" data-validate="parsley" method="POST" action="{{path('maindb_editsimplereport')}}">
+                            {%elseif tacheedit is defined and dup is defined%}
+                                <form class="form-horizontal" role="form" data-validate="parsley" method="POST" action="{{path('maindb_duplicatesimplereport')}}">
+                                {%endif%}
+                                <input readonly hidden type="text" name="idtosaveedition" id="idtosaveedition" value="{%if tacheedit.id is defined%}{%if tacheedit.id is not empty%}{{tacheedit.id}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                        {%if tacheedit is defined and dup is not defined%}
+                                            <h4 class="modal-title" id="myModalLabel">Edit report : {%if tacheedit.date is defined%}{%if tacheedit.date is not empty%}{{tacheedit.date}}{%endif%}{%endif%} : {%if tacheedit.nom is defined%}{%if tacheedit.nom is not empty%}{{tacheedit.nom}}{%endif%}{%endif%} {%if tacheedit.nature is defined%}{%if tacheedit.nature is not empty%}{{tacheedit.nature}}{%endif%}{%endif%}<input readonly type="text" id="bookIsd" value="" style="border: none; width : 100%;"/> </h4>
+                                            {%elseif tacheedit is defined and dup is defined%}
+                                            <h4 class="modal-title" id="myModalLabel">Cloning report : {%if tacheedit.date is defined%}{%if tacheedit.date is not empty%}{{tacheedit.date}}{%endif%}{%endif%} : {%if tacheedit.nom is defined%}{%if tacheedit.nom is not empty%}{{tacheedit.nom}}{%endif%}{%endif%} {%if tacheedit.nature is defined%}{%if tacheedit.nature is not empty%}{{tacheedit.nature}}{%endif%}{%endif%}<input readonly type="text" id="bookIsd" value="" style="border: none; width : 100%;"/> </h4>
+                                            {%endif%}
+                                        <input readonly hidden type="text" name="idToEdit" id="bookIsd2" value="" style="border: none; width : 100%;"/>
+                                        {% if oldprodid is defined and oldprod is not null %}<input readonly hidden type="text" name="idoldprod" id="bookIsd2" value="{{oldprodid}}" style="border: none; width : 100%;"/>{% endif %}
+                                        {% if oldversid is defined and oldversid is not null %}<input readonly hidden type="text" name="idoldvers" id="bookIsd2" value="{{oldversid}}" style="border: none; width : 100%;"/>{% endif %}
+                                        {% if oldcompid is defined and oldcompid is not null %}<input readonly hidden type="text" name="idoldcomp" id="bookIsd2" value="{{oldcompid}}" style="border: none; width : 100%;"/>{% endif %}
+                                        {% if oldplatid is defined and oldplatid is not null %}<input readonly hidden type="text" name="idoldplat" id="bookIsd2" value="{{oldplatid}}" style="border: none; width : 100%;"/>{% endif %}
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class='form-group'>
+                                            <label for='InputPassword3' class='col-sm-2 control-label'>Date : </label>
+                                            <div class='col-sm-10'>
+                                                <input readonly type='text' placeholder='select date' name='dateeditproduit' id='dateeditproduit' value='{{tacheedit.date}}' style='font-size: 15px; width : auto; required'>
+                                            </div>
+                                        </div>
+                                        <div class='form-group'>
+                                            <label for='InputPassword3' class='col-sm-2 control-label'>Label : </label>
+                                            <div class='col-sm-10'>
+                                                <input class='form-control parsley-validated' type='text' name='nomedit' value="{{tacheedit.nom}}" required></input>                                                </div>
+                                        </div> 
+                                        <div class="form-group" style="display: none;">
+                                            <label for="inputPassword3" class="col-sm-2 control-label">Final Customer : </label>
+                                            <div class="col-sm-10">
+                                                <select required class="form-control" name="finalcustomer" id="finalcustomers">
+                                                    {%if clients is defined%}
+                                                        <option  value="">-- Select Custommer --</option>
+                                                        {%for client in clients%}
+                                                            {%if client.id == tacheedit.clientId%}
+                                                                <option selected value="{{client.id}}">{{client.nom}}</option>
+                                                            {%else%}
+                                                                <option value="{{client.id}}">{{client.nom}}</option>
+                                                            {%endif%}    
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-2 control-label">Activité : </label>
+                                            <div class="col-sm-10">
+                                                <select required class="form-control" name="activite" id="activite">
+                                                    {%if activites is defined%}
+                                                        <option  value="">-- Select activite --</option>
+                                                        {%for activite in activites%}
+                                                            {%if activite.id == tacheedit.activiteId %}
+                                                                <option selected value="{{activite.id}}">{{activite.nom}}</option>
+                                                            {%else%}
+                                                                <option value="{{activite.id}}">{{activite.nom}}</option>
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-2 control-label">Time spent : </label>
+                                            <div class="col-sm-10">
+                                                <select required class="form-control" name="temps" id="temps">
+                                                    {%if times is defined%}
+                                                        <option  value="">-- Select Time Spent --</option>
+                                                        {%for time in times%}
+                                                            {%if time == '0.25' %}
+                                                                {%if time == tacheedit.tempsPasse%}
+                                                                    <option selected  value="{{time}}">1/4 day</option>
+                                                                {%else%}
+                                                                    <option  value="{{time}}">1/4 day</option>
+                                                                {%endif%}
+                                                            {%elseif time == '0.5' %}
+                                                                {%if time == tacheedit.tempsPasse%}
+                                                                    <option selected  value="{{time}}">1/2 day</option>
+                                                                {%else%}
+                                                                    <option  value="{{time}}">1/2 day</option>
+                                                                {%endif%}
+                                                            {%elseif time == '0.75' %}
+                                                                {%if time == tacheedit.tempsPasse%}
+                                                                    <option selected  value="{{time}}">3/4 day</option>
+                                                                {%else%}
+                                                                    <option  value="{{time}}">3/4 day</option>
+                                                                {%endif%}
+                                                            {%elseif time == '1.0' %}
+                                                                {%if time == tacheedit.tempsPasse%}
+                                                                    <option selected  value="{{time}}">Full day</option>
+                                                                {%else%}
+                                                                    <option  value="{{time}}">Full day</option>
+                                                                {%endif%}
+                                                            {%else%}
+                                                                <option  value="{{time}}">{{time}}</option>
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="margin: 15px; background-image: linear-gradient(to bottom,#428bca 0,#2d6ca2 100%); color: white; border-color: #2b669a; border-radius: 5px;width: 33%;margin-left: auto;margin-right: auto;">
+                                            {%if oldprod is defined and oldvers is defined and oldplat is defined and oldcomp is defined%}
+                                                <p style="margin: 2%;">Current product : {{oldprod}}</p>
+                                                <ul>
+                                                    <li>current version : {{oldvers}}</li> 
+                                                    <li>current plateforme : {{oldplat}}</li>
+                                                    <li>current component : {{oldcomp}}</li>
+                                                </ul>
+                                            {%endif%}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-2 control-label">Edit product : </label>
+                                            <div class="col-sm-10">
+                                                <input type="checkbox" id="checkbox1" name="subphaseoption"/>
+                                            </div>
+                                        </div>
+                                        <div id="autoUpdate" class="autoUpdate" style="display : none;">
+                                            <div class="form-group">
+                                                <label for="inputPassword3" class="col-sm-2 control-label">Product : </label>
+                                                <div class="col-sm-10">
+                                                    <select required class="form-control" name="product" id="productedit">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputPassword3" class="col-sm-2 control-label">Versions : </label>
+                                                <div class="col-sm-10">                                   
+                                                    <select  class="form-control" name="version" id="versionsedit"></select>  
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputPassword3" class="col-sm-2 control-label">Plateforme : </label>
+                                                <div class="col-sm-10">
+                                                    <select  class="form-control" name="plateforme" id="plateformesedit"></select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputPassword3" class="col-sm-2 control-label">Component : </label>
+                                                <div class="col-sm-10">
+                                                    <select  class="form-control" name="component" id="composantsedit"></select> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-2 control-label">Comment : </label>
+                                            <div class="col-sm-10">
+                                                <textarea class="form-control" rows="3" name="comment">{{tacheedit.commentaire}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+                </div>  
+            {%endif%}
+
+            <div class="modal fade" id="modal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width: 60%;">
+                    <form class="form-horizontal" role="form" data-validate="parsley" method="POST" action="{{path('maindb_savenewsimplereport')}}">
+                        <input readonly hidden type="text" name="date" id="bookIsd2" value="{%if date is defined%}{%if date is not empty%}{{date}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                        <input readonly hidden type="text" name="label" id="bookIsd2" value="{%if label is defined%}{%if label is not empty%}{{label}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                        <input readonly hidden type="text" name="naturetosave" id="bookIsd2" value="{%if natureselected is defined%}{%if natureselected is not empty%}{{natureselected}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title" id="myModalLabel">New report : {%if date is defined%}{%if date is not empty%}{{date}}{%endif%}{%endif%} : {%if label is defined%}{%if label is not empty%}{{label}}{%endif%}{%endif%} {%if natureselected is defined%}{%if natureselected is not empty%}{{natureselected}}{%endif%}{%endif%}<input readonly type="text" id="bookIsd" value="" style="border: none; width : 100%;"/> </h4>
+                                <input readonly hidden type="text" name="idToEdit" id="bookIsd2" value="" style="border: none; width : 100%;"/>
+                                <div class="form-group" style="display: none;">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Final Customer : </label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control" name="finalcustomer" id="finalcustomer">
+                                            {%if clients is defined%}
+                                                <option  value="">-- Select Custommer --</option>
+                                                {%for client in clients%}
+                                                    {%if client.nom == 'V3D' or client.nom == 'v3d'%}
+                                                        <option selected value="{{client.id}}">{{client.nom}}</option>
+                                                    {%else%}
+                                                        <option value="{{client.id}}">{{client.nom}}</option>
+                                                    {%endif%}    
+                                                {%endfor%}
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div style="margin-top: 30px;">
+
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Activité : </label>
+                                        <div class="col-sm-10">
+                                            <select required class="form-control" name="activite" id="activite">
+                                                {%if activites is defined%}
+                                                    <option  value="">-- Select activite --</option>
+                                                    {%for activite in activites%}
+                                                        <option  value="{{activite.id}}">{{activite.nom}}</option>
+                                                    {%endfor%}
+                                                {%endif%}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Time spent : </label>
+                                        <div class="col-sm-10">
+                                            <select required class="form-control" name="temps" id="temps">
+                                                {%if times is defined%}
+                                                    <option  value="">-- Select Time Spent --</option>
+                                                    {%for time in times%}
+                                                        {%if time == '0.25' %}
+                                                            <option  value="{{time}}">1/4 day</option>
+                                                        {%elseif time == '0.5' %}
+                                                            <option  value="{{time}}">1/2 day</option>
+                                                        {%elseif time == '0.75' %}
+                                                            <option  value="{{time}}">3/4 day</option>
+                                                        {%elseif time == '1.0' %}
+                                                            <option  value="{{time}}">Full day</option>
+                                                        {%else%}
+                                                            <option  value="{{time}}">{{time}}</option>
+                                                        {%endif%}
+                                                    {%endfor%}
+                                                {%endif%}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Comment : </label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control"  name="comment"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {%if tacheedit is defined%}
+                <div class="modal fade" id="modal3Edition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="width: 60%;">
+                        {%if tacheedit is defined and dup is not defined%}
+                            <form class="form-horizontal" role="form" data-validate="parsley" method="POST" action="{{path('maindb_editsimplereport')}}">
+                            {%elseif tacheedit is defined and dup is defined%}
+                                <form class="form-horizontal" role="form" data-validate="parsley" method="POST" action="{{path('maindb_duplicatesimplereport')}}">
+                                {%endif%}
+                                <input readonly hidden type="text" name="idtosaveedition" id="idtosaveedition" value="{%if tacheedit.id is defined%}{%if tacheedit.id is not empty%}{{tacheedit.id}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                        {%if tacheedit is defined and dup is not defined%}
+                                            <h4 class="modal-title" id="myModalLabel">Edit report : {%if tacheedit.date is defined%}{%if tacheedit.date is not empty%}{{tacheedit.date}}{%endif%}{%endif%} : {%if tacheedit.nom is defined%}{%if tacheedit.nom is not empty%}{{tacheedit.nom}}{%endif%}{%endif%} {%if tacheedit.nature is defined%}{%if tacheedit.nature is not empty%}{{tacheedit.nature}}{%endif%}{%endif%}<input readonly type="text" id="bookIsd" value="" style="border: none; width : 100%;"/> </h4>
+                                            {%elseif tacheedit is defined and dup is defined%}
+                                            <h4 class="modal-title" id="myModalLabel">Cloning report : {%if tacheedit.date is defined%}{%if tacheedit.date is not empty%}{{tacheedit.date}}{%endif%}{%endif%} : {%if tacheedit.nom is defined%}{%if tacheedit.nom is not empty%}{{tacheedit.nom}}{%endif%}{%endif%} {%if tacheedit.nature is defined%}{%if tacheedit.nature is not empty%}{{tacheedit.nature}}{%endif%}{%endif%}<input readonly type="text" id="bookIsd" value="" style="border: none; width : 100%;"/> </h4>
+                                            {%endif%}
+                                        <input readonly hidden type="text" name="idToEdit" id="bookIsd2" value="" style="border: none; width : 100%;"/>
+                                    </div>
+                                    <div class="form-group" style="display: none;">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Final Customer : </label>
+                                        <div class="col-sm-10">
+                                            <select required class="form-control" name="finalcustomer" id="finalcustomersa">
+                                                {%if clients is defined%}
+                                                    <option  value="">-- Select Custommer --</option>
+                                                    {%for client in clients%}
+                                                        {%if client.nom == 'V3D' or client.nom == 'v3d'%}
+                                                            <option selected value="{{client.id}}">{{client.nom}}</option>
+                                                        {%else%}
+                                                            <option value="{{client.id}}">{{client.nom}}</option>
+                                                        {%endif%}    
+                                                    {%endfor%}
+                                                {%endif%}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div style="margin-top: 30px;">
+                                            <div class='form-group'>
+                                                <label for='InputPassword3' class='col-sm-2 control-label'>Date : </label>
+                                                <div class='col-sm-10'>
+                                                    <input readonly type='text' placeholder='select date' name='dateeditproduit' id='dateeditintern' value='{{tacheedit.date}}' style='font-size: 15px; width : auto; required'>
+                                                </div>
+                                            </div>
+                                            <div class='form-group'>
+                                                <label for='InputPassword3' class='col-sm-2 control-label'>Label : </label>
+                                                <div class='col-sm-10'>
+                                                    <input class='form-control parsley-validated' type='text' name='nomedit' value="{{tacheedit.nom}}" required></input>                                                </div>
+                                            </div> 
+
+                                            <div class="form-group">
+                                                <label for="inputPassword3" class="col-sm-2 control-label">Activité : </label>
+                                                <div class="col-sm-10">
+                                                    <select required class="form-control" name="activite" id="activite">
+                                                        {%if activites is defined%}
+                                                            <option  value="">-- Select activite --</option>
+                                                            {%for activite in activites%}
+                                                                {%if activite.id == tacheedit.activiteId%}
+                                                                    <option selected value="{{activite.id}}">{{activite.nom}}</option>
+                                                                {%else%}
+                                                                    <option  value="{{activite.id}}">{{activite.nom}}</option>
+                                                                {%endif%}
+                                                            {%endfor%}
+                                                        {%endif%}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputPassword3" class="col-sm-2 control-label">Time spent : </label>
+                                                <div class="col-sm-10">
+                                                    <select required class="form-control" name="temps" id="temps">
+                                                        {%if times is defined%}
+                                                            <option  value="">-- Select Time Spent --</option>
+                                                            {%for time in times%}
+                                                                {%if time == '0.25' %}
+                                                                    {%if time == tacheedit.tempsPasse%}
+                                                                        <option selected  value="{{time}}">1/4 day</option>
+                                                                    {%else%}
+                                                                        <option  value="{{time}}">1/4 day</option>
+                                                                    {%endif%}
+                                                                {%elseif time == '0.5' %}
+                                                                    {%if time == tacheedit.tempsPasse%}
+                                                                        <option selected  value="{{time}}">1/2 day</option>
+                                                                    {%else%}
+                                                                        <option  value="{{time}}">1/2 day</option>
+                                                                    {%endif%}
+                                                                {%elseif time == '0.75' %}
+                                                                    {%if time == tacheedit.tempsPasse%}
+                                                                        <option selected  value="{{time}}">3/4 day</option>
+                                                                    {%else%}
+                                                                        <option  value="{{time}}">3/4 day</option>
+                                                                    {%endif%}
+                                                                {%elseif time == '1.0' %}
+                                                                    {%if time == tacheedit.tempsPasse%}
+                                                                        <option selected  value="{{time}}">Full day</option>
+                                                                    {%else%}
+                                                                        <option  value="{{time}}">Full day</option>
+                                                                    {%endif%}
+                                                                {%else%}
+                                                                    <option  value="{{time}}">{{time}}</option>
+                                                                {%endif%}
+                                                            {%endfor%}
+                                                        {%endif%}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputPassword3" class="col-sm-2 control-label">Comment : </label>
+                                                <div class="col-sm-10">
+                                                    <textarea class="form-control" name="comment">{{tacheedit.commentaire}}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+                </div>
+            </div>
+        {%endif%}
+        <div class="modal fade" id="modal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="width: 60%;">
+                <form class="form-horizontal" role="form" data-validate="parsley" method="POST" action="{{path('maindb_savenewsimplereport')}}">
+                    <input readonly hidden type="text" name="date" id="bookIsd2" value="{%if date is defined%}{%if date is not empty%}{{date}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                    <input readonly hidden type="text" name="label" id="bookIsd2" value="{%if label is defined%}{%if label is not empty%}{{label}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                    <input readonly hidden type="text" name="naturetosave" id="bookIsd2" value="{%if natureselected is defined%}{%if natureselected is not empty%}{{natureselected}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">New report : {%if date is defined%}{%if date is not empty%}{{date}}{%endif%}{%endif%} : {%if label is defined%}{%if label is not empty%}{{label}}{%endif%}{%endif%} {%if natureselected is defined%}{%if natureselected is not empty%}{{natureselected}}{%endif%}{%endif%}<input readonly type="text" id="bookIsd" value="" style="border: none; width : 100%;"/> </h4>
+                            <input readonly hidden type="text" name="idToEdit" id="bookIsd2" value="" style="border: none; width : 100%;"/>
+                        </div>
+                        <div class="modal-body">
+                            <div style="margin-top: 30px;">
+
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Activité : </label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control" name="activite" id="activite">
+                                            {%if activites is defined%}
+                                                <option  value="">-- Select activite --</option>
+                                                {%for activite in activites%}
+                                                    <option  value="{{activite.id}}">{{activite.nom}}</option>
+                                                {%endfor%}
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Customer : </label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control" name="finalcustomer" id="finalcustommer">
+                                            {%if clients is defined%}
+                                                <option  value="">-- Select Customer --</option>
+                                                {%for client in clients%}
+                                                    <option  value="{{client.id}}">{{client.nom}}</option>
+                                                {%endfor%}
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                </div>        
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Time spent : </label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control" name="temps" id="temps">
+                                            {%if times is defined%}
+                                                <option  value="">-- Select Time Spent --</option>
+                                                {%for time in times%}
+                                                    {%if time == '0.25' %}
+                                                        <option  value="{{time}}">1/4 day</option>
+                                                    {%elseif time == '0.5' %}
+                                                        <option  value="{{time}}">1/2 day</option>
+                                                    {%elseif time == '0.75' %}
+                                                        <option  value="{{time}}">3/4 day</option>
+                                                    {%elseif time == '1.0' %}
+                                                        <option  value="{{time}}">Full day</option>
+                                                    {%else%}
+                                                        <option  value="{{time}}">{{time}}</option>
+                                                    {%endif%}
+                                                {%endfor%}
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Comment : </label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control"  name="comment"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal fade" id="modal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="width: 60%;">
+                <form class="form-horizontal" role="form" data-validate="parsley" method="POST" action="{{path('maindb_savenewsimplereport')}}">
+                    <input readonly hidden type="text" name="date" id="bookIsd2" value="{%if date is defined%}{%if date is not empty%}{{date}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                    <input readonly hidden type="text" name="label" id="bookIsd2" value="{%if label is defined%}{%if label is not empty%}{{label}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                    <input readonly hidden type="text" name="naturetosave" id="bookIsd2" value="{%if natureselected is defined%}{%if natureselected is not empty%}{{natureselected}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">New report : {%if date is defined%}{%if date is not empty%}{{date}}{%endif%}{%endif%} : {%if label is defined%}{%if label is not empty%}{{label}}{%endif%}{%endif%} {%if natureselected is defined%}{%if natureselected is not empty%}{{natureselected}}{%endif%}{%endif%}<input readonly type="text" id="bookIsd" value="" style="border: none; width : 100%;"/> </h4>
+                            <input readonly hidden type="text" name="idToEdit" id="bookIsd2" value="" style="border: none; width : 100%;"/>
+                        </div>
+                        <div class="modal-body">
+                            <div style="margin-top: 30px;">
+
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Activité : </label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control" name="activite" id="activite">
+                                            {%if activites is defined%}
+                                                <option  value="">-- Select activite --</option>
+                                                {%for activite in activites%}
+                                                    <option  value="{{activite.id}}">{{activite.nom}}</option>
+                                                {%endfor%}
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Time spent : </label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control" name="temps" id="temps">
+                                            {%if times is defined%}
+                                                <option  value="">-- Select Time Spent --</option>
+                                                {%for time in times%}
+                                                    {%if time == '0.25' %}
+                                                        <option  value="{{time}}">1/4 day</option>
+                                                    {%elseif time == '0.5' %}
+                                                        <option  value="{{time}}">1/2 day</option>
+                                                    {%elseif time == '0.75' %}
+                                                        <option  value="{{time}}">3/4 day</option>
+                                                    {%elseif time == '1.0' %}
+                                                        <option  value="{{time}}">Full day</option>
+                                                    {%else%}
+                                                        <option  value="{{time}}">{{time}}</option>
+                                                    {%endif%}
+                                                {%endfor%}
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- C'EST LA -->             <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Customer : </label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control" name="finalcustomer" id="finalcustomert"></select>
+                                    </div>
+                                </div>   
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Partenaire : </label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="partenaire" id="partenaire"></select>
+                                    </div>
+                                </div> 
+
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Product : </label>
+                                    <div class="col-sm-10">
+                                        <select required class="form-control" name="product" id="product">
+                                            {%if produits is defined%}
+                                                <option  value="">-- Select Product --</option>
+                                                {%for produit in produits%}
+                                                    <option  value="{{produit.id}}">{{produit.nom}}</option>
+                                                {%endfor%}
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">Comment : </label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control"  name="comment"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div> 
+        {%if tacheedit is defined%}
+            <div class="modal fade" id="modal5Edition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width: 60%;">
+                    {%if tacheedit is defined and dup is not defined%}
+                        <form class="form-horizontal" role="form" data-validate="parsley" method="POST" action="{{path('maindb_editsimplereport')}}">
+                        {%elseif tacheedit is defined and dup is defined%}
+                            <form class="form-horizontal" role="form" data-validate="parsley" method="POST" action="{{path('maindb_duplicatesimplereport')}}">
+                            {%endif%}
+                            <input readonly hidden type="text" name="idtosaveedition" id="idtosaveedition" value="{%if tacheedit.id is defined%}{%if tacheedit.id is not empty%}{{tacheedit.id}}{%endif%}{%endif%}" style="border: none; width : 100%;"/>
+                            {% if oldcustomerid is defined and oldcustomerid is not null %}<input readonly hidden type="text" name="idoldcustomer" id="bookIsd2" value="{{oldcustomerid}}" style="border: none; width : 100%;"/>{% endif %}
+                            {% if oldpartenaireid is defined and oldpartenaireid is not null %}<input readonly hidden type="text" name="idoldpartenaire" id="bookIsd2" value="{{oldpartenaireid}}" style="border: none; width : 100%;"/>{% endif %}
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    {%if tacheedit is defined and dup is not defined%}
+                                        <h4 class="modal-title" id="myModalLabel">Edit report : {%if tacheedit.date is defined%}{%if tacheedit.date is not empty%}{{tacheedit.date}}{%endif%}{%endif%} : {%if tacheedit.nom is defined%}{%if tacheedit.nom is not empty%}{{tacheedit.nom}}{%endif%}{%endif%} {%if tacheedit.nature is defined%}{%if tacheedit.nature is not empty%}{{tacheedit.nature}}{%endif%}{%endif%}<input readonly type="text" id="bookIsd" value="" style="border: none; width : 100%;"/> </h4>
+                                        {%elseif tacheedit is defined and dup is defined%}
+                                        <h4 class="modal-title" id="myModalLabel">Cloning report : {%if tacheedit.date is defined%}{%if tacheedit.date is not empty%}{{tacheedit.date}}{%endif%}{%endif%} : {%if tacheedit.nom is defined%}{%if tacheedit.nom is not empty%}{{tacheedit.nom}}{%endif%}{%endif%} {%if tacheedit.nature is defined%}{%if tacheedit.nature is not empty%}{{tacheedit.nature}}{%endif%}{%endif%}<input readonly type="text" id="bookIsd" value="" style="border: none; width : 100%;"/> </h4>
+                                        {%endif%}
+                                    <input readonly hidden type="text" name="idToEdit" id="bookIsd2" value="" style="border: none; width : 100%;"/>
+                                </div>
+                                <div class="modal-body">
+                                    <div style="margin-top: 30px;">
+                                        <div class='form-group'>
+                                            <label for='InputPassword3' class='col-sm-2 control-label'>Date : </label>
+                                            <div class='col-sm-10'>
+                                                <input readonly type='text' placeholder='select date' name='dateeditproduit' id='dateeditavv' value='{{tacheedit.date}}' style='font-size: 15px; width : auto; required'>
+                                            </div>
+                                        </div>
+                                        <div class='form-group'>
+                                            <label for='InputPassword3' class='col-sm-2 control-label'>Label : </label>
+                                            <div class='col-sm-10'>
+                                                <input class='form-control parsley-validated' type='text' name='nomedit' value="{{tacheedit.nom}}" required></input>                                                </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-2 control-label">Activité : </label>
+                                            <div class="col-sm-10">
+                                                <select required class="form-control" name="activite" id="activite">
+                                                    {%if activites is defined%}
+                                                        <option  value="">-- Select activite --</option>
+                                                        {%for activite in activites%}
+                                                            {%if activite.id == tacheedit.activiteId%}
+                                                                <option selected value="{{activite.id}}">{{activite.nom}}</option>
+                                                            {%else%}
+                                                                <option  value="{{activite.id}}">{{activite.nom}}</option>   
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-2 control-label">Time spent : </label>
+                                            <div class="col-sm-10">
+                                                <select required class="form-control" name="temps" id="temps">
+                                                    {%if times is defined%}
+                                                        <option  value="">-- Select Time Spent --</option>
+                                                        {%for time in times%}
+                                                            {%if time == '0.25' %}
+                                                                {%if time == tacheedit.tempsPasse%}
+                                                                    <option selected  value="{{time}}">1/4 day</option>
+                                                                {%else%}
+                                                                    <option  value="{{time}}">1/4 day</option>
+                                                                {%endif%}
+                                                            {%elseif time == '0.5' %}
+                                                                {%if time == tacheedit.tempsPasse%}
+                                                                    <option selected  value="{{time}}">1/2 day</option>
+                                                                {%else%}
+                                                                    <option  value="{{time}}">1/2 day</option>
+                                                                {%endif%}
+                                                            {%elseif time == '0.75' %}
+                                                                {%if time == tacheedit.tempsPasse%}
+                                                                    <option selected  value="{{time}}">3/4 day</option>
+                                                                {%else%}
+                                                                    <option  value="{{time}}">3/4 day</option>
+                                                                {%endif%}
+                                                            {%elseif time == '1.0' %}
+                                                                {%if time == tacheedit.tempsPasse%}
+                                                                    <option selected  value="{{time}}">Full day</option>
+                                                                {%else%}
+                                                                    <option  value="{{time}}">Full day</option>
+                                                                {%endif%}
+                                                            {%else%}
+                                                                <option  value="{{time}}">{{time}}</option>
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="margin: 15px; background-image: linear-gradient(to bottom,#428bca 0,#2d6ca2 100%); color: white; border-color: #2b669a; border-radius: 5px;width: 33%;margin-left: auto;margin-right: auto;">
+                                            {%if oldpartenaire is defined and oldcustomer is defined%}
+                                                <p style="margin: 2%;">Current customer : {{oldcustomer}}</p>
+                                                <ul>
+                                                    <li>current partenaire : {{oldpartenaire}}</li>
+                                                </ul>
+                                            {%endif%}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-2 control-label">Edit Customer : </label>
+                                            <div class="col-sm-10">
+                                                <input type="checkbox" id="checkbox12" name="editcustomer"/>
+                                            </div>
+                                        </div>
+                                        <div id="autoUpdate2" class="autoUpdate" style="display : none;">       
+                                            <div class="form-group">
+                                                <label for="inputPassword3" class="col-sm-2 control-label">Customer : </label>
+                                                <div class="col-sm-10">
+                                                    <select required class="form-control" name="finalcustomer" id="finalcustomere"></select>
+                                                </div>
+                                            </div>   
+                                            <div class="form-group">
+                                                <label for="inputPassword3" class="col-sm-2 control-label">Partenaire : </label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control" name="partenaire" id="partenairee"></select>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-2 control-label">Product :</label>
+                                            <div class="col-sm-10">
+                                                <select required class="form-control" name="product" id="product">
+                                                    {%if produits is defined%}
+                                                        <option  value="">-- Select Product --</option>
+                                                        {%for produit in produits%}
+                                                            {%if produit.id == tacheedit.produitId%}
+                                                                <option selected value="{{produit.id}}">{{produit.nom}}</option>
+                                                            {%else%}
+                                                                <option  value="{{produit.id}}">{{produit.nom}}</option>
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-2 control-label">Comment : </label>
+                                            <div class="col-sm-10">
+                                                <textarea class="form-control"  name="comment">{{tacheedit.commentaire}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                </div>
+            </div>
+        {%endif%}
+
+        <div class="modal fade" id="addBookDialog">
+            <div class="modal-dialog" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Are you sure?</h4>
+                    </div>
+                    <form role="form" data-validate="parsley" method="POST" action="{{path('maindb_gestionsimplereport')}}">
+                        <div class="modal-body">
+                            <p>Do you really want to delete : </p>
+                            <input readonly type="text" id="bookId" value="" style="border: none; width : 100%;"/>
+                            <input hidden readonly type="text" name="todelete" id="bookId2" value=""/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Delete</button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+    </body>
+
+    <!-- /container -->
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+
+
+
+    <script src="{{asset('bundles/maindb/js/jquery.min.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/bootstrap.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/parsley/parsley-standalone.min.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/parsley/parsley.extend.min.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/parsley/parsley.min.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/dropdown.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/affix.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/alert.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/button.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/jquery.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/scrollspy.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/tab.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/tooltip.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/transition.js')}}"></script>
+    <script src="{{asset('bundles/maindb/js/bootstrap-datepicker.js')}}"></script>
+    <script type="text/javascript">
+        $(document).on("click", ".open-AddBookDialog", function (e) {
+            e.preventDefault();
+            var _self = $(this);
+            var myBookId = _self.data('id');
+            $("#date").val(myBookId);
+            $(_self.attr('href')).modal('show');
+        });
+    </script>
+    <script type="text/javascript">
+                                                // When the document is ready
+                                                $(document).ready(function () {
+
+                                                    $('#example1').datepicker({
+                                                        format: "yyyy/mm/dd",
+                                                        endDate: "m+0"
+                                                    });
+                                                });</script>
+    <script type="text/javascript">
+        // When the document is ready
+        $(document).ready(function () {
+            var val = $("#startdate").val();
+            $('#example2').datepicker({
+                format: "yyyy/mm/dd",
+            });
+        });</script>
+    <script type="text/javascript">
+        // When the document is ready
+
+        $(document).ready(function () {
+            $("#nature").change(function () {
+                $("#date").datepicker({
+                    format: "yyyy/mm/dd"
+                }
+            });
+        });</script>
+
+    <script>
+        $(document).ready(function () {
+            $("#date").datepicker({
+                format: "yyyy/mm/dd",
+                startDate: "-1y",
+                endDate: "m+0",
+                daysOfWeekDisabled: [0, 6]
+            });
+            disableWeekends(datepicker.picker);
+            var _fill = datepicker.fill;
+            datepicker.fill = function () {
+                _fill.call(this);
+                disableWeekends(datepicker.picker);
+                ;
+            };
+        });
+    </script>
+    <script>
+        $("#dateeditproduit").datepicker({
+            format: "yyyy/mm/dd",
+            startDate: "-1y",
+            endDate: "m+0",
+            daysOfWeekDisabled: [0, 6]
+        });
+        disableWeekends(datepicker.picker);
+        var _fill = datepicker.fill;
+        datepicker.fill = function () {
+            _fill.call(this);
+            disableWeekends(datepicker.picker);
+            ;
+        };
+    </script>
+    <script>
+        $("#dateeditintern").datepicker({
+            format: "yyyy/mm/dd",
+            startDate: "-1y",
+            endDate: "m+0",
+            daysOfWeekDisabled: [0, 6]
+        });
+        disableWeekends(datepicker.picker);
+        var _fill = datepicker.fill;
+        datepicker.fill = function () {
+            _fill.call(this);
+            disableWeekends(datepicker.picker);
+            ;
+        };
+    </script>
+    <script>
+        $("#dateeditavv").datepicker({
+            format: "yyyy/mm/dd",
+            startDate: "-1y",
+            endDate: "m+0",
+            daysOfWeekDisabled: [0, 6]
+        });
+        disableWeekends(datepicker.picker);
+        var _fill = datepicker.fill;
+        datepicker.fill = function () {
+            _fill.call(this);
+            disableWeekends(datepicker.picker);
+            ;
+        };
+    </script>
+    <script type="text/javascript">
+        var test = '{{natureselected}}';
+        var test2 = '{{erreurtemps}}';
+        if (test == 'Product' && test2 == '') {
+            $(window).load(function () {
+                $('#modal2').modal('show');
+            });
+        } else if (test == 'Absence' && test2 == '') {
+            $(window).load(function () {
+                $('#modal3').modal('show');
+            });
+        } else if (test == 'Project' && test2 == '') {
+            $(window).load(function () {
+                $('#modal5').modal('show');
+            });
+        } else if (test == 'Internal' && test2 == '') {
+            $(window).load(function () {
+                $('#modal3').modal('show');
+            });
+        } else if (test == 'Pre Sale' && test2 == '') {
+            $(window).load(function () {
+                $('#modal5').modal('show');
+            });
+        } else if (test2 != '') {
+            window.alert('{{erreurtemps}}');
+        }
+    </script>
+    <script type="text/javascript">
+        var test = '{{natureedit}}';
+        var test2 = '{{erreurtemps}}';
+        if (test == 'Product' && test2 == '') {
+            $(window).load(function () {
+                $('#modal2Edition').modal('show');
+            });
+        } else if ((test == 'Internal' && test2 == '') || (test == 'Absence' && test2 == '')) {
+            $(window).load(function () {
+                $('#modal3Edition').modal('show');
+            });
+        } else if ((test == 'Pre Sale' && test2 == '') || (test == 'Project' && test2 == '')) {
+            $(window).load(function () {
+                $('#modal5Edition').modal('show');
+            });
+        }
+    </script>
+    <script>
+        $(document).on("click", ".open-AddBookDialog", function (e) {
+
+            e.preventDefault();
+            var _self = $(this);
+            var myBookId = _self.data('id');
+            var myBookId2 = _self.data('id2');
+            $("#bookId").val(myBookId);
+            $("#bookId2").val(myBookId2);
+            $(_self.attr('href')).modal('show');
+        });
+    </script>
+
+    {%if clientsa is defined and disableclients is defined and disableclients == 0%}
+        <script>
+            var a = "{{clientsa}}";
+            a = a.replace(/&quot;/g, '"');
+            a = a.replace(/(?:\r\n|\r|\n)/g, '');
+            console.log(a);
+            var optionValues = JSON.parse(a);
+            function setSelect(selectElement, arr) {
+                // Remove all previous values from the select
+                while (selectElement.firstChild) {
+                    selectElement.removeChild(selectElement.firstChild);
+                }
+                // Go over all the options in the array and place them inside the select.
+                for (var i = 0; i < arr.length; ++i) {
+                    var optionValue = arr[i][0];
+                    var optionText = arr[i][1];
+                    // Initialize the option to be added
+                    var optionElement = document.createElement('option');
+                    optionElement.value = optionValue;
+                    optionElement.title = optionText; // In case we shorten the text to fit into the select
+                    optionElement.textContent = optionText;
+                    optionElement.innerText = optionText;
+                    selectElement.appendChild(optionElement);
+                }
+            }
+            function setPlateformes() {
+                var selectedProductIndex = document.getElementById("finalcustomert").value - 1;
+                var versionsArray = optionValues[selectedProductIndex][2];
+                var versionSelect = document.getElementById("partenaire");
+                setSelect(versionSelect, versionsArray);
+            }
+            function setProduct() {
+                var productSelect = document.getElementById("finalcustomert");
+                setSelect(productSelect, optionValues);
+                setPlateformes();
+                // Add a listener on the select element, to update the version options.
+                productSelect.addEventListener("change", setPlateformes);
+            }
+
+            setProduct();
+        </script>
+    {%endif%}
+    {%if clientsa is defined and disableclients is defined and disableclients == 0%}
+        <script>
+            var a = "{{clientsa}}";
+            a = a.replace(/&quot;/g, '"');
+            a = a.replace(/(?:\r\n|\r|\n)/g, '');
+            console.log(a);
+            var optionValues = JSON.parse(a);
+            function setSelect(selectElement, arr) {
+                // Remove all previous values from the select
+                while (selectElement.firstChild) {
+                    selectElement.removeChild(selectElement.firstChild);
+                }
+                // Go over all the options in the array and place them inside the select.
+                for (var i = 0; i < arr.length; ++i) {
+                    var optionValue = arr[i][0];
+                    var optionText = arr[i][1];
+                    // Initialize the option to be added
+                    var optionElement = document.createElement('option');
+                    optionElement.value = optionValue;
+                    optionElement.title = optionText; // In case we shorten the text to fit into the select
+                    optionElement.textContent = optionText;
+                    optionElement.innerText = optionText;
+                    selectElement.appendChild(optionElement);
+                }
+            }
+            function setPlateformes() {
+                var selectedProductIndex = document.getElementById("finalcustomere").value - 1;
+                var versionsArray = optionValues[selectedProductIndex][2];
+                var versionSelect = document.getElementById("partenairee");
+                setSelect(versionSelect, versionsArray);
+            }
+            function setProduct() {
+                var productSelect = document.getElementById("finalcustomere");
+                setSelect(productSelect, optionValues);
+                setPlateformes();
+                // Add a listener on the select element, to update the version options.
+                productSelect.addEventListener("change", setPlateformes);
+            }
+
+            setProduct();
+        </script>
+    {%endif%}
+
+    {%if produitsavecversions is defined and disableproduits is defined and disableproduits == 0%}
+        <script>
+            var a = "{{produitsavecversions}}";
+            a = a.replace(/&quot;/g, '"');
+            a = a.replace(/(?:\r\n|\r|\n)/g, '');
+            console.log(a);
+            var optionValues = JSON.parse(a);
+            function setSelect(selectElement, arr) {
+                // Remove all previous values from the select
+                while (selectElement.firstChild) {
+                    selectElement.removeChild(selectElement.firstChild);
+                }
+                // Go over all the options in the array and place them inside the select.
+                for (var i = 0; i < arr.length; ++i) {
+                    var optionValue = arr[i][0];
+                    var optionText = arr[i][1];
+                    // Initialize the option to be added
+                    var optionElement = document.createElement('option');
+                    optionElement.value = optionValue;
+                    optionElement.title = optionText; // In case we shorten the text to fit into the select
+                    optionElement.textContent = optionText;
+                    optionElement.innerText = optionText;
+                    selectElement.appendChild(optionElement);
+                }
+            }
+
+            function setVersion() {
+                var selectedProductIndex = document.getElementById("productnormal").value - 1;
+                var versionsArray = optionValues[selectedProductIndex][2];
+                var versionSelect = document.getElementById("versionsnormal");
+                setSelect(versionSelect, versionsArray);
+            }
+            function setComposants() {
+                var selectedProductIndex = document.getElementById("productnormal").value - 1;
+                var versionsArray = optionValues[selectedProductIndex][3];
+                var versionSelect = document.getElementById("composantsnormal");
+                setSelect(versionSelect, versionsArray);
+            }
+            function setPlateformes() {
+                var selectedProductIndex = document.getElementById("productnormal").value - 1;
+                var versionsArray = optionValues[selectedProductIndex][4];
+                var versionSelect = document.getElementById("plateformesnormal");
+                setSelect(versionSelect, versionsArray);
+            }
+            function setProduct() {
+                var productSelect = document.getElementById("productnormal");
+                setSelect(productSelect, optionValues);
+                setVersion();
+                setComposants();
+                setPlateformes();
+                // Add a listener on the select element, to update the version options.
+                productSelect.addEventListener("change", setVersion);
+                productSelect.addEventListener("change", setComposants);
+                productSelect.addEventListener("change", setPlateformes);
+            }
+
+            setProduct();
+        </script>
+    {%endif%}
+    {%if produitsavecversions is defined and disableproduits is defined and disableproduits == 0%}
+        <script>
+            var a = "{{produitsavecversions}}";
+            a = a.replace(/&quot;/g, '"');
+            a = a.replace(/(?:\r\n|\r|\n)/g, '');
+            console.log(a);
+            var optionValues = JSON.parse(a);
+            function setSelect(selectElement, arr) {
+                // Remove all previous values from the select
+                while (selectElement.firstChild) {
+                    selectElement.removeChild(selectElement.firstChild);
+                }
+                // Go over all the options in the array and place them inside the select.
+                for (var i = 0; i < arr.length; ++i) {
+                    var optionValue = arr[i][0];
+                    var optionText = arr[i][1];
+                    // Initialize the option to be added
+                    var optionElement = document.createElement('option');
+                    optionElement.value = optionValue;
+                    optionElement.title = optionText; // In case we shorten the text to fit into the select
+                    optionElement.textContent = optionText;
+                    optionElement.innerText = optionText;
+                    selectElement.appendChild(optionElement);
+                }
+            }
+
+            function setVersion() {
+                var selectedProductIndex = document.getElementById("productedit").value - 1;
+                var versionsArray = optionValues[selectedProductIndex][2];
+                var versionSelect = document.getElementById("versionsedit");
+                setSelect(versionSelect, versionsArray);
+            }
+            function setComposants() {
+                var selectedProductIndex = document.getElementById("productedit").value - 1;
+                var versionsArray = optionValues[selectedProductIndex][3];
+                var versionSelect = document.getElementById("composantsedit");
+                setSelect(versionSelect, versionsArray);
+            }
+            function setPlateformes() {
+                var selectedProductIndex = document.getElementById("productedit").value - 1;
+                var versionsArray = optionValues[selectedProductIndex][4];
+                var versionSelect = document.getElementById("plateformesedit");
+                setSelect(versionSelect, versionsArray);
+            }
+            function setProduct() {
+                var productSelect = document.getElementById("productedit");
+                setSelect(productSelect, optionValues);
+                setVersion();
+                setComposants();
+                setPlateformes();
+                // Add a listener on the select element, to update the version options.
+                productSelect.addEventListener("change", setVersion);
+                productSelect.addEventListener("change", setComposants);
+                productSelect.addEventListener("change", setPlateformes);
+            }
+            setProduct();
+        </script>
+    {%endif%}
+    <script>
+        $(document).ready(function () {
+            $('#checkbox1').change(function () {
+                $('#autoUpdate').fadeToggle();
+            });
+        });
+    </script> 
+    <script>
+        $(document).ready(function () {
+            $('#checkbox12').change(function () {
+                $('#autoUpdate2').fadeToggle();
+            });
+        });
+    </script>
+    
+
+    <!-- Placed at the end of the document so the pages load faster -->
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="main\dbBundle\Entity\Utilisateur" table="utilisateur">
+    <unique-constraints>
+      <unique-constraint name="mail" columns="mail"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="equipeId" type="integer" column="equipe_id" nullable="true"/>
+    <field name="actif" type="boolean" column="actif" nullable="false"/>
+    <field name="nom" type="string" column="nom" length="15" nullable="false"/>
+    <field name="prenom" type="string" column="prenom" length="15" nullable="false"/>
+    <field name="trigramme" type="string" column="trigramme" length="3" nullable="false"/>
+    <field name="mail" type="string" column="mail" length="30" nullable="false"/>
+    <field name="mdp" type="string" column="mdp" length="150" nullable="false"/>
+    <field name="dateInscription" type="string" column="date_inscription" length="20" nullable="false"/>
+  </entity>
+</doctrine-mapping>
