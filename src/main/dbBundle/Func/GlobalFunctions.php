@@ -210,7 +210,7 @@ class GlobalFunctions extends Controller {
             $query = $em->createQuery(
                     'SELECT elem
             FROM ' . $repository . ' elem
-            WHERE elem.id != 0 AND elem.actif = 1
+            WHERE elem.id != 0 AND elem.id != 1 AND elem.actif = 1
             ORDER BY elem.numero'
             );
             return ($query->getArrayResult());
@@ -219,7 +219,7 @@ class GlobalFunctions extends Controller {
             $query = $em->createQuery(
                     'SELECT elem
             FROM ' . $repository . ' elem
-            WHERE elem.id != 0 AND elem.actif = 1
+            WHERE elem.id != 0 AND elem.id != 1 AND elem.actif = 1
             ORDER BY elem.nom'
             );
             return ($query->getArrayResult());
