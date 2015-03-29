@@ -214,12 +214,26 @@ class GlobalFunctions extends Controller {
             ORDER BY elem.numero'
             );
             return ($query->getArrayResult());
-        }
-        else {
+        }elseif ($reponame == 'Client'
+                || $reponame == 'Composants'
+                || $reponame == 'Equipe'
+                || $reponame == 'Partenaire'
+                || $reponame == 'Plateforme'
+                || $reponame == 'Produit'
+                || $reponame == 'Service'
+                || $reponame == 'Societe'){
             $query = $em->createQuery(
                     'SELECT elem
             FROM ' . $repository . ' elem
             WHERE elem.id != 0 AND elem.id != 1 AND elem.actif = 1
+            ORDER BY elem.nom'
+            );
+            return ($query->getArrayResult());
+        }else{
+            $query = $em->createQuery(
+                    'SELECT elem
+            FROM ' . $repository . ' elem
+            WHERE elem.actif = 1
             ORDER BY elem.nom'
             );
             return ($query->getArrayResult());
