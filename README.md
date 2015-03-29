@@ -62,7 +62,4 @@ If any warning/error happens, treat it.
 Before starting using the application make sure everything is up to date.
 To be sure go to `domain.com/web/app.php/update` and press the update button.
 
-3) Ready to go
--------------------------------------
-
-You are good to go!
+You are good to go
