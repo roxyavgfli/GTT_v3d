@@ -1076,6 +1076,9 @@
                                         </div>
                                         <div class="form-group" style="margin: 15px; background-image: linear-gradient(to bottom,#428bca 0,#2d6ca2 100%); color: white; border-color: #2b669a; border-radius: 5px;width: 33%;margin-left: auto;margin-right: auto;">
                                             {%if oldpartenaire is defined and oldcustomer is defined%}
+                                                {%if oldCiD is defined%}
+                                                    <input hidden name="idoldcustomer" value="{{oldCiD}}">
+                                                {%endif%}
                                                 <p style="margin: 2%;">Current customer : {{oldcustomer}}</p>
                                                 <ul>
                                                     <li>current partenaire : {{oldpartenaire}}</li>
