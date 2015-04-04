@@ -2121,7 +2121,7 @@ class DefaultController extends Controller {
                     $query = $em->createQuery(
                             'SELECT  e
                                     FROM  maindbBundle:Version e, maindbBundle:ProduitVersion a
-                                    WHERE e.id = a.versionId AND a.produitId = ?1
+                                    WHERE e.id = a.versionId AND a.produitId = ?1 AND e.actif = 1
                                     ORDER BY e.numero'
                     );
                     $query->setParameter(1, $request->get('Id'));
@@ -2276,7 +2276,7 @@ class DefaultController extends Controller {
                 $query = $em->createQuery(
                         'SELECT c.id, c.nom, c.prenom, c.trigramme, c.mail, c.actif
                                     FROM maindbBundle:Utilisateur c
-                                    WHERE c.equipeId =0 AND c.actif = 1  // TODO
+                                    WHERE c.equipeId =0 AND c.actif = 1
                                     GROUP BY c.id
                                     ORDER BY c.nom
                                     '

@@ -26,7 +26,8 @@ class UpdateController extends Controller {
         $user = GlobalFunctions::GetCurrentUser($session, $em);
         $roles = GlobalFunctions::getUserRoles($session);
         if ($request->getMethod() == 'POST' && $request->get('update') == 1){
-            $message = GlobalFunctions::update(); 
+            set_time_limit(20000);
+            $message = GlobalFunctions::update($em); 
         }
         
         

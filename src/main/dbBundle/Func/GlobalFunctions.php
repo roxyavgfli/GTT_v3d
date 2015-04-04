@@ -214,14 +214,8 @@ class GlobalFunctions extends Controller {
             ORDER BY elem.numero'
             );
             return ($query->getArrayResult());
-        }elseif ($reponame == 'Client'
-                || $reponame == 'Composants'
-                || $reponame == 'Equipe'
-                || $reponame == 'Partenaire'
-                || $reponame == 'Plateforme'
-                || $reponame == 'Produit'
-                || $reponame == 'Service'
-                || $reponame == 'Societe'){
+        }
+        elseif ($reponame == 'Client' || $reponame == 'Composants' || $reponame == 'Equipe' || $reponame == 'Partenaire' || $reponame == 'Plateforme' || $reponame == 'Produit' || $reponame == 'Service' || $reponame == 'Societe') {
             $query = $em->createQuery(
                     'SELECT elem
             FROM ' . $repository . ' elem
@@ -229,7 +223,8 @@ class GlobalFunctions extends Controller {
             ORDER BY elem.nom'
             );
             return ($query->getArrayResult());
-        }else{
+        }
+        else {
             $query = $em->createQuery(
                     'SELECT elem
             FROM ' . $repository . ' elem
@@ -242,10 +237,10 @@ class GlobalFunctions extends Controller {
 
     /**
      * Function used to update via /update
+     * @param EntityManager $em
      * @return String message
      */
-    function update() {
-        $em = $this->getDoctrine()->getEntityManager();
+    static function update($em) {
         $entityArray = ['Composants', 'Client', 'Equipe', 'Partenaire', 'Plateforme', 'Produit', 'Service', 'Societe', 'Version'];
         GlobalFunctions::updateUsersEquipe($em);
         foreach ($entityArray as $entity) {
@@ -285,7 +280,7 @@ class GlobalFunctions extends Controller {
             }
         }
     }
-    
+
     /**
      * Function used to know if Link none exists for product
      * @param EntityManager $em The entity manager
@@ -295,19 +290,19 @@ class GlobalFunctions extends Controller {
     static function entityNoneLinkProductExists($em, $entity) {
         $halfname = strtolower(str_replace('Produit', '', $entity));
         GlobalFunctions::removeAnnoyingValue($em, $entity);
-        $test = $em->getRepository('maindbBundle:' . $entity)->findOneBy(Array('id' => 1, 'produitId' => 1, $halfname.'Id' => 1));
+        $test = $em->getRepository('maindbBundle:' . $entity)->findOneBy(Array('id' => 1, 'produitId' => 1, $halfname . 'Id' => 1));
         return (!empty($test));
     }
-    
+
     /**
      * Function used to remove a value that needs to be defined
      * @param EntityManager $em The entity manager
      * @param String $entity The entity 
      */
-    static function removeAnnoyingValue($em, $entity){
+    static function removeAnnoyingValue($em, $entity) {
         $halfname = strtolower(str_replace('Produit', '', $entity));
-        $test = $em->getRepository('maindbBundle:' . $entity)->findOneBy(Array('produitId' => 1, $halfname.'Id' => 1));
-        if ($test){
+        $test = $em->getRepository('maindbBundle:' . $entity)->findOneBy(Array('produitId' => 1, $halfname . 'Id' => 1));
+        if ($test) {
             $em->remove($test);
             $em->flush();
         }
@@ -374,15 +369,31 @@ class GlobalFunctions extends Controller {
      * @param String $entity The entity 
      */
     static function updateEntity($em, $entity) {
-        $backup = $em->getRepository('maindbBundle:' . $entity)->findAll();
-        foreach (array_reverse($backup) as $element) {
-            $element->setIdWithDependency($element->getId() + 1, $em);
-            $em->persist($element);
-            $metadata = $em->getClassMetaData(get_class($element));
-            $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
-            $em->flush();
+        if (!GlobalFunctions::oneIdIsTaken($em, $entity)) {
+            GlobalFunctions::setUpEntity($em, $entity);
         }
-        GlobalFunctions::setUpEntity($em, $entity);
+        else {
+            $backup = $em->getRepository('maindbBundle:' . $entity)->findAll();
+            foreach (array_reverse($backup) as $element) {
+                $element->setIdWithDependency($element->getId() + 1, $em);
+                $em->persist($element);
+                $metadata = $em->getClassMetaData(get_class($element));
+                $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
+                $em->flush();
+            }
+            GlobalFunctions::setUpEntity($em, $entity);
+        }
+    }
+    
+    /**
+     * Function used to know of the entity countains a one Id or not
+     * @param EntityManager $em The entity manager  
+     * @param String $entity The entity (name)
+     * @return Boolean true is it is taken false else
+     */
+    static function oneIdIsTaken($em, $entity) {
+        $test = $em->getRepository('maindbBundle:' . $entity)->findOneBy(Array('id' => 1));  
+        return (!Empty($test));
     }
 
     /**
@@ -504,54 +515,54 @@ class GlobalFunctions extends Controller {
             }
         }
     }
-    
+
     /**
      * Function used to set correctly the id in the tasks reported
      * @param EntityManager $em The entity manager
      */
-    static function updateTasks($em){
+    static function updateTasks($em) {
         $tasks = $em->getRepository('maindbBundle:Tachesimple')->findAll();
-        foreach ($tasks as $task){
+        foreach ($tasks as $task) {
             GlobalFunctions::updateOneTask($em, $task);
         }
     }
-    
+
     /**
      * Function used to set task's values null to the good value 1
      * @param EntityManager $em The entity manager
      * @param Tachesimple $task The task to modify
      */
-    static function updateOneTask($em, $task){
-        if ($task->getClientId()== NULL || $task->getClientId()== 0){
+    static function updateOneTask($em, $task) {
+        if ($task->getClientId() == NULL || $task->getClientId() == 0) {
             $task->setClientId(1);
         }
-        if ($task->getComposantId()== NULL || $task->getComposantId()== 0){
+        if ($task->getComposantId() == NULL || $task->getComposantId() == 0) {
             $task->setComposantId(1);
         }
-        if ($task->getPartenaireId()== NULL || $task->getPartenaireId() == 0){
+        if ($task->getPartenaireId() == NULL || $task->getPartenaireId() == 0) {
             $task->setPartenaireId(1);
         }
-        if ($task->getPlateformeId()== NULL || $task->getPlateformeId() == 0){
+        if ($task->getPlateformeId() == NULL || $task->getPlateformeId() == 0) {
             $task->setPlateformeId(1);
         }
-        if ($task->getProduitId()==NULL || $task->getProduitId() == 0){
+        if ($task->getProduitId() == NULL || $task->getProduitId() == 0) {
             $task->setProduitId(1);
         }
-        if ($task->getVersionId()==NULL || $task->getVersionId() == 0){
+        if ($task->getVersionId() == NULL || $task->getVersionId() == 0) {
             $task->setVersionId(1);
         }
-        if ($task->getProduitId()==NULL || $task->getProduitId() == 0){
+        if ($task->getProduitId() == NULL || $task->getProduitId() == 0) {
             $task->setProduitId(1);
         }
-        /*$task->setClientId(1);
-        $task->setComposantId(1);
-        $task->setPartenaireId(1);
-        $task->setPlateformeId(1);
-        $task->setProduitId(1);
-        $task->setVersionId(1);
-        $task->setProduitId(1);
-        $em->persist($task);
-        $em->flush();*/
+        /* $task->setClientId(1);
+          $task->setComposantId(1);
+          $task->setPartenaireId(1);
+          $task->setPlateformeId(1);
+          $task->setProduitId(1);
+          $task->setVersionId(1);
+          $task->setProduitId(1);
+          $em->persist($task);
+          $em->flush(); */
     }
 
 }

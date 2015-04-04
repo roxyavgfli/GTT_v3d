@@ -1,4 +1,4 @@
-V3D GTT
+GTT
 ========================
 
 This application is delivered with Symfony2
@@ -12,11 +12,11 @@ Your php version needs to be >= 5.4 and database should be mysql.
 
 ### *Removing cache*
 
-    sudo rm –rf gtt.v3d.fr/www/app/cache/*
+    sudo rm –rf repository/www/app/cache/*
 
-### *The application is located in gtt.v3d.fr/www*
+### *The application is located in repository/www*
 
-Copy all files from git to `gtt.v3d.fr/www`.
+Copy all files from git to `repository/www`.
 
 ### *Check rights on important folders*
 
@@ -29,9 +29,9 @@ Copy all files from git to `gtt.v3d.fr/www`.
     database_driver: pdo_mysql
     database_host: localhost // To modify
     database_port: null // To modify
-    database_name: v3d_gtt // ! important
+    database_name: db_name // ! important
     database_user: root // To modify
-    database_password: ae355670de // To modify
+    database_password: db_passwd // To modify
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null

@@ -47,7 +47,7 @@
     </head>
 
     <body style="height: 100%;">
-          <div class="container" style="height: 90%">
+        <div class="container" style="height: 90%">
             <nav role="navigation" class="navbar navbar-default">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -1189,32 +1189,35 @@
     <script src="{{asset('bundles/maindb/js/tooltip.js')}}"></script>
     <script src="{{asset('bundles/maindb/js/transition.js')}}"></script>
     <script src="{{asset('bundles/maindb/js/bootstrap-datepicker.js')}}"></script>
+
     <script type="text/javascript">
         $(document).on("click", ".open-AddBookDialog", function (e) {
-            e.preventDefault();
+            .preventDefault();
             var _self = $(this);
             var myBookId = _self.data('id');
             $("#date").val(myBookId);
             $(_self.attr('href')).modal('show');
         });
-    </script>
+    </script> 
     <script type="text/javascript">
-                                                // When the document is ready
-                                                $(document).ready(function () {
+        // When the document is ready
+        $(document).ready(function () {
 
-                                                    $('#example1').datepicker({
-                                                        format: "yyyy/mm/dd",
-                                                        endDate: "m+0"
-                                                    });
-                                                });</script>
+            $('#example1').datepicker({
+                format: "yyyy/mm/dd",
+                endDate: "m+0"
+            });
+        });
+    </script>
     <script type="text/javascript">
         // When the document is ready
         $(document).ready(function () {
             var val = $("#startdate").val();
             $('#example2').datepicker({
-                format: "yyyy/mm/dd",
+                format: "yyyy/mm/dd"
             });
-        });</script>
+        });
+    </script>
     <script type="text/javascript">
         // When the document is ready
 
@@ -1222,27 +1225,20 @@
             $("#nature").change(function () {
                 $("#date").datepicker({
                     format: "yyyy/mm/dd"
-                }
+                })
             });
-        });</script>
-
+        });
+    </script>
+    <!-- SCRIPT CRITICAL -->
     <script>
-        $(document).ready(function () {
             $("#date").datepicker({
                 format: "yyyy/mm/dd",
                 startDate: "-1y",
                 endDate: "m+0",
                 daysOfWeekDisabled: [0, 6]
             });
-            disableWeekends(datepicker.picker);
-            var _fill = datepicker.fill;
-            datepicker.fill = function () {
-                _fill.call(this);
-                disableWeekends(datepicker.picker);
-                ;
-            };
-        });
     </script>
+    <!-- SCRIPT CRITICAL -->
     <script>
         $("#dateeditproduit").datepicker({
             format: "yyyy/mm/dd",
@@ -1250,12 +1246,6 @@
             endDate: "m+0",
             daysOfWeekDisabled: [0, 6]
         });
-        disableWeekends(datepicker.picker);
-        var _fill = datepicker.fill;
-        datepicker.fill = function () {
-            _fill.call(this);
-            disableWeekends(datepicker.picker);
-            ;
         };
     </script>
     <script>
@@ -1265,13 +1255,6 @@
             endDate: "m+0",
             daysOfWeekDisabled: [0, 6]
         });
-        disableWeekends(datepicker.picker);
-        var _fill = datepicker.fill;
-        datepicker.fill = function () {
-            _fill.call(this);
-            disableWeekends(datepicker.picker);
-            ;
-        };
     </script>
     <script>
         $("#dateeditavv").datepicker({
@@ -1280,13 +1263,6 @@
             endDate: "m+0",
             daysOfWeekDisabled: [0, 6]
         });
-        disableWeekends(datepicker.picker);
-        var _fill = datepicker.fill;
-        datepicker.fill = function () {
-            _fill.call(this);
-            disableWeekends(datepicker.picker);
-            ;
-        };
     </script>
     <script type="text/javascript">
         var test = '{{natureselected}}';
@@ -1344,6 +1320,7 @@
             $(_self.attr('href')).modal('show');
         });
     </script>
+
 
     {%if clientsa is defined and disableclients is defined and disableclients == 0%}
         <script>
@@ -1554,6 +1531,7 @@
             });
         });
     </script> 
+
     <script>
         $(document).ready(function () {
             $('#checkbox12').change(function () {
@@ -1561,7 +1539,7 @@
             });
         });
     </script>
-    
+
 
     <!-- Placed at the end of the document so the pages load faster -->
 </body>
