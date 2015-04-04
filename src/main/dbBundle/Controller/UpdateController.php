@@ -30,6 +30,7 @@ class UpdateController extends Controller {
             $entity = GlobalFunctions::getEntitiesArray();
             GlobalFunctions::updateNullValues($em, $entity);
             $message = GlobalFunctions::update($em);
+            GlobalFunctions::updateTasks($em);
         }
 
         return $this->render('maindbBundle:Default:updatepage.html.twig', array('roles' => $roles,

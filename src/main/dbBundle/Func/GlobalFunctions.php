@@ -308,9 +308,7 @@ class GlobalFunctions extends Controller {
             if ($user->getEquipeId() == NULL || $user->getEquipeId() == 0) {
                 $user->setEquipeId(1);
                 $em->persist($user);
-                $em->detach($user);
                 $em->flush();
-                $em->clear();
             }
         }
     }
@@ -427,9 +425,24 @@ class GlobalFunctions extends Controller {
                 $metadata = $em->getClassMetaData(get_class($element));
                 $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
                 $em->flush();
+                $em->detach($element);
+                $em->clear();
             }
             GlobalFunctions::setUpEntity($em, $entity);
         }
+    }
+    
+    /**
+     * Used to update tasks with null values
+     * @param EntityManager $em The entity manager
+     */
+    static function updateSimpleTasks($em){
+        $taskrepo = $em->getRepository('maindbBundle:Tachesimple');
+        $tasks = $taskrepo->findAll();
+        foreach ($tasks as $task){
+            print_r ("coucou");
+        }
+        
     }
 
     /**
@@ -578,6 +591,8 @@ class GlobalFunctions extends Controller {
      * Function used to set task's values null to the good value 1
      * @param EntityManager $em The entity manager
      * @param Tachesimple $task The task to modify
+     * 
+     * 
      */
     static function updateOneTask($em, $task) {
         if ($task->getClientId() == NULL || $task->getClientId() == 0) {
