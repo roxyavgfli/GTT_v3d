@@ -244,6 +244,7 @@ class GlobalFunctions extends Controller {
         $entityArray = ['Composants', 'Client', 'Equipe', 'Partenaire', 'Plateforme', 'Produit', 'Service', 'Societe', 'Version'];
         GlobalFunctions::updateUsersEquipe($em);
         foreach ($entityArray as $entity) {
+            GlobalFunction::updateNullValues($em, $entity);
             if (!GlobalFunctions::entityNoneExists($em, $entity)) {
                 GlobalFunctions::updateEntity($em, $entity);
             }
@@ -251,6 +252,10 @@ class GlobalFunctions extends Controller {
         GlobalFunctions::updateLinksOfProductsForNone($em);
         GlobalFunctions::updateTasks($em);
         return ("Update done");
+    }
+    
+    static function updateNullValues($em, $entity){
+        
     }
 
     /**
