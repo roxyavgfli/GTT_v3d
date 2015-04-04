@@ -268,7 +268,6 @@ class GlobalFunctions extends Controller {
                 $backup = $em->getRepository('maindbBundle:' . $entity)->findAll();
                 foreach ($backup as $raw) {
                     if ($raw->getPartenaireId() == null || $raw->getPartenaireId() == 0) {
-                        print_r("coucou \n");
                         $raw->setPartenaireId(1);
                         $em->persist($raw);
                         $em->flush();
@@ -623,8 +622,11 @@ class GlobalFunctions extends Controller {
           $task->setProduitId(1);
           $task->setVersionId(1);
           $task->setProduitId(1);
+         * */
           $em->persist($task);
-          $em->flush(); */
+          $em->flush(); 
+          $em->detach($task);
+          $em->clear();
     }
 
 }
