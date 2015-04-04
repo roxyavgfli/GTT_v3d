@@ -36,6 +36,9 @@ class ExportSimpleTaskController extends Controller {
             if (ExportActionController::gestionExportAction($request) == -1){
                 $errorMessage = "Please provide interval to export";
                 return RenderPageExportFunctions::renderErrorPage($em, $session, $errorMessage);
+            }elseif(ExportActionController::gestionExportAction($request) == -2){
+                $errorMessage = "Nothing to export";
+                return RenderPageExportFunctions::renderErrorPage($em, $session, $errorMessage);
             }
         }
         return RenderPageExportFunctions::renderNormalPage($em, $session);

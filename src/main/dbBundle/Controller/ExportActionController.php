@@ -6,6 +6,7 @@ use main\dbBundle\Func\FileFunctions;
 use main\dbBundle\Func\RequestFunctions;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use main\dbBundle\Func\RenderPageFunctions\RenderPageExportFunctions;
 
 /*
  * Class To manage export
@@ -19,6 +20,8 @@ class ExportActionController extends Controller {
      * @return Integer
      */
     public function gestionExportAction(Request $request) {
+        $em = $this->getDoctrine()->getEntityManager();
+        $session = $this->getRequest()->getSession();
         if ($request->get('naturesexport') && $request->get('endate') && $request->get('startdate') && $request->get('exportType')) {
             $arrayToExport = Array();
             $allnature = RequestFunctions::getAllNature($request);
@@ -35,10 +38,15 @@ class ExportActionController extends Controller {
             }elseif($request->get('exportType')=='services'){
                 $arrayToExport = RequestFunctions::getAllTasksServicesDefinedNaturesDefined($request);
             }
-            FileFunctions::writeToCsvFile($arrayToExport, FileFunctions::functionName());
-            FileFunctions::downloadCsvFile(FileFunctions::functionName());
-            FileFunctions::removeFile(FileFunctions::functionName());
-            return 1;
+            if (!empty($arrayToExport[0][0])){
+                $filename = FileFunctions::functionName();
+                FileFunctions::writeToCsvFile($arrayToExport, $filename);
+                FileFunctions::downloadCsvFile($filename);
+                FileFunctions::removeFile($filename);
+                return 1;
+            }else{
+                return -2;
+            }
         }
         elseif (!$request->get('endate') && !$request->get('startdate')){
             return -1;

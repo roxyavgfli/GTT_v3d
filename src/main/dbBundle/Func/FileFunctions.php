@@ -23,33 +23,35 @@ class FileFunctions {
      */
     function writeToCsvFile($arraysToWrite, $filename) {
         $handle = FileFunctions::createCsvFile($filename);
-        foreach ($arraysToWrite as $arrayToWrite) {
-            foreach ($arrayToWrite as $element) {
-                $i = 0;
-                foreach ($element as $value) {
-                    foreach ($value as $item) {
-                        if ($i == 15) {
-                            fwrite($handle, utf8_decode(str_replace(".", ",", "\"" . $item . "\"")));
+        if (!empty($arraysToWrite)) {
+            foreach ($arraysToWrite as $arrayToWrite) {
+                foreach ($arrayToWrite as $element) {
+                    $i = 0;
+                    foreach ($element as $value) {
+                        foreach ($value as $item) {
+                            if ($i == 15) {
+                                fwrite($handle, utf8_decode(str_replace(".", ",", "\"" . $item . "\"")));
+                            }
+                            else {
+                                fwrite($handle, utf8_decode(str_replace(".", ",", "\"" . $item . "\"")));
+                            }
+                            fwrite($handle, ",");
+                            $i++;
                         }
-                        else {
-                            fwrite($handle, utf8_decode(str_replace(".", ",", "\"" . $item . "\"")));
-                        }
-                        fwrite($handle, ",");
-                        $i++;
+                        fwrite($handle, "\n");
                     }
-                    fwrite($handle, "\n");
                 }
             }
         }
         fclose($handle);
     }
-    
+
     /**
      * Function to get the name of the file
      * @return String File name with the date
      */
     static public function functionName() {
-        return ("export_gtt".date("Y_m_d"));
+        return ("export_gtt" . date("Y_m_d-h-i-s") . ".csv");
     }
 
     /**

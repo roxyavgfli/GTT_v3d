@@ -207,9 +207,9 @@
                 </form>
             </div>
         </div>
-        {% if message is defined and message is not empty%}
-            <div class="alert alert-success" style="margin-top: 20px; text-align: center;">
-                <strong style="text-align: center;">{{message}}</strong>
+        {% if errorMessage is defined and errorMessage is not empty%}
+            <div class="alert alert-danger" style="margin-top: 20px; text-align: center;">
+                <strong style="text-align: center;">{{errorMessage}}</strong>
             </div>
         {% endif%}
 
@@ -278,6 +278,12 @@
                 $('#autoUpdate2').hide();
             });
         });
+    </script>
+    <script>
+        var = {{errorMessage}} ;
+        if (var){
+            window.alert(var);
+        }
     </script>
 </body>
 </html>
