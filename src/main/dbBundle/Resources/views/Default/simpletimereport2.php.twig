@@ -1214,7 +1214,7 @@
         $(document).ready(function () {
             var val = $("#startdate").val();
             $('#example2').datepicker({
-                format: "yyyy/mm/dd",
+                format: "yyyy/mm/dd"
             });
         });
     </script>
@@ -1225,7 +1225,7 @@
             $("#nature").change(function () {
                 $("#date").datepicker({
                     format: "yyyy/mm/dd"
-                }
+                })
             });
         });
     </script>
@@ -1237,15 +1237,8 @@
                 endDate: "m+0",
                 daysOfWeekDisabled: [0, 6]
             });
-            disableWeekends(datepicker.picker);
-            var _fill = datepicker.fill;
-            datepicker.fill = function () {
-                _fill.call(this);
-                disableWeekends(datepicker.picker);
-                ;
-            };
-        });
     </script>
+    <!-- SCRIPT CRITICAL -->
     <script>
         $("#dateeditproduit").datepicker({
             format: "yyyy/mm/dd",
@@ -1253,14 +1246,7 @@
             endDate: "m+0",
             daysOfWeekDisabled: [0, 6]
         });
-        disableWeekends(datepicker.picker);
-        var _fill = datepicker.fill;
-        datepicker.fill = function () {
-            _fill.call(this);
-            disableWeekends(datepicker.picker);
-            ;
         };
-    });
     </script>
     <script>
         $("#dateeditintern").datepicker({
@@ -1269,13 +1255,6 @@
             endDate: "m+0",
             daysOfWeekDisabled: [0, 6]
         });
-        disableWeekends(datepicker.picker);
-        var _fill = datepicker.fill;
-        datepicker.fill = function () {
-            _fill.call(this);
-            disableWeekends(datepicker.picker);
-            ;
-        };
     </script>
     <script>
         $("#dateeditavv").datepicker({
@@ -1284,13 +1263,6 @@
             endDate: "m+0",
             daysOfWeekDisabled: [0, 6]
         });
-        disableWeekends(datepicker.picker);
-        var _fill = datepicker.fill;
-        datepicker.fill = function () {
-            _fill.call(this);
-            disableWeekends(datepicker.picker);
-            ;
-        };
     </script>
     <script type="text/javascript">
         var test = '{{natureselected}}';
