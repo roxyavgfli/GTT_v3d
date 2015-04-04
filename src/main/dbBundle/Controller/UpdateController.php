@@ -25,12 +25,13 @@ class UpdateController extends Controller {
         }
         $user = GlobalFunctions::GetCurrentUser($session, $em);
         $roles = GlobalFunctions::getUserRoles($session);
-        if ($request->getMethod() == 'POST' && $request->get('update') == 1){
+        if ($request->getMethod() == 'POST' && $request->get('update') == 1) {
             set_time_limit(20000);
-            $message = GlobalFunctions::update($em); 
+            $entity = GlobalFunctions::getEntitiesArray();
+            GlobalFunctions::updateNullValues($em, $entity);
+            $message = GlobalFunctions::update($em);
         }
-        
-        
+
         return $this->render('maindbBundle:Default:updatepage.html.twig', array('roles' => $roles,
                     'name' => $user->getNom(),
                     'startdatesearch' => SimpleTaskControllerFunctions::getStartDate($request),
@@ -41,4 +42,3 @@ class UpdateController extends Controller {
     }
 
 }
-

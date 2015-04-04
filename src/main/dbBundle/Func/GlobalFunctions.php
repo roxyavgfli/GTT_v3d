@@ -236,15 +236,23 @@ class GlobalFunctions extends Controller {
     }
 
     /**
+     * Used to get entities array
+     * @return Array The array with entities
+     */
+    static function getEntitiesArray() {
+        $entityArray = ['Composants', 'Client', 'Equipe', 'Partenaire', 'Plateforme', 'Produit', 'Service', 'Societe', 'Version'];
+        return $entityArray;
+    }
+
+    /**
      * Function used to update via /update
      * @param EntityManager $em
      * @return String message
      */
     static function update($em) {
-        $entityArray = ['Composants', 'Client', 'Equipe', 'Partenaire', 'Plateforme', 'Produit', 'Service', 'Societe', 'Version'];
+        $entityArray = GlobalFunctions::getEntitiesArray();
         GlobalFunctions::updateUsersEquipe($em);
         foreach ($entityArray as $entity) {
-            GlobalFunction::updateNullValues($em, $entity);
             if (!GlobalFunctions::entityNoneExists($em, $entity)) {
                 GlobalFunctions::updateEntity($em, $entity);
             }
@@ -253,43 +261,41 @@ class GlobalFunctions extends Controller {
         GlobalFunctions::updateTasks($em);
         return ("Update done");
     }
-    
-    static function updateNullValues($em, $entity){
-        if ($entity == 'Client'){
-            $backup = $em->getRepository('maindbBundle:' . $entity)->findAll();
-            foreach ($backup as $raw){
-                if ($raw->getPartenaireId() == NULL || $raw->getPartenaireId() == 0){
-                    $raw->setPartenaireId(1);
-                    $em->persist($raw);
-                    $em->detach($raw);
-                    $em->flush();
-                    $em->clear();
+
+    static function updateNullValues($em, $entities) {
+        foreach ($entities as $entity) {
+            if ($entity == 'Client') {
+                $backup = $em->getRepository('maindbBundle:' . $entity)->findAll();
+                foreach ($backup as $raw) {
+                    if ($raw->getPartenaireId() == null || $raw->getPartenaireId() == 0) {
+                        print_r("coucou \n");
+                        $raw->setPartenaireId(1);
+                        $em->persist($raw);
+                        $em->flush();
+                    }
                 }
             }
-        }elseif ($entity == 'Equipe'){
-            $backup = $em->getRepository('maindbBundle:' . $entity)->findAll();
-            foreach ($backup as $raw){
-                if ($raw->getServiceId() == NULL || $raw->getServiceId() == 0){
-                    $raw->setServiceId(1);
-                    $em->persist($raw);
-                    $em->detach($raw);
-                    $em->flush();
-                    $em->clear();
+            elseif ($entity == 'Equipe') {
+                $backup = $em->getRepository('maindbBundle:' . $entity)->findAll();
+                foreach ($backup as $raw) {
+                    if ($raw->getServiceId() == null || $raw->getServiceId() == 0) {
+                        $raw->setServiceId(1);
+                        $em->persist($raw);
+                        $em->flush();
+                    }
                 }
             }
-        }elseif ($entity == 'Service'){
-            $backup = $em->getRepository('maindbBundle:' . $entity)->findAll();
-            foreach ($backup as $raw){
-                if ($raw->getSocieteId() == NULL || $raw->getSocieteId() == 0){
-                    $raw->setSocieteId(1);
-                    $em->persist($raw);
-                    $em->detach($raw);
-                    $em->flush();
-                    $em->clear();
+            elseif ($entity == 'Service') {
+                $backup = $em->getRepository('maindbBundle:' . $entity)->findAll();
+                foreach ($backup as $raw) {
+                    if ($raw->getSocieteId() == null || $raw->getSocieteId() == 0) {
+                        $raw->setSocieteId(1);
+                        $em->persist($raw);
+                        $em->flush();
+                    }
                 }
             }
         }
-        
     }
 
     /**
@@ -425,7 +431,7 @@ class GlobalFunctions extends Controller {
             GlobalFunctions::setUpEntity($em, $entity);
         }
     }
-    
+
     /**
      * Function used to know of the entity countains a one Id or not
      * @param EntityManager $em The entity manager  
@@ -433,7 +439,7 @@ class GlobalFunctions extends Controller {
      * @return Boolean true is it is taken false else
      */
     static function oneIdIsTaken($em, $entity) {
-        $test = $em->getRepository('maindbBundle:' . $entity)->findOneBy(Array('id' => 1));  
+        $test = $em->getRepository('maindbBundle:' . $entity)->findOneBy(Array('id' => 1));
         return (!Empty($test));
     }
 
