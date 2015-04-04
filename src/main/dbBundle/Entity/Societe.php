@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Societe
  */
-class Societe
-{
+class Societe {
+
     /**
      * @var string
      */
@@ -29,10 +29,10 @@ class Societe
      * 
      * @param integer $id
      */
-    public function setId($id){
+    public function setId($id) {
         $this->id = $id;
     }
-    
+
     /**
      * set id and updating dependencies
      * @param Integer $id
@@ -45,12 +45,16 @@ class Societe
         foreach ($raws as $raw) {
             $raw->setSocieteId($id);
             $em->persist($raw);
+            $this->em->detach($raw);
             $em->flush();
+            $this->em->clear();
         }
         $em->persist($this);
         $metadata = $em->getClassMetaData(get_class($this));
         $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
+        $this->em->detach($this);
         $em->flush();
+        $this->em->clear();
     }
 
     /**
@@ -59,8 +63,7 @@ class Societe
      * @param string $nom
      * @return Societe
      */
-    public function setNom($nom)
-    {
+    public function setNom($nom) {
         $this->nom = $nom;
 
         return $this;
@@ -71,8 +74,7 @@ class Societe
      *
      * @return string 
      */
-    public function getNom()
-    {
+    public function getNom() {
         return $this->nom;
     }
 
@@ -82,8 +84,7 @@ class Societe
      * @param boolean $actif
      * @return Societe
      */
-    public function setActif($actif)
-    {
+    public function setActif($actif) {
         $this->actif = $actif;
 
         return $this;
@@ -94,8 +95,7 @@ class Societe
      *
      * @return boolean 
      */
-    public function getActif()
-    {
+    public function getActif() {
         return $this->actif;
     }
 
@@ -104,8 +104,8 @@ class Societe
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
+
 }

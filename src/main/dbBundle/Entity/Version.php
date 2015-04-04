@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Version
  */
-class Version
-{
+class Version {
+
     /**
      * @var string
      */
@@ -23,16 +23,16 @@ class Version
      * @var integer
      */
     private $id;
-    
+
     /**
      * Set id
      * 
      * @param integer $id
      */
-    public function setId($id){
+    public function setId($id) {
         $this->id = $id;
     }
-    
+
     /**
      * set id and updating dependencies
      * @param Integer $id
@@ -45,18 +45,24 @@ class Version
         foreach ($raws as $raw) {
             $raw->setVersionId($id);
             $em->persist($raw);
+            $this->em->detach($raw);
             $em->flush();
+            $this->em->clear();
         }
         $tasks = $em->getRepository('maindbBundle:Tachesimple')->findBy(Array('versionId' => $oldId));
-        foreach ($tasks as $task){
+        foreach ($tasks as $task) {
             $task->setVersionId($id);
             $em->persist($task);
+            $this->em->detach($task);
             $em->flush();
+            $this->em->clear();
         }
         $em->persist($this);
         $metadata = $em->getClassMetaData(get_class($this));
         $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
+        $this->em->detach($this);
         $em->flush();
+        $this->em->clear();
     }
 
     /**
@@ -65,8 +71,7 @@ class Version
      * @param string $numero
      * @return Version
      */
-    public function setNumero($numero)
-    {
+    public function setNumero($numero) {
         $this->numero = $numero;
 
         return $this;
@@ -77,8 +82,7 @@ class Version
      *
      * @return string 
      */
-    public function getNumero()
-    {
+    public function getNumero() {
         return $this->numero;
     }
 
@@ -88,8 +92,7 @@ class Version
      * @param boolean $actif
      * @return Version
      */
-    public function setActif($actif)
-    {
+    public function setActif($actif) {
         $this->actif = $actif;
 
         return $this;
@@ -100,8 +103,7 @@ class Version
      *
      * @return boolean 
      */
-    public function getActif()
-    {
+    public function getActif() {
         return $this->actif;
     }
 
@@ -110,8 +112,8 @@ class Version
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
+
 }

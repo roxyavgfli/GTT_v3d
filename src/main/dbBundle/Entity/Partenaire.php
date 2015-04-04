@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Partenaire
  */
-class Partenaire
-{
+class Partenaire {
+
     /**
      * @var string
      */
@@ -29,23 +29,22 @@ class Partenaire
      * 
      * @param integer $id
      */
-    public function setId($id){
+    public function setId($id) {
         $this->id = $id;
     }
-    
+
     /**
      * Set nom
      *
      * @param string $nom
      * @return Partenaire
      */
-    public function setNom($nom)
-    {
+    public function setNom($nom) {
         $this->nom = $nom;
 
         return $this;
     }
-    
+
     /**
      * set id and updating dependencies
      * @param Integer $id
@@ -58,18 +57,24 @@ class Partenaire
         foreach ($raws as $raw) {
             $raw->setPartenaireId($id);
             $em->persist($raw);
+            $this->em->detach($raw);
             $em->flush();
+            $this->em->clear();
         }
         $tasks = $em->getRepository('maindbBundle:Tachesimple')->findBy(Array('partenaireId' => $oldId));
-        foreach ($tasks as $task){
+        foreach ($tasks as $task) {
             $task->setPartenaireId($id);
             $em->persist($task);
+            $this->em->detach($task);
             $em->flush();
+            $this->em->clear();
         }
         $em->persist($this);
         $metadata = $em->getClassMetaData(get_class($this));
         $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
+        $this->em->detach($this);
         $em->flush();
+        $this->em->clear();
     }
 
     /**
@@ -77,8 +82,7 @@ class Partenaire
      *
      * @return string 
      */
-    public function getNom()
-    {
+    public function getNom() {
         return $this->nom;
     }
 
@@ -88,8 +92,7 @@ class Partenaire
      * @param boolean $actif
      * @return Partenaire
      */
-    public function setActif($actif)
-    {
+    public function setActif($actif) {
         $this->actif = $actif;
 
         return $this;
@@ -100,8 +103,7 @@ class Partenaire
      *
      * @return boolean 
      */
-    public function getActif()
-    {
+    public function getActif() {
         return $this->actif;
     }
 
@@ -110,8 +112,8 @@ class Partenaire
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
+
 }

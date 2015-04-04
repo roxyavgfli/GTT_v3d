@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Service
  */
-class Service
-{
+class Service {
+
     /**
      * @var integer
      */
@@ -34,7 +34,7 @@ class Service
      * 
      * @param integer $id
      */
-    public function setId($id){
+    public function setId($id) {
         $this->id = $id;
     }
 
@@ -44,13 +44,12 @@ class Service
      * @param integer $societeId
      * @return Service
      */
-    public function setSocieteId($societeId)
-    {
+    public function setSocieteId($societeId) {
         $this->societeId = $societeId;
 
         return $this;
     }
-    
+
     /**
      * set id and updating dependencies
      * @param Integer $id
@@ -63,12 +62,16 @@ class Service
         foreach ($raws as $raw) {
             $raw->setServiceId($id);
             $em->persist($raw);
+            $this->em->detach($raw);
             $em->flush();
+            $this->em->clear();
         }
         $em->persist($this);
         $metadata = $em->getClassMetaData(get_class($this));
         $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
+        $this->em->detach($this);
         $em->flush();
+        $this->em->clear();
     }
 
     /**
@@ -76,8 +79,7 @@ class Service
      *
      * @return integer 
      */
-    public function getSocieteId()
-    {
+    public function getSocieteId() {
         return $this->societeId;
     }
 
@@ -87,8 +89,7 @@ class Service
      * @param string $nom
      * @return Service
      */
-    public function setNom($nom)
-    {
+    public function setNom($nom) {
         $this->nom = $nom;
 
         return $this;
@@ -99,8 +100,7 @@ class Service
      *
      * @return string 
      */
-    public function getNom()
-    {
+    public function getNom() {
         return $this->nom;
     }
 
@@ -110,8 +110,7 @@ class Service
      * @param boolean $actif
      * @return Service
      */
-    public function setActif($actif)
-    {
+    public function setActif($actif) {
         $this->actif = $actif;
 
         return $this;
@@ -122,8 +121,7 @@ class Service
      *
      * @return boolean 
      */
-    public function getActif()
-    {
+    public function getActif() {
         return $this->actif;
     }
 
@@ -132,8 +130,8 @@ class Service
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
+
 }

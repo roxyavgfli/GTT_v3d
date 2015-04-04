@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Composants
  */
-class Composants
-{
+class Composants {
+
     /**
      * @var string
      */
@@ -29,10 +29,10 @@ class Composants
      * 
      * @param integer $id
      */
-    public function setId($id){
+    public function setId($id) {
         $this->id = $id;
     }
-    
+
     /**
      * set id and updating dependencies
      * @param Integer $id
@@ -45,28 +45,31 @@ class Composants
         foreach ($raws as $raw) {
             $raw->setComposantId($id);
             $em->persist($raw);
+            $this->em->detach($raw);
             $em->flush();
+            $this->em->clear();
         }
         $tasks = $em->getRepository('maindbBundle:Tachesimple')->findBy(Array('composantId' => $oldId));
-        foreach ($tasks as $task){
+        foreach ($tasks as $task) {
             $task->setComposantId($id);
             $em->persist($task);
+            $this->em->detach($task);
             $em->flush();
+            $this->em->clear();
         }
         $em->persist($this);
         $metadata = $em->getClassMetaData(get_class($this));
         $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
         $em->flush();
     }
-    
+
     /**
      * Set nom
      *
      * @param string $nom
      * @return Composants
      */
-    public function setNom($nom)
-    {
+    public function setNom($nom) {
         $this->nom = $nom;
 
         return $this;
@@ -77,8 +80,7 @@ class Composants
      *
      * @return string 
      */
-    public function getNom()
-    {
+    public function getNom() {
         return $this->nom;
     }
 
@@ -88,8 +90,7 @@ class Composants
      * @param boolean $actif
      * @return Composants
      */
-    public function setActif($actif)
-    {
+    public function setActif($actif) {
         $this->actif = $actif;
 
         return $this;
@@ -100,8 +101,7 @@ class Composants
      *
      * @return boolean 
      */
-    public function getActif()
-    {
+    public function getActif() {
         return $this->actif;
     }
 
@@ -110,8 +110,8 @@ class Composants
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
+
 }

@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Produit
  */
-class Produit
-{
+class Produit {
+
     /**
      * @var string
      */
@@ -29,10 +29,10 @@ class Produit
      * 
      * @param integer $id
      */
-    public function setId($id){
+    public function setId($id) {
         $this->id = $id;
     }
-    
+
     /**
      * set id and updating dependencies
      * @param Integer $id
@@ -45,30 +45,40 @@ class Produit
         foreach ($rawsC as $raw) {
             $raw->setProduitId($id);
             $em->persist($raw);
+            $this->em->detach($raw);
             $em->flush();
+            $this->em->clear();
         }
         $rawsP = $em->getRepository('maindbBundle:ProduitPlateforme')->findBy(Array('produitId' => $oldId));
         foreach ($rawsP as $raw) {
             $raw->setProduitId($id);
             $em->persist($raw);
+            $this->em->detach($raw);
             $em->flush();
+            $this->em->clear();
         }
         $rawsV = $em->getRepository('maindbBundle:ProduitVersion')->findBy(Array('produitId' => $oldId));
         foreach ($rawsV as $raw) {
             $raw->setProduitId($id);
             $em->persist($raw);
+            $this->em->detach($raw);
             $em->flush();
+            $this->em->clear();
         }
         $tasks = $em->getRepository('maindbBundle:Tachesimple')->findBy(Array('produitId' => $oldId));
-        foreach ($tasks as $task){
+        foreach ($tasks as $task) {
             $task->setComposantId($id);
             $em->persist($task);
+            $this->em->detach($task);
             $em->flush();
+            $this->em->clear();
         }
         $em->persist($this);
         $metadata = $em->getClassMetaData(get_class($this));
         $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
+        $this->em->detach($this);
         $em->flush();
+        $this->em->clear();
     }
 
     /**
@@ -77,8 +87,7 @@ class Produit
      * @param string $nom
      * @return Produit
      */
-    public function setNom($nom)
-    {
+    public function setNom($nom) {
         $this->nom = $nom;
 
         return $this;
@@ -89,8 +98,7 @@ class Produit
      *
      * @return string 
      */
-    public function getNom()
-    {
+    public function getNom() {
         return $this->nom;
     }
 
@@ -100,8 +108,7 @@ class Produit
      * @param boolean $actif
      * @return Produit
      */
-    public function setActif($actif)
-    {
+    public function setActif($actif) {
         $this->actif = $actif;
 
         return $this;
@@ -112,8 +119,7 @@ class Produit
      *
      * @return boolean 
      */
-    public function getActif()
-    {
+    public function getActif() {
         return $this->actif;
     }
 
@@ -122,8 +128,8 @@ class Produit
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
+
 }

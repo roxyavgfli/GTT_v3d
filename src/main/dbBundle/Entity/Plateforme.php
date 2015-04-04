@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Plateforme
  */
-class Plateforme
-{
+class Plateforme {
+
     /**
      * @var string
      */
@@ -29,10 +29,10 @@ class Plateforme
      * 
      * @param integer $id
      */
-    public function setId($id){
+    public function setId($id) {
         $this->id = $id;
     }
-    
+
     /**
      * set id and updating dependencies
      * @param Integer $id
@@ -45,18 +45,24 @@ class Plateforme
         foreach ($raws as $raw) {
             $raw->setPlateformeId($id);
             $em->persist($raw);
+            $this->em->detach($raw);
             $em->flush();
+            $this->em->clear();
         }
         $tasks = $em->getRepository('maindbBundle:Tachesimple')->findBy(Array('plateformeId' => $oldId));
-        foreach ($tasks as $task){
+        foreach ($tasks as $task) {
             $task->setPlateformeId($id);
             $em->persist($task);
+            $this->em->detach($task);
             $em->flush();
+            $this->em->clear();
         }
         $em->persist($this);
         $metadata = $em->getClassMetaData(get_class($this));
         $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
+        $this->em->detach($this);
         $em->flush();
+        $this->em->clear();
     }
 
     /**
@@ -65,8 +71,7 @@ class Plateforme
      * @param string $nom
      * @return Plateforme
      */
-    public function setNom($nom)
-    {
+    public function setNom($nom) {
         $this->nom = $nom;
 
         return $this;
@@ -77,8 +82,7 @@ class Plateforme
      *
      * @return string 
      */
-    public function getNom()
-    {
+    public function getNom() {
         return $this->nom;
     }
 
@@ -88,8 +92,7 @@ class Plateforme
      * @param boolean $actif
      * @return Plateforme
      */
-    public function setActif($actif)
-    {
+    public function setActif($actif) {
         $this->actif = $actif;
 
         return $this;
@@ -100,8 +103,7 @@ class Plateforme
      *
      * @return boolean 
      */
-    public function getActif()
-    {
+    public function getActif() {
         return $this->actif;
     }
 
@@ -110,8 +112,8 @@ class Plateforme
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
+
 }
