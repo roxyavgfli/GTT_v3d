@@ -255,6 +255,40 @@ class GlobalFunctions extends Controller {
     }
     
     static function updateNullValues($em, $entity){
+        if ($entity == 'Client'){
+            $backup = $em->getRepository('maindbBundle:' . $entity)->findAll();
+            foreach ($backup as $raw){
+                if ($raw->getPartenaireId() == NULL || $raw->getPartenaireId() == 0){
+                    $raw->setPartenaireId(1);
+                    $em->persist($raw);
+                    $em->detach($raw);
+                    $em->flush();
+                    $em->clear();
+                }
+            }
+        }elseif ($entity == 'Equipe'){
+            $backup = $em->getRepository('maindbBundle:' . $entity)->findAll();
+            foreach ($backup as $raw){
+                if ($raw->getServiceId() == NULL || $raw->getServiceId() == 0){
+                    $raw->setServiceId(1);
+                    $em->persist($raw);
+                    $em->detach($raw);
+                    $em->flush();
+                    $em->clear();
+                }
+            }
+        }elseif ($entity == 'Service'){
+            $backup = $em->getRepository('maindbBundle:' . $entity)->findAll();
+            foreach ($backup as $raw){
+                if ($raw->getSocieteId() == NULL || $raw->getSocieteId() == 0){
+                    $raw->setSocieteId(1);
+                    $em->persist($raw);
+                    $em->detach($raw);
+                    $em->flush();
+                    $em->clear();
+                }
+            }
+        }
         
     }
 
@@ -268,7 +302,9 @@ class GlobalFunctions extends Controller {
             if ($user->getEquipeId() == NULL || $user->getEquipeId() == 0) {
                 $user->setEquipeId(1);
                 $em->persist($user);
+                $em->detach($user);
                 $em->flush();
+                $em->clear();
             }
         }
     }
