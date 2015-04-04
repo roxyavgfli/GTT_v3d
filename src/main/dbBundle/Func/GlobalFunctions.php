@@ -242,10 +242,10 @@ class GlobalFunctions extends Controller {
 
     /**
      * Function used to update via /update
+     * @param EntityManager $em
      * @return String message
      */
-    function update() {
-        $em = $this->getDoctrine()->getEntityManager();
+    static function update($em) {
         $entityArray = ['Composants', 'Client', 'Equipe', 'Partenaire', 'Plateforme', 'Produit', 'Service', 'Societe', 'Version'];
         GlobalFunctions::updateUsersEquipe($em);
         foreach ($entityArray as $entity) {

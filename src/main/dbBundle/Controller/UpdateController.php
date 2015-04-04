@@ -26,7 +26,7 @@ class UpdateController extends Controller {
         $user = GlobalFunctions::GetCurrentUser($session, $em);
         $roles = GlobalFunctions::getUserRoles($session);
         if ($request->getMethod() == 'POST' && $request->get('update') == 1){
-            $message = GlobalFunctions::update(); 
+            $message = GlobalFunctions::update($em); 
         }
         
         
