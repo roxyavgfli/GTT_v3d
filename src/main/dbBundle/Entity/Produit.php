@@ -45,40 +45,30 @@ class Produit {
         foreach ($rawsC as $raw) {
             $raw->setProduitId($id);
             $em->persist($raw);
-            $this->em->detach($raw);
             $em->flush();
-            $this->em->clear();
         }
         $rawsP = $em->getRepository('maindbBundle:ProduitPlateforme')->findBy(Array('produitId' => $oldId));
         foreach ($rawsP as $raw) {
             $raw->setProduitId($id);
             $em->persist($raw);
-            $this->em->detach($raw);
             $em->flush();
-            $this->em->clear();
         }
         $rawsV = $em->getRepository('maindbBundle:ProduitVersion')->findBy(Array('produitId' => $oldId));
         foreach ($rawsV as $raw) {
             $raw->setProduitId($id);
             $em->persist($raw);
-            $this->em->detach($raw);
             $em->flush();
-            $this->em->clear();
         }
         $tasks = $em->getRepository('maindbBundle:Tachesimple')->findBy(Array('produitId' => $oldId));
         foreach ($tasks as $task) {
             $task->setComposantId($id);
             $em->persist($task);
-            $this->em->detach($task);
             $em->flush();
-            $this->em->clear();
         }
         $em->persist($this);
         $metadata = $em->getClassMetaData(get_class($this));
         $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
-        $this->em->detach($this);
         $em->flush();
-        $this->em->clear();
     }
 
     /**

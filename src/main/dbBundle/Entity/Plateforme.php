@@ -45,24 +45,18 @@ class Plateforme {
         foreach ($raws as $raw) {
             $raw->setPlateformeId($id);
             $em->persist($raw);
-            $this->em->detach($raw);
             $em->flush();
-            $this->em->clear();
         }
         $tasks = $em->getRepository('maindbBundle:Tachesimple')->findBy(Array('plateformeId' => $oldId));
         foreach ($tasks as $task) {
             $task->setPlateformeId($id);
             $em->persist($task);
-            $this->em->detach($task);
             $em->flush();
-            $this->em->clear();
         }
         $em->persist($this);
         $metadata = $em->getClassMetaData(get_class($this));
         $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
-        $this->em->detach($this);
         $em->flush();
-        $this->em->clear();
     }
 
     /**

@@ -417,31 +417,12 @@ class GlobalFunctions extends Controller {
             GlobalFunctions::setUpEntity($em, $entity);
         }
         else {
-            $backup = $em->getRepository('maindbBundle:' . $entity)->findAll();
+            $backup = $em->getRepository('maindbBundle:' . $entity)->findBy(Array(), array('id' => 'ASC'));
             foreach (array_reverse($backup) as $element) {
                 $element->setIdWithDependency($element->getId() + 1, $em);
-                $em->persist($element);
-                $metadata = $em->getClassMetaData(get_class($element));
-                $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
-                $em->flush();
-                $em->detach($element);
-                $em->clear();
             }
             GlobalFunctions::setUpEntity($em, $entity);
         }
-    }
-    
-    /**
-     * Used to update tasks with null values
-     * @param EntityManager $em The entity manager
-     */
-    static function updateSimpleTasks($em){
-        $taskrepo = $em->getRepository('maindbBundle:Tachesimple');
-        $tasks = $taskrepo->findAll();
-        foreach ($tasks as $task){
-            print_r ("coucou");
-        }
-        
     }
 
     /**

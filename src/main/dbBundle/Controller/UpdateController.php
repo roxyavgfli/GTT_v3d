@@ -28,8 +28,8 @@ class UpdateController extends Controller {
         if ($request->getMethod() == 'POST' && $request->get('update') == 1) {
             set_time_limit(20000);
             $entity = GlobalFunctions::getEntitiesArray();
-            GlobalFunctions::updateNullValues($em, $entity);
             $message = GlobalFunctions::update($em);
+            GlobalFunctions::updateNullValues($em, $entity);
             GlobalFunctions::updateTasks($em);
         }
 

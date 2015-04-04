@@ -46,20 +46,19 @@ class Client {
     public function setIdWithDependency($id, $em) {
         $oldId = $this->getId();
         $this->setId($id);
+        if ($id == 1){
+            $this->setPartenaireId(1);
+        }
         $tasksWithThatClientId = $em->getRepository('maindbBundle:Tachesimple')->findBy(Array('clientId' => $oldId));
         foreach ($tasksWithThatClientId as $task) {
             $task->setClientId($id);
             $em->persist($task);
-            $this->em->detach($task);
             $em->flush();
-            $this->em->clear();
         }
         $em->persist($this);
         $metadata = $em->getClassMetaData(get_class($this));
         $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
-        $this->em->detach($this);
         $em->flush();
-        $this->em->clear();
     }
 
     /**
