@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 class UpdateController extends Controller {
 
     public function gestionupdateAction(Request $request) {
+        $this->em = $this->getContainer()->get('doctrine')->getManager();
+        $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
         $em = $this->getDoctrine()->getEntityManager();
         $session = $this->getRequest()->getSession();
         $message = null;
@@ -26,15 +28,27 @@ class UpdateController extends Controller {
         $user = GlobalFunctions::GetCurrentUser($session, $em);
         $roles = GlobalFunctions::getUserRoles($session);
         if ($request->getMethod() == 'POST' && $request->get('update') == 1) {
-            set_time_limit(20000);
-            ini_set('memory_limit','1024M');
-            $entity = GlobalFunctions::getEntitiesArray();
-            $updatemsg = GlobalFunctions::update($em);
-            $message = $message . $updatemsg;
-            GlobalFunctions::updateNullValues($em, $entity);
-            $message = $message . ", updated null values";
-            GlobalFunctions::updateTasks($em);
-            $message = $message . ", updated Simple Tasks null values";
+            try {
+                set_time_limit(20000);
+                ini_set('memory_limit', '-1');
+                $entity = GlobalFunctions::getEntitiesArray();
+                $updatemsg = GlobalFunctions::update($em);
+                $message = $message . $updatemsg;
+                GlobalFunctions::updateNullValues($em, $entity);
+                $message = $message . ", updated null values";
+                GlobalFunctions::updateTasks($em);
+                $message = $message . ", updated Simple Tasks null values";
+            }
+            catch (Exception $ex) {
+                return $this->render('maindbBundle:Default:updatepage.html.twig', array('roles' => $roles,
+                            'name' => $user->getNom(),
+                            'startdatesearch' => SimpleTaskControllerFunctions::getStartDate($request),
+                            'surname' => $user->getPrenom(),
+                            'mail' => $user->getMail(),
+                            'message' => $message,
+                            'erroreMessage' => $ex->getMessage(),
+                            'trigramme' => $user->getTrigramme()));
+            }
         }
 
         return $this->render('maindbBundle:Default:updatepage.html.twig', array('roles' => $roles,

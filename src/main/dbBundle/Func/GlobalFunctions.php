@@ -567,6 +567,8 @@ class GlobalFunctions extends Controller {
         $tasks = $em->getRepository('maindbBundle:Tachesimple')->findAll();
         foreach ($tasks as $task) {
             GlobalFunctions::updateOneTask($em, $task);
+            gc_collect_cycles();
+            
         }
     }
 
@@ -608,8 +610,7 @@ class GlobalFunctions extends Controller {
           $task->setProduitId(1);
          * */
           $em->persist($task);
-          $em->flush(); 
-          $em->detach($task);
+          $em->flush();
           $em->clear();
     }
 
