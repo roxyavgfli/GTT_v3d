@@ -564,11 +564,12 @@ class GlobalFunctions extends Controller {
      * @param EntityManager $em The entity manager
      */
     static function updateTasks($em) {
-        $tasks = $em->getRepository('maindbBundle:Tachesimple')->findAll();
+        $tasks = $em->getRepository('maindbBundle:Tachesimple')->findBy(Array(), Array('id' => 'ASC'));
         foreach ($tasks as $task) {
             GlobalFunctions::updateOneTask($em, $task);
+            $em->persist($task);
+            $em->flush();
             gc_collect_cycles();
-            
         }
     }
 
@@ -579,7 +580,7 @@ class GlobalFunctions extends Controller {
      * 
      * 
      */
-    static function updateOneTask($em, $task) {
+    static function updateOneTask($task) {
         if ($task->getClientId() == NULL || $task->getClientId() == 0) {
             $task->setClientId(1);
         }
@@ -601,17 +602,6 @@ class GlobalFunctions extends Controller {
         if ($task->getProduitId() == NULL || $task->getProduitId() == 0) {
             $task->setProduitId(1);
         }
-        /* $task->setClientId(1);
-          $task->setComposantId(1);
-          $task->setPartenaireId(1);
-          $task->setPlateformeId(1);
-          $task->setProduitId(1);
-          $task->setVersionId(1);
-          $task->setProduitId(1);
-         * */
-          $em->persist($task);
-          $em->flush();
-          $em->clear();
     }
 
 }
