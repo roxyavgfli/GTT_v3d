@@ -250,16 +250,19 @@ class GlobalFunctions extends Controller {
      * @return String message
      */
     static function update($em) {
+        $toreturn = "";
         $entityArray = GlobalFunctions::getEntitiesArray();
         GlobalFunctions::updateUsersEquipe($em);
+        $toreturn = $toreturn . "Updated null values in Users";
         foreach ($entityArray as $entity) {
             if (!GlobalFunctions::entityNoneExists($em, $entity)) {
                 GlobalFunctions::updateEntity($em, $entity);
             }
         }
+        $toreturn = $toreturn . ", updated entities";
         GlobalFunctions::updateLinksOfProductsForNone($em);
-        GlobalFunctions::updateTasks($em);
-        return ("Update done");
+        $toreturn = $toreturn . ", updated links of products";
+        return $toreturn;
     }
 
     static function updateNullValues($em, $entities) {

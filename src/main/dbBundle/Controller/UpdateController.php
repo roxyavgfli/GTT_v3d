@@ -27,10 +27,14 @@ class UpdateController extends Controller {
         $roles = GlobalFunctions::getUserRoles($session);
         if ($request->getMethod() == 'POST' && $request->get('update') == 1) {
             set_time_limit(20000);
+            ini_set('memory_limit','1024M');
             $entity = GlobalFunctions::getEntitiesArray();
-            $message = GlobalFunctions::update($em);
+            $updatemsg = GlobalFunctions::update($em);
+            $message = $message . $updatemsg;
             GlobalFunctions::updateNullValues($em, $entity);
+            $message = $message . ", updated null values";
             GlobalFunctions::updateTasks($em);
+            $message = $message . ", updated Simple Tasks null values";
         }
 
         return $this->render('maindbBundle:Default:updatepage.html.twig', array('roles' => $roles,
