@@ -32,10 +32,10 @@ class UpdateController extends Controller {
                 set_time_limit(20000);
                 ini_set('memory_limit', '-1');
                 $entity = GlobalFunctions::getEntitiesArray();
-                //$updatemsg = GlobalFunctions::update($em);
-                //$message = $message . $updatemsg;
-                //GlobalFunctions::updateNullValues($em, $entity);
-                //$message = $message . ", updated null values";
+                $updatemsg = GlobalFunctions::update($em);
+                $message = $message . $updatemsg;
+                GlobalFunctions::updateNullValues($em, $entity);
+                $message = $message . ", updated null values";
                 GlobalFunctions::updateTasks($em);
                 $message = $message . ", updated Simple Tasks null values";
             }

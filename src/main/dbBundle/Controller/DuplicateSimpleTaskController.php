@@ -104,7 +104,7 @@ class DuplicateSimpleTaskController extends Controller {
                             }
                         }
                         if ($request->get('nomedit')) {
-                            $tacheDup->setNom($request->get('nomedit'));
+                            $tacheDup->setNom(utf8_encode($request->get('nomedit')));
                         }
                         if ($request->get('finalcustomer')) {
                             $tacheDup->setClientId($request->get('finalcustomer'));
@@ -232,7 +232,7 @@ class DuplicateSimpleTaskController extends Controller {
                         }
 
                         if ($request->get('comment')) {
-                            $tacheDup->setCommentaire($request->get('comment'));
+                            $tacheDup->setCommentaire(utf8_encode($request->get('comment')));
                         }
                         $tacheDup->setUserId($user->getId());
                         $tacheDup->setActif(1);

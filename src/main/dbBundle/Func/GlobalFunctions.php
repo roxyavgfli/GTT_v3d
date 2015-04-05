@@ -240,7 +240,7 @@ class GlobalFunctions extends Controller {
      * @return Array The array with entities
      */
     static function getEntitiesArray() {
-        $entityArray = ['Composants', 'Client', 'Equipe', 'Partenaire', 'Plateforme', 'Produit', 'Service', 'Societe', 'Version'];
+        $entityArray = ['Composants', 'Partenaire',  'Client', 'Plateforme', 'Produit', 'Service', 'Equipe', 'Societe', 'Version'];
         return $entityArray;
     }
 
@@ -566,7 +566,7 @@ class GlobalFunctions extends Controller {
     static function updateTasks($em) {
         $tasks = $em->getRepository('maindbBundle:Tachesimple')->findBy(Array(), Array('id' => 'ASC'));
         foreach ($tasks as $task) {
-            GlobalFunctions::updateOneTask($em, $task);
+            GlobalFunctions::updateOneTask($task);
             $em->persist($task);
             $em->flush();
             gc_collect_cycles();

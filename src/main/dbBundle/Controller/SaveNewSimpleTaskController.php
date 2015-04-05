@@ -207,11 +207,11 @@ class SaveNewSimpleTaskController extends Controller {
                         $newtask->setVersionId(1);
                     $newtask->setActif(1);
                     $newtask->setEditable(1);
-                    $newtask->setCommentaire($request->get('comment'));
+                    $newtask->setCommentaire(utf8_encode($request->get('comment')));
                     $time = $request->get('date');
                     $newtask->setDate($time);
                     $newtask->setNature($request->get('naturetosave'));
-                    $newtask->setNom($request->get('label'));
+                    $newtask->setNom(utf8_encode($request->get('label')));
                     $newtask->setActiviteId($request->get('activite'));
                     $newtask->setTempsPasse($request->get('temps'));
                     $em->persist($newtask);

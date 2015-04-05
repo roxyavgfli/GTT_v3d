@@ -25,7 +25,7 @@
                 margin-top: 20px;
             }
         </style>
-        
+
 
 
 
@@ -44,6 +44,7 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+       
     </head>
 
     <body>
@@ -127,15 +128,15 @@
         </div>
 
         <div class="container">
-            {%if message is defined and message is not null%}
-                <p style="color : green;">{{message}}</p>
+            {%if errorMessage is defined and errorMessage is not null%}
+                <p style="color : red;">{{errorMessage}}</p>
             {%endif%}
 
             <p>Welcome {{name}} {{surname}}</p>
             <p>Click below to process update</p>
-            <form role="form" data-validate="parsley" method="POST" action="{{path('maindb_update')}}">
+            <form role="form" data-validate="parsley" method="POST"action="{{path('maindb_update')}}" > <!---->
                 <input hidden readonly type="text" name="update" id="update" value="1"/>
-                <button type="submit" class="btn btn-primary">UPDATE</button>
+                <button onclick="drawszlider()"  class="btn btn-primary" type="submit">UPDATE</button><!-- -->
             </form>
 
 
