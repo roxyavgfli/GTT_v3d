@@ -854,6 +854,7 @@ class SimpleTaskControllerFunctions {
                             'oldpartenaireid' => $oldpartenaireid,
                             'oldcustomer' => $oldcustomera,
                             'oldcustomerid' => $oldcustomerid,
+                            'edit' => 1,
                             'disableclients' => $disableclients,
                             'disableproduits' => $disableproduits,
                             'tachestodisplay' => $tachestodisplay));

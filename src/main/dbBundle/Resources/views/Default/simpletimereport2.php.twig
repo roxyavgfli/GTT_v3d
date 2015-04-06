@@ -1180,19 +1180,255 @@
     <script src="{{asset('bundles/maindb/js/parsley/parsley.extend.min.js')}}"></script>
     <script src="{{asset('bundles/maindb/js/parsley/parsley.min.js')}}"></script>
     <script src="{{asset('bundles/maindb/js/dropdown.js')}}"></script>
-    <script src="{{asset('bundles/maindb/js/affix.js')}}"></script>
-    <script src="{{asset('bundles/maindb/js/alert.js')}}"></script>
-    <script src="{{asset('bundles/maindb/js/button.js')}}"></script>
-    <script src="{{asset('bundles/maindb/js/jquery.js')}}"></script>
-    <script src="{{asset('bundles/maindb/js/scrollspy.js')}}"></script>
     <script src="{{asset('bundles/maindb/js/tab.js')}}"></script>
-    <script src="{{asset('bundles/maindb/js/tooltip.js')}}"></script>
-    <script src="{{asset('bundles/maindb/js/transition.js')}}"></script>
     <script src="{{asset('bundles/maindb/js/bootstrap-datepicker.js')}}"></script>
 
+
+    {%if produitsavecversions is defined and disableproduits is defined and disableproduits == 0 and edit is not defined%}
+        <script>
+                                                var a = "{{produitsavecversions}}";
+                                                a = a.replace(/&quot;/g, '"');
+                                                a = a.replace(/(?:\r\n|\r|\n)/g, '');
+                                                console.log(a);
+                                                var optionValues = JSON.parse(a);
+                                                function setSelect(selectElement, arr) {
+                                                    // Remove all previous values from the select
+                                                    while (selectElement.firstChild) {
+                                                        selectElement.removeChild(selectElement.firstChild);
+                                                    }
+                                                    // Go over all the options in the array and place them inside the select.
+                                                    for (var i = 0; i < arr.length; ++i) {
+                                                        var optionValue = arr[i][0];
+                                                        var optionText = arr[i][1];
+                                                        // Initialize the option to be added
+                                                        var optionElement = document.createElement('option');
+                                                        optionElement.value = optionValue;
+                                                        optionElement.title = optionText; // In case we shorten the text to fit into the select
+                                                        optionElement.textContent = optionText;
+                                                        optionElement.innerText = optionText;
+                                                        selectElement.appendChild(optionElement);
+                                                    }
+                                                }
+
+                                                function getIndex() {
+                                                    var valueSelected = document.getElementById("productnormal").value;
+                                                    for (var i = 0; i < optionValues.length; i++) {
+                                                        if (optionValues[i][0] == valueSelected) {
+                                                            return i;
+                                                        }
+                                                    }
+                                                    return -1;
+                                                }
+
+                                                function setVersion() {
+                                                    var selectedProductIndex = document.getElementById("productnormal").value - 1;
+                                                    var versionsArray = optionValues[getIndex()][2];
+                                                    var versionSelect = document.getElementById("versionsnormal");
+                                                    setSelect(versionSelect, versionsArray);
+                                                }
+                                                function setComposants() {
+                                                    var selectedProductIndex = document.getElementById("productnormal").value - 1;
+                                                    var versionsArray = optionValues[getIndex()][3];
+                                                    var versionSelect = document.getElementById("composantsnormal");
+                                                    setSelect(versionSelect, versionsArray);
+                                                }
+                                                function setPlateformes() {
+                                                    var selectedProductIndex = document.getElementById("productnormal").value - 1;
+                                                    var versionsArray = optionValues[getIndex()][4];
+                                                    var versionSelect = document.getElementById("plateformesnormal");
+                                                    setSelect(versionSelect, versionsArray);
+                                                }
+                                                function setProduct() {
+                                                    var productSelect = document.getElementById("productnormal");
+                                                    setSelect(productSelect, optionValues);
+                                                    setVersion();
+                                                    setComposants();
+                                                    setPlateformes();
+                                                    // Add a listener on the select element, to update the version options.
+                                                    productSelect.addEventListener("change", setVersion);
+                                                    productSelect.addEventListener("change", setComposants);
+                                                    productSelect.addEventListener("change", setPlateformes);
+                                                }
+
+                                                setProduct();
+        </script>
+    {%endif%}
+    {%if clientsa is defined and disableclients is defined and disableclients == 0 and edit is not defined%}
+        <script>
+            var a = "{{clientsa}}";
+            a = a.replace(/&quot;/g, '"');
+            a = a.replace(/(?:\r\n|\r|\n)/g, '');
+            console.log(a);
+            var optionValues = JSON.parse(a);
+            function setSelect(selectElement, arr) {
+                // Remove all previous values from the select
+                while (selectElement.firstChild) {
+                    selectElement.removeChild(selectElement.firstChild);
+                }
+                // Go over all the options in the array and place them inside the select.
+                for (var i = 0; i < arr.length; ++i) {
+                    var optionValue = arr[i][0];
+                    var optionText = arr[i][1];
+                    // Initialize the option to be added
+                    var optionElement = document.createElement('option');
+                    optionElement.value = optionValue;
+                    optionElement.title = optionText; // In case we shorten the text to fit into the select
+                    optionElement.textContent = optionText;
+                    optionElement.innerText = optionText;
+                    selectElement.appendChild(optionElement);
+                }
+            }
+
+            function getIndex() {
+                var valueSelected = document.getElementById("finalcustomert").value;
+                for (var i = 0; i < optionValues.length; i++) {
+                    if (optionValues[i][0] == valueSelected) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+
+            function setPlateformes() {
+                var selectedProductIndex = document.getElementById("finalcustomert").value - 1;
+                var versionsArray = optionValues[getIndex()][2];
+                var versionSelect = document.getElementById("partenaire");
+                setSelect(versionSelect, versionsArray);
+            }
+            function setProduct() {
+                var productSelect = document.getElementById("finalcustomert");
+                setSelect(productSelect, optionValues);
+                setPlateformes();
+                // Add a listener on the select element, to update the version options.
+                productSelect.addEventListener("change", setPlateformes);
+            }
+
+            setProduct();
+        </script>
+    {%endif%}
+    {%if clientsa is defined and disableclients is defined and disableclients == 0 and edit is defined and edit == 1%}
+        <script>
+            var a = "{{clientsa}}";
+            a = a.replace(/&quot;/g, '"');
+            a = a.replace(/(?:\r\n|\r|\n)/g, '');
+            console.log(a);
+            var optionValues = JSON.parse(a);
+            function setSelect(selectElement, arr) {
+                // Remove all previous values from the select
+                while (selectElement.firstChild) {
+                    selectElement.removeChild(selectElement.firstChild);
+                }
+                // Go over all the options in the array and place them inside the select.
+                for (var i = 0; i < arr.length; ++i) {
+                    var optionValue = arr[i][0];
+                    var optionText = arr[i][1];
+                    // Initialize the option to be added
+                    var optionElement = document.createElement('option');
+                    optionElement.value = optionValue;
+                    optionElement.title = optionText; // In case we shorten the text to fit into the select
+                    optionElement.textContent = optionText;
+                    optionElement.innerText = optionText;
+                    selectElement.appendChild(optionElement);
+                }
+            }
+
+            function getIndex() {
+                var valueSelected = document.getElementById("finalcustomere").value;
+                for (var i = 0; i < optionValues.length; i++) {
+                    if (optionValues[i][0] == valueSelected) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+
+            function setPlateformes() {
+                var selectedProductIndex = document.getElementById("finalcustomere").value - 1;
+                var versionsArray = optionValues[getIndex()][2];
+                var versionSelect = document.getElementById("partenairee");
+                setSelect(versionSelect, versionsArray);
+            }
+            function setProduct() {
+                var productSelect = document.getElementById("finalcustomere");
+                setSelect(productSelect, optionValues);
+                setPlateformes();
+                // Add a listener on the select element, to update the version options.
+                productSelect.addEventListener("change", setPlateformes);
+            }
+
+            setProduct();
+        </script>
+        {%endif%}
+            {%if produitsavecversions is defined and disableproduits is defined and disableproduits == 0 and edit is defined and edit == 1%}
+        <script>
+            var a = "{{produitsavecversions}}";
+            a = a.replace(/&quot;/g, '"');
+            a = a.replace(/(?:\r\n|\r|\n)/g, '');
+            console.log(a);
+            var optionValues = JSON.parse(a);
+            function setSelect(selectElement, arr) {
+                // Remove all previous values from the select
+                while (selectElement.firstChild) {
+                    selectElement.removeChild(selectElement.firstChild);
+                }
+                // Go over all the options in the array and place them inside the select.
+                for (var i = 0; i < arr.length; ++i) {
+                    var optionValue = arr[i][0];
+                    var optionText = arr[i][1];
+                    // Initialize the option to be added
+                    var optionElement = document.createElement('option');
+                    optionElement.value = optionValue;
+                    optionElement.title = optionText; // In case we shorten the text to fit into the select
+                    optionElement.textContent = optionText;
+                    optionElement.innerText = optionText;
+                    selectElement.appendChild(optionElement);
+                }
+            }
+
+            function getIndex() {
+                var valueSelected = document.getElementById("productedit").value;
+                for (var i = 0; i < optionValues.length; i++) {
+                    if (optionValues[i][0] == valueSelected) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+
+            function setVersion() {
+                var selectedProductIndex = document.getElementById("productedit").value - 1;
+                var versionsArray = optionValues[getIndex()][2];
+                var versionSelect = document.getElementById("versionsedit");
+                setSelect(versionSelect, versionsArray);
+            }
+            function setComposants() {
+                var selectedProductIndex = document.getElementById("productedit").value - 1;
+                var versionsArray = optionValues[getIndex()][3];
+                var versionSelect = document.getElementById("composantsedit");
+                setSelect(versionSelect, versionsArray);
+            }
+            function setPlateformes() {
+                var selectedProductIndex = document.getElementById("productedit").value - 1;
+                var versionsArray = optionValues[getIndex()][4];
+                var versionSelect = document.getElementById("plateformesedit");
+                setSelect(versionSelect, versionsArray);
+            }
+            function setProduct() {
+                var productSelect = document.getElementById("productedit");
+                setSelect(productSelect, optionValues);
+                setVersion();
+                setComposants();
+                setPlateformes();
+                // Add a listener on the select element, to update the version options.
+                productSelect.addEventListener("change", setVersion);
+                productSelect.addEventListener("change", setComposants);
+                productSelect.addEventListener("change", setPlateformes);
+            }
+            setProduct();
+        </script>
+    {%endif%}
     <script type="text/javascript">
         $(document).on("click", ".open-AddBookDialog", function (e) {
-            .preventDefault();
             var _self = $(this);
             var myBookId = _self.data('id');
             $("#date").val(myBookId);
@@ -1231,12 +1467,12 @@
     </script>
     <!-- SCRIPT CRITICAL -->
     <script>
-            $("#date").datepicker({
-                format: "yyyy/mm/dd",
-                startDate: "-1y",
-                endDate: "m+0",
-                daysOfWeekDisabled: [0, 6]
-            });
+        $("#date").datepicker({
+            format: "yyyy/mm/dd",
+            startDate: "-1y",
+            endDate: "m+0",
+            daysOfWeekDisabled: [0, 6]
+        });
     </script>
     <!-- SCRIPT CRITICAL -->
     <script>
@@ -1246,7 +1482,6 @@
             endDate: "m+0",
             daysOfWeekDisabled: [0, 6]
         });
-        };
     </script>
     <script>
         $("#dateeditintern").datepicker({
@@ -1321,209 +1556,6 @@
         });
     </script>
 
-
-    {%if clientsa is defined and disableclients is defined and disableclients == 0%}
-        <script>
-            var a = "{{clientsa}}";
-            a = a.replace(/&quot;/g, '"');
-            a = a.replace(/(?:\r\n|\r|\n)/g, '');
-            console.log(a);
-            var optionValues = JSON.parse(a);
-            function setSelect(selectElement, arr) {
-                // Remove all previous values from the select
-                while (selectElement.firstChild) {
-                    selectElement.removeChild(selectElement.firstChild);
-                }
-                // Go over all the options in the array and place them inside the select.
-                for (var i = 0; i < arr.length; ++i) {
-                    var optionValue = arr[i][0];
-                    var optionText = arr[i][1];
-                    // Initialize the option to be added
-                    var optionElement = document.createElement('option');
-                    optionElement.value = optionValue;
-                    optionElement.title = optionText; // In case we shorten the text to fit into the select
-                    optionElement.textContent = optionText;
-                    optionElement.innerText = optionText;
-                    selectElement.appendChild(optionElement);
-                }
-            }
-            function setPlateformes() {
-                var selectedProductIndex = document.getElementById("finalcustomert").value - 1;
-                var versionsArray = optionValues[selectedProductIndex][2];
-                var versionSelect = document.getElementById("partenaire");
-                setSelect(versionSelect, versionsArray);
-            }
-            function setProduct() {
-                var productSelect = document.getElementById("finalcustomert");
-                setSelect(productSelect, optionValues);
-                setPlateformes();
-                // Add a listener on the select element, to update the version options.
-                productSelect.addEventListener("change", setPlateformes);
-            }
-
-            setProduct();
-        </script>
-    {%endif%}
-    {%if clientsa is defined and disableclients is defined and disableclients == 0%}
-        <script>
-            var a = "{{clientsa}}";
-            a = a.replace(/&quot;/g, '"');
-            a = a.replace(/(?:\r\n|\r|\n)/g, '');
-            console.log(a);
-            var optionValues = JSON.parse(a);
-            function setSelect(selectElement, arr) {
-                // Remove all previous values from the select
-                while (selectElement.firstChild) {
-                    selectElement.removeChild(selectElement.firstChild);
-                }
-                // Go over all the options in the array and place them inside the select.
-                for (var i = 0; i < arr.length; ++i) {
-                    var optionValue = arr[i][0];
-                    var optionText = arr[i][1];
-                    // Initialize the option to be added
-                    var optionElement = document.createElement('option');
-                    optionElement.value = optionValue;
-                    optionElement.title = optionText; // In case we shorten the text to fit into the select
-                    optionElement.textContent = optionText;
-                    optionElement.innerText = optionText;
-                    selectElement.appendChild(optionElement);
-                }
-            }
-            function setPlateformes() {
-                var selectedProductIndex = document.getElementById("finalcustomere").value - 1;
-                var versionsArray = optionValues[selectedProductIndex][2];
-                var versionSelect = document.getElementById("partenairee");
-                setSelect(versionSelect, versionsArray);
-            }
-            function setProduct() {
-                var productSelect = document.getElementById("finalcustomere");
-                setSelect(productSelect, optionValues);
-                setPlateformes();
-                // Add a listener on the select element, to update the version options.
-                productSelect.addEventListener("change", setPlateformes);
-            }
-
-            setProduct();
-        </script>
-    {%endif%}
-
-    {%if produitsavecversions is defined and disableproduits is defined and disableproduits == 0%}
-        <script>
-            var a = "{{produitsavecversions}}";
-            a = a.replace(/&quot;/g, '"');
-            a = a.replace(/(?:\r\n|\r|\n)/g, '');
-            console.log(a);
-            var optionValues = JSON.parse(a);
-            function setSelect(selectElement, arr) {
-                // Remove all previous values from the select
-                while (selectElement.firstChild) {
-                    selectElement.removeChild(selectElement.firstChild);
-                }
-                // Go over all the options in the array and place them inside the select.
-                for (var i = 0; i < arr.length; ++i) {
-                    var optionValue = arr[i][0];
-                    var optionText = arr[i][1];
-                    // Initialize the option to be added
-                    var optionElement = document.createElement('option');
-                    optionElement.value = optionValue;
-                    optionElement.title = optionText; // In case we shorten the text to fit into the select
-                    optionElement.textContent = optionText;
-                    optionElement.innerText = optionText;
-                    selectElement.appendChild(optionElement);
-                }
-            }
-
-            function setVersion() {
-                var selectedProductIndex = document.getElementById("productnormal").value - 1;
-                var versionsArray = optionValues[selectedProductIndex][2];
-                var versionSelect = document.getElementById("versionsnormal");
-                setSelect(versionSelect, versionsArray);
-            }
-            function setComposants() {
-                var selectedProductIndex = document.getElementById("productnormal").value - 1;
-                var versionsArray = optionValues[selectedProductIndex][3];
-                var versionSelect = document.getElementById("composantsnormal");
-                setSelect(versionSelect, versionsArray);
-            }
-            function setPlateformes() {
-                var selectedProductIndex = document.getElementById("productnormal").value - 1;
-                var versionsArray = optionValues[selectedProductIndex][4];
-                var versionSelect = document.getElementById("plateformesnormal");
-                setSelect(versionSelect, versionsArray);
-            }
-            function setProduct() {
-                var productSelect = document.getElementById("productnormal");
-                setSelect(productSelect, optionValues);
-                setVersion();
-                setComposants();
-                setPlateformes();
-                // Add a listener on the select element, to update the version options.
-                productSelect.addEventListener("change", setVersion);
-                productSelect.addEventListener("change", setComposants);
-                productSelect.addEventListener("change", setPlateformes);
-            }
-
-            setProduct();
-        </script>
-    {%endif%}
-    {%if produitsavecversions is defined and disableproduits is defined and disableproduits == 0%}
-        <script>
-            var a = "{{produitsavecversions}}";
-            a = a.replace(/&quot;/g, '"');
-            a = a.replace(/(?:\r\n|\r|\n)/g, '');
-            console.log(a);
-            var optionValues = JSON.parse(a);
-            function setSelect(selectElement, arr) {
-                // Remove all previous values from the select
-                while (selectElement.firstChild) {
-                    selectElement.removeChild(selectElement.firstChild);
-                }
-                // Go over all the options in the array and place them inside the select.
-                for (var i = 0; i < arr.length; ++i) {
-                    var optionValue = arr[i][0];
-                    var optionText = arr[i][1];
-                    // Initialize the option to be added
-                    var optionElement = document.createElement('option');
-                    optionElement.value = optionValue;
-                    optionElement.title = optionText; // In case we shorten the text to fit into the select
-                    optionElement.textContent = optionText;
-                    optionElement.innerText = optionText;
-                    selectElement.appendChild(optionElement);
-                }
-            }
-
-            function setVersion() {
-                var selectedProductIndex = document.getElementById("productedit").value - 1;
-                var versionsArray = optionValues[selectedProductIndex][2];
-                var versionSelect = document.getElementById("versionsedit");
-                setSelect(versionSelect, versionsArray);
-            }
-            function setComposants() {
-                var selectedProductIndex = document.getElementById("productedit").value - 1;
-                var versionsArray = optionValues[selectedProductIndex][3];
-                var versionSelect = document.getElementById("composantsedit");
-                setSelect(versionSelect, versionsArray);
-            }
-            function setPlateformes() {
-                var selectedProductIndex = document.getElementById("productedit").value - 1;
-                var versionsArray = optionValues[selectedProductIndex][4];
-                var versionSelect = document.getElementById("plateformesedit");
-                setSelect(versionSelect, versionsArray);
-            }
-            function setProduct() {
-                var productSelect = document.getElementById("productedit");
-                setSelect(productSelect, optionValues);
-                setVersion();
-                setComposants();
-                setPlateformes();
-                // Add a listener on the select element, to update the version options.
-                productSelect.addEventListener("change", setVersion);
-                productSelect.addEventListener("change", setComposants);
-                productSelect.addEventListener("change", setPlateformes);
-            }
-            setProduct();
-        </script>
-    {%endif%}
     <script>
         $(document).ready(function () {
             $('#checkbox1').change(function () {
