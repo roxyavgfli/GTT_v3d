@@ -259,7 +259,6 @@ class DuplicateSimpleTaskController extends Controller {
                 $equipes = $repository->findBy(array('actif' => 1));
                 $repository = $em->getRepository('maindbBundle:Activite');
                 $activites2 = $repository->findBy(array('actif' => 1));
-
                 $repository = $em->getRepository('maindbBundle:Partenaire');
                 $partenaires = $repository->findBy(array('actif' => 1));
 
@@ -272,6 +271,16 @@ class DuplicateSimpleTaskController extends Controller {
                 $naturesearched = "";
 
                 if ($request->get('idToEdit')) {
+                    $repository = $em->getRepository('maindbBundle:Tachesimple');
+                    $tacheModif = $repository->findOneBy(array('id' => $request->get('idToEdit')));
+                    if ($tacheModif->getNature() == 'Product') {
+                        $disableclients = 1;
+                        $disableproduits = 0;
+                    }
+                    else if ($tacheModif->getNature() == 'Pre Sale' || $tacheModif->getNature() == 'Project') {
+                        $disableproduits = 1;
+                        $disableclients = 0;
+                    }
                     $repository = $em->getRepository('maindbBundle:Tachesimple');
                     $taskToEdit = $repository->findOneBy(array('id' => $request->get('idToEdit')));
                     if ($taskToEdit->getuserId() == $user->getId()) {
@@ -842,7 +851,8 @@ class DuplicateSimpleTaskController extends Controller {
                                     'clientsa' => json_encode($clientsa),
                                     'disableclients' => $disableclients,
                                     'disableproduits' => $disableproduits,
-                                    'tachestodisplay' => $tachestodisplay));
+                                    'tachestodisplay' => $tachestodisplay,
+                                    'edit' => 1));
                     }
                     else {
                         print_r("error : you dont have access to other's report");
