@@ -400,7 +400,9 @@ class SimpleTaskControllerFunctions {
             $tachesofday = $repository->findBy(array('actif' => 1, 'userId' => $user->getId(), 'date' => $time));
             $temps = 0.0;
             foreach ($tachesofday as $task) {
-                $temps = $temps + floatval($task->getTempsPasse());
+                if ($task->getId()!=$request->get('idToEdit')) {
+                    $temps = $temps + floatval($task->getTempsPasse());
+                }
             }
             $tempsrestant = 1.0 - $temps;
             $i = 0;
@@ -408,6 +410,8 @@ class SimpleTaskControllerFunctions {
                 $i = $i + 0.250;
                 array_push($times, strval($i));
             }
+        }else {
+            $times = array(0.25,0.5,0.75,1);
         }
         return $times;
     }
