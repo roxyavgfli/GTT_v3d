@@ -369,6 +369,8 @@ class DefaultController extends Controller {
                         else {
                             $administratorToEdit = 0;
                         }
+                        $actif = $userToEdit->getActif();
+                        
 
                         return $this->render('maindbBundle:Default:gestionuseredit.html.twig', array('roles' => $roles,
                                     'name' => $user->getNom(),
@@ -382,8 +384,53 @@ class DefaultController extends Controller {
                                     'idToEdit' => $userToEdit->getId(),
                                     'message' => $message,
                                     'message2' => $message2,
+                                    'inactive' => $actif,
                                     'administratorToEdit' => $administratorToEdit));
                     }
+                }
+            }
+        }
+        return ($this->gestionuserlistAction($request));
+    }
+
+    public function gestiondeleteuserAction(Request $request) {
+        //checking installation
+        if (!($this->installVerif($request))) {
+            return $this->render('maindbBundle:Default:installation.html.twig');
+        }
+        //checking session
+        $session = $this->getRequest()->getSession();
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository('maindbBundle:Utilisateur');
+        if ($session->has('login')) {
+            $login = $session->get('login');
+            $usermail = $login->getMail();
+            $password = $login->getPassword();
+            $roles = $login->getPermission();
+            $user = $repository->findOneBy(array('mail' => $usermail, 'mdp' => $password));
+            if ($user) {
+                $permissions = $this->getPermissionUser($user);
+                $isadmin = false;
+                $permissionToTest = "administrator";
+                foreach ($permissions as $permission) {
+                    foreach ($permission as $per) {
+                        if ($per == 'administrator') {
+                            $isadmin = true;
+                        }
+                    }
+                }
+                // page reserved for admin use
+                if (!$isadmin) {
+                    return $this->render('maindbBundle:Default:errorpermission.html.twig');
+                }
+                $message = '';
+                $message2 = '';
+                $repository = $em->getRepository('maindbBundle:Utilisateur');
+                $userToEdit = $repository->findOneBy(array('id' => $request->get('idToEdit')));
+                if ($request->getMethod() == 'POST' && $userToEdit->getActif()==0) {
+                    $em->remove($userToEdit);
+                    $em->flush();
+                    return $this->gestionuserlistAction($request);
                 }
             }
         }
@@ -841,8 +888,8 @@ class DefaultController extends Controller {
                     $lastname = $request->get('lastName');
                     $trigram = $request->get('trigram');
                     $equipeId = $request->get('team');
-                    if (!$equipeId || $equipeId = NULL){
-                        $equipeId = 0;
+                    if (!$equipeId || $equipeId = NULL) {
+                        $equipeId = 1;
                     }
                     $usernew = new Utilisateur();
                     $usernew->setMail($mail);

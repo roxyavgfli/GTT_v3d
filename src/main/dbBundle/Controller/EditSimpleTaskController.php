@@ -37,8 +37,8 @@ class EditSimpleTaskController extends Controller {
         $activites = GlobalFunctions::getFromRepository($em, 'Activite');
         $partenaires = GlobalFunctions::getFromRepository($em, 'Partenaire');
         $clients = GlobalFunctions::getFromRepository($em, 'Client');
-        $tachestodisplay = SimpleTaskControllerFunctions::mainTreatment($em, $request, $user);
         SimpleTaskControllerFunctions::editionTreatment($request, $em, $user);
+        $tachestodisplay = SimpleTaskControllerFunctions::mainTreatment($em, $request, $user);
         if ($request->get('idToEdit')){
             return SimpleTaskControllerFunctions::mainFunctionEditionIfEditionToBeMade($request, $em, $user, $roles, $activites, $clients, $ssphases, $phases, $natures);
         }

@@ -415,6 +415,30 @@ class SimpleTaskControllerFunctions {
         }
         return $times;
     }
+    
+    static function getTimesEdition($em, $request, $user, $taskEdited) {
+        $repository = $em->getRepository('maindbBundle:Tachesimple');
+        $times = array();
+        if ($taskEdited) {
+            $time = $taskEdited->getDate();
+            $tachesofday = $repository->findBy(array('actif' => 1, 'userId' => $user->getId(), 'date' => $time));
+            $temps = 0.0;
+            foreach ($tachesofday as $task) {
+                if ($task->getId()!=$taskEdited->getId()) {
+                    $temps = $temps + floatval($task->getTempsPasse());
+                }
+            }
+            $tempsrestant = 1.0 - $temps;
+            $i = 0;
+            while ($i < $tempsrestant) {
+                $i = $i + 0.250;
+                array_push($times, strval($i));
+            }
+        }else {
+            $times = array(0.25,0.5,0.75,1);
+        }
+        return $times;
+    }
 
     /**
      * Function to get natures to display
@@ -514,7 +538,7 @@ class SimpleTaskControllerFunctions {
                     if ($request->get('editcustomer')) {
                         if ($request->get('finalcustomer')) {
                             $tacheModif->setClientId($request->get('finalcustomer'));
-                            $tacheModif->setPartenaireId(O);
+                            $tacheModif->setPartenaireId(1);
                         }
                         else {
                             $tacheModif->setClientId(1);
@@ -757,7 +781,7 @@ class SimpleTaskControllerFunctions {
                     array_push($produitsAvecComposants, $produitComp);
                 }
                 $naturesearched = "";
-                $times = SimpleTaskControllerFunctions::getTimes($em, $request, $user);
+                $times = SimpleTaskControllerFunctions::getTimesEdition($em, $request, $user, $taskToEdit);
                 $time = $request->get('date');
 
                 if (!$times) {

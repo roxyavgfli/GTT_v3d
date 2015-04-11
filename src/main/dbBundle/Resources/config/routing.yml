@@ -157,3 +157,7 @@ maindb_exportaction:
 maindb_update:
     path: /update
     defaults: { _controller: maindbBundle:Update:gestionupdate }
+    
+maindb_useredeletion:
+    path: /deletion
+    defaults: { _controller: maindbBundle:Default:gestiondeleteuser }
