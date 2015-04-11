@@ -75,7 +75,7 @@ class GlobalFunctions extends Controller {
      * @return Boolean true if user in team false else
      */
     static public function isUserInTeam($user) {
-        return (!($user->getEquipeId() == 0 || $user->getEquipeId() == NULL));
+        return (!($user->getEquipeId() == 1 || $user->getEquipeId() == NULL));
     }
 
     /**

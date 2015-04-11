@@ -573,9 +573,9 @@ class DefaultController extends Controller {
                             $produitToDelete = $repository->findOneBy(array('id' => $todelete));
                             $permissions = $this->getPermissionUser($produitToDelete);
                             $isTl = false;
-                            $permissionToTest = "team manager";
+                            $permissionToTest = "team leader";
                             foreach ($permissions as $permission) {
-                                if ($role[1] = 'team manager') {
+                                if ($role[1] = 'team leader') {
 
                                     $isTl = true;
                                 }
@@ -586,6 +586,7 @@ class DefaultController extends Controller {
                             else {
                                 // DELETION
                                 $produitToDelete->setActif(0);
+                                $produitToDelete->setEquipeId(1);
                                 $em->persist($produitToDelete);
                                 $em->flush();
                                 unset($todelete);
@@ -608,10 +609,10 @@ class DefaultController extends Controller {
                             $produitToDelete = $repository->findOneBy(array('id' => $todelete));
                             $permissions = $this->getPermissionUser($produitToDelete);
                             $isTl = false;
-                            $permissionToTest = "team manager";
+                            $permissionToTest = "team leader";
                             foreach ($permissions as $permission) {
                                 foreach ($permission as $perm) {
-                                    if ($perm == 'team manager') {
+                                    if ($perm == 'team leader') {
                                         $isTl = true;
                                     }
                                 }
@@ -622,6 +623,7 @@ class DefaultController extends Controller {
                             else {
                                 // DELETION
                                 $produitToDelete->setActif(0);
+                                $produitToDelete->setEquipeId(1);
                                 $em->persist($produitToDelete);
                                 $em->flush();
                                 unset($todelete);
@@ -2464,7 +2466,7 @@ class DefaultController extends Controller {
                     $query = $em->createQuery(
                             'SELECT c.id, c.nom, c.prenom, c.trigramme, c.mail, c.actif
                                     FROM maindbBundle:Utilisateur c, maindbBundle:Equipe e
-                                    WHERE c.equipeId IS NULL AND c.actif = 1
+                                    WHERE c.equipeId IS NULL OR c.equipeId = 0 OR c.equipeId = 1 AND c.actif = 1
                                     GROUP BY c.id
                                     ORDER BY c.nom
                                     '
