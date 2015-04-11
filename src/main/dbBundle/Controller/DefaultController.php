@@ -2255,7 +2255,7 @@ class DefaultController extends Controller {
                     $repository = $em->getRepository('maindbBundle:Utilisateur');
                     $usersToRemove = $repository->findBy(array('equipeId' => $request->get('todelete')));
                     foreach ($usersToRemove as $user) {
-                        $user->setEquipeId(0);
+                        $user->setEquipeId(1);
                         $em->persist($user);
                         $em->flush();
                         $repository = $em->getRepository('maindbBundle:UserRole');
@@ -2439,7 +2439,7 @@ class DefaultController extends Controller {
                     if (!$relation) {
                         $repository = $em->getRepository('maindbBundle:Utilisateur');
                         $user = $repository->findOneBy(array('id' => $request->get('todelete')));
-                        $user->setEquipeId(0);
+                        $user->setEquipeId(1);
                         $em->persist($user);
                         $em->flush();
                     }
