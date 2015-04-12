@@ -51,6 +51,29 @@ class SimpleTaskControllerFunctions {
         }
         return $aryRange;
     }
+    
+    /**
+     * Function used to know if there is still enought time to save a task for this day
+     * @param EntityManager $em The entity manager
+     * @param String $dateWanted The day you want to save a task
+     * @param float $timeWanted The Time of the task you want to save
+     * @param integer $userid the user id
+     * @return Boolean
+     */
+    static function isTimeIsLeftThisDay($em, $dateWanted, $timeWanted, $userid){
+        $repoTask = $em->getRepository('maindbBundle:Tachesimple');
+        $tasksOfDay = $repoTask->findBy(Array('date' => $dateWanted, 'userId' => $userid, 'actif' =>1));
+        $totaltime = 0;
+        foreach($tasksOfDay as $task){
+            $totaltime = $totaltime + $task->getTempsPasse();
+        }
+        if ($timeWanted){
+            return ($totaltime <= (1-$timeWanted));
+        }else{
+            return ($totaltime < 1);
+        }
+        
+    }
 
     /**
      * Function to delete a task if needed

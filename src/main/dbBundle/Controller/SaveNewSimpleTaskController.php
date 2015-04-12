@@ -7,6 +7,7 @@ use main\dbBundle\Entity\Tachesimple;
 use main\dbBundle\Entity\Utilisateur;
 use main\dbBundle\Entity\Role;
 use main\dbBundle\Func\GlobalFunctions;
+use main\dbBundle\Func\SimpleTaskFunctions\SimpleTaskControllerFunctions;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -213,9 +214,11 @@ class SaveNewSimpleTaskController extends Controller {
                     $newtask->setNature($request->get('naturetosave'));
                     $newtask->setNom(utf8_encode($request->get('label')));
                     $newtask->setActiviteId($request->get('activite'));
-                    $newtask->setTempsPasse($request->get('temps'));
-                    $em->persist($newtask);
-                    $em->flush();
+                    if (SimpleTaskControllerFunctions::isTimeIsLeftThisDay($em, $request->get('date'), $request->get('temps'), $userid)) {
+                        $newtask->setTempsPasse($request->get('temps'));
+                        $em->persist($newtask);
+                        $em->flush();
+                    }
                 }
                 $repository = $em->getRepository('maindbBundle:Composants');
                 $composants = $repository->findBy(array('actif' => 1));
