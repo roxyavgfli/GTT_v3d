@@ -360,7 +360,6 @@ class SaveNewSimpleTaskController extends Controller {
                     $datestotest = $this->createDateRangeArray($startdate2, $enddate2);
                     ////////////////////////
                     $tachestodisplay = Array();
-
                     foreach ($datestotest as $tache3) {
                         $tachetoadd = Array();
                         array_push($tachetoadd, $tache3);
