@@ -7,6 +7,7 @@ use main\dbBundle\Func\GlobalFunctions;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use main\dbBundle\Func\InstallationFunctions;
+use main\dbBundle\Func\SimpleTaskFunctions\SimpleTaskControllerFunctions;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -266,8 +267,8 @@ class DuplicateSimpleTaskController extends Controller {
                 $label = "";
                 $date = "";
                 $nature = "";
-                $startdate = date("Y/m/d", strtotime("-1 week"));
-                $endate = "9999/12/30";
+                $startdate = SimpleTaskControllerFunctions::getStartDate($request, $session);
+                $endate = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
                 $naturesearched = "";
 
                 if ($request->get('idToEdit')) {
@@ -293,6 +294,7 @@ class DuplicateSimpleTaskController extends Controller {
                             $element = $repository->findOneBy(array('id' => $ITR->getActiviteId()));
                             array_push($activites, $element);
                         }
+                        /*
                         if ($request->get('startdate') && $request->get('startdate') != "") {
                             $time = $request->get('startdate');
                             $startdate = $time;
@@ -300,7 +302,7 @@ class DuplicateSimpleTaskController extends Controller {
                         if ($request->get('endate') && $request->get('endate') != "") {
                             $time = $request->get('endate');
                             $endate = $time;
-                        }
+                        }*/
                         $em = $this->getDoctrine()->getManager();
 
                         if ($request->get('natureshearched') && $request->get('natureshearched') != "") {
@@ -371,8 +373,7 @@ class DuplicateSimpleTaskController extends Controller {
                                     '
                             );
                             $query->setParameter(3, $user->getId());
-                            $startdate2 = $query->getArrayResult();
-                            $startdate2 = date("Y/m/d", strtotime("-1 week"));
+                            $startdate2 = SimpleTaskControllerFunctions::getStartDate($request, $session);
                             $query = $em->createQuery(
                                     'SELECT MAX (t.date)
                                     FROM maindbBundle:Tachesimple t
@@ -381,10 +382,9 @@ class DuplicateSimpleTaskController extends Controller {
                                     '
                             );
                             $query->setParameter(3, $user->getId());
-                            $enddate2 = $query->getArrayResult();
-                            $enddate2 = $enddate2[0][1];
+                            $enddate2 = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
                             $dateendreport = $enddate2;
-                            $today = $today = date("Y/m/d");
+                            /*$today = $today = date("Y/m/d");
                             if ($today > $enddate2) {
                                 $enddate2 = $today;
                             }
@@ -398,7 +398,7 @@ class DuplicateSimpleTaskController extends Controller {
                                 if ($enddate2 > $dateendreport) {
                                     $enddate2 = $dateendreport;
                                 }
-                            }
+                            }*/
                             $datestotest = GlobalFunctions::createDateRangeArray($startdate2, $enddate2);
                             ////////////////////////
                             $tachestodisplay = Array();
@@ -552,16 +552,16 @@ class DuplicateSimpleTaskController extends Controller {
                         if (!$times) {
                             $erreurtemps = "Sorry you have no time left";
                         }
-                        $startdate = date("Y/m/d", strtotime("-1 week"));
-                        $endate = "9999/12/30";
-                        if ($request->get('startdate') && $request->get('startdate') != "") {
+                        $startdate = SimpleTaskControllerFunctions::getStartDate($request, $session);
+                        $endate = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
+                        /*if ($request->get('startdate') && $request->get('startdate') != "") {
                             $time = $request->get('startdate');
                             $startdate = $time;
                         }
                         if ($request->get('endate') && $request->get('endate') != "") {
                             $time = $request->get('endate');
                             $endate = $time;
-                        }
+                        }*/
                         $em = $this->getDoctrine()->getManager();
 
                         if ($request->get('natureshearched') && $request->get('natureshearched') != "") {
@@ -587,8 +587,7 @@ class DuplicateSimpleTaskController extends Controller {
                                     '
                             );
                             $query->setParameter(3, $user->getId());
-                            $startdate2 = $query->getArrayResult();
-                            $startdate2 = date("Y/m/d", strtotime("-1 week"));
+                            $startdate2 = SimpleTaskControllerFunctions::getStartDate($request, $session);
                             if (!$startdate2) {
                                 $startdate2 = $user->getDateInscription();
                             }
@@ -600,10 +599,9 @@ class DuplicateSimpleTaskController extends Controller {
                                     '
                             );
                             $query->setParameter(3, $user->getId());
-                            $enddate2 = $query->getArrayResult();
-                            $enddate2 = $enddate2[0][1];
+                            $enddate2 = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
                             $dateendreport = $enddate2;
-                            $today = $today = date("Y/m/d");
+                            /*$today = $today = date("Y/m/d");
                             if ($today > $enddate2) {
                                 $enddate2 = $today;
                             }
@@ -617,7 +615,7 @@ class DuplicateSimpleTaskController extends Controller {
                                 if ($enddate2 > $dateendreport) {
                                     $enddate2 = $dateendreport;
                                 }
-                            }
+                            }*/
                             $datestotest = $this->createDateRangeArray($startdate2, $enddate2);
                             ////////////////////////
                             $tachestodisplay = Array();
@@ -676,8 +674,7 @@ class DuplicateSimpleTaskController extends Controller {
                                     '
                             );
                             $query->setParameter(3, $user->getId());
-                            $startdate2 = $query->getArrayResult();
-                            $startdate2 = $startdate2[0][1];
+                            $startdate2 = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
                             $query = $em->createQuery(
                                     'SELECT MAX (t.date)
                                     FROM maindbBundle:Tachesimple t
@@ -686,10 +683,9 @@ class DuplicateSimpleTaskController extends Controller {
                                     '
                             );
                             $query->setParameter(3, $user->getId());
-                            $enddate2 = $query->getArrayResult();
-                            $enddate2 = $enddate2[0][1];
+                            $enddate2 = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
                             $dateendreport = $enddate2;
-                            $today = $today = date("Y/m/d");
+                            /*$today = $today = date("Y/m/d");
                             if ($today > $enddate2) {
                                 $enddate2 = $today;
                             }
@@ -703,7 +699,7 @@ class DuplicateSimpleTaskController extends Controller {
                                 if ($enddate2 > $dateendreport) {
                                     $enddate2 = $dateendreport;
                                 }
-                            }
+                            }*/
                             $datestotest = GlobalFunctions::createDateRangeArray($startdate2, $enddate2);
                             ////////////////////////
                             $tachestodisplay = Array();
@@ -879,8 +875,8 @@ class DuplicateSimpleTaskController extends Controller {
                 $label = "";
                 $date = "";
                 $nature = "";
-                $startdate = "0000/00/00";
-                $endate = "9999/12/30";
+                $startdate = SimpleTaskControllerFunctions::getStartDate($request, $session);
+                $endate = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
                 $naturesearched = "";
                 if ($request->getMethod() == 'POST' && $request->get('todelete')) {
                     $repository = $em->getRepository('maindbBundle:Tachesimple');
@@ -890,14 +886,14 @@ class DuplicateSimpleTaskController extends Controller {
                     $em->flush();
                 }
 
-                if ($request->get('startdate') && $request->get('startdate') != "") {
+                /*if ($request->get('startdate') && $request->get('startdate') != "") {
                     $time = $request->get('startdate');
                     $startdate = $time;
                 }
                 if ($request->get('endate') && $request->get('endate') != "") {
                     $time = $request->get('endate');
                     $endate = $time;
-                }
+                }*/
                 $em = $this->getDoctrine()->getManager();
 
                 if ($request->get('natureshearched') && $request->get('natureshearched') != "") {
@@ -969,7 +965,7 @@ class DuplicateSimpleTaskController extends Controller {
                     );
                     $query->setParameter(3, $user->getId());
                     $startdate2 = $query->getArrayResult();
-                    $startdate2 = $startdate2[0][1];
+                    $startdate2 = SimpleTaskControllerFunctions::getStartDate($request, $session);
                     $query = $em->createQuery(
                             'SELECT MAX (t.date)
                                     FROM maindbBundle:Tachesimple t
@@ -979,9 +975,9 @@ class DuplicateSimpleTaskController extends Controller {
                     );
                     $query->setParameter(3, $user->getId());
                     $enddate2 = $query->getArrayResult();
-                    $enddate2 = $enddate2[0][1];
+                    $enddate2 = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
                     $dateendreport = $enddate2;
-                    $today = $today = date("Y/m/d");
+                    /*$today = $today = date("Y/m/d");
                     if ($today > $enddate2) {
                         $enddate2 = $today;
                     }
@@ -995,7 +991,7 @@ class DuplicateSimpleTaskController extends Controller {
                         if ($enddate2 > $dateendreport) {
                             $enddate2 = $dateendreport;
                         }
-                    }
+                    }*/
                     $datestotest = GlobalFunctions::createDateRangeArray($startdate2, $enddate2);
                     ////////////////////////
                     $tachestodisplay = Array();
