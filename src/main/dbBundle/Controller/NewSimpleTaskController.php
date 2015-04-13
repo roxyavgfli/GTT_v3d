@@ -39,7 +39,7 @@ class NewSimpleTaskController extends Controller {
         $equipes = GlobalFunctions::getFromRepository($em, 'Equipe');
         $activites = GlobalFunctions::getFromRepository($em, 'Activite');
         $partenaires = GlobalFunctions::getFromRepository($em, 'Partenaire');
-        $tachestodisplay = SimpleTaskControllerFunctions::mainTreatment($em, $request, $user);
+        $tachestodisplay = SimpleTaskControllerFunctions::mainTreatment($em, $request, $user, $session);
         $times = SimpleTaskControllerFunctions::getTimes($em, $request, $user);
         $disableproduits = null;
         $disableclients = null;
@@ -55,11 +55,11 @@ class NewSimpleTaskController extends Controller {
 
         return $this->render('maindbBundle:Default:simpletimereport2.php.twig', array('roles' => $roles,
                     'tasks' => $tachestodisplay,
-                    'startdatesearch' => SimpleTaskControllerFunctions::getStartDate($request),
+                    'startdatesearch' => SimpleTaskControllerFunctions::getStartDate($request, $session),
                     'composants' => $composants,
                     'ssphases' => $ssphases,
                     'phases' => $phases,
-                    'endatesearch' => SimpleTaskControllerFunctions::getEndDate($request, $user, $em),
+                    'endatesearch' => SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session),
                     'naturesearch' => SimpleTaskControllerFunctions::getNatureSearched($request),
                     'name' => $user->getNom(),
                     'surname' => $user->getPrenom(),

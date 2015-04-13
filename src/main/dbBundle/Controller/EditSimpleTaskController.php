@@ -40,10 +40,10 @@ class EditSimpleTaskController extends Controller {
         SimpleTaskControllerFunctions::editionTreatment($request, $em, $user);
         $tachestodisplay = SimpleTaskControllerFunctions::mainTreatment($em, $request, $user);
         if ($request->get('idToEdit')){
-            return SimpleTaskControllerFunctions::mainFunctionEditionIfEditionToBeMade($request, $em, $user, $roles, $activites, $clients, $ssphases, $phases, $natures);
+            return SimpleTaskControllerFunctions::mainFunctionEditionIfEditionToBeMade($request, $em, $user, $roles, $activites, $clients, $ssphases, $phases, $natures, $session);
         }
-        $startdate = SimpleTaskControllerFunctions::getStartDate($request);
-        $endate = SimpleTaskControllerFunctions::getEndDate($request, $user, $em);
+        $startdate = SimpleTaskControllerFunctions::getStartDate($request, $session);
+        $endate = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
         $naturesearched = SimpleTaskControllerFunctions::getNatureSearched($request);
         
         return $this->render('maindbBundle:Default:simpletimereport2.php.twig', array('roles' => $roles,
