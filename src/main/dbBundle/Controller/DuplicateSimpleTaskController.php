@@ -319,7 +319,7 @@ class DuplicateSimpleTaskController extends Controller {
                             $query->setParameter(2, $startdate);
                             $query->setParameter(3, $naturesearched);
                             $query->setParameter(4, $user->getId());
-                            $taches2 = $query->getArrayResult();
+                            $taches2 = SimpleTaskControllerFunctions::createDateRangeArray($startdate, $endate);
                             $tachestodisplay = Array();
                             foreach ($taches2 as $tache3) {
                                 $tachetoadd = Array();
@@ -674,7 +674,7 @@ class DuplicateSimpleTaskController extends Controller {
                                     '
                             );
                             $query->setParameter(3, $user->getId());
-                            $startdate2 = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
+                            $startdate2 = SimpleTaskControllerFunctions::getStartDate($request, $session);
                             $query = $em->createQuery(
                                     'SELECT MAX (t.date)
                                     FROM maindbBundle:Tachesimple t
@@ -684,7 +684,6 @@ class DuplicateSimpleTaskController extends Controller {
                             );
                             $query->setParameter(3, $user->getId());
                             $enddate2 = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
-                            $dateendreport = $enddate2;
                             /*$today = $today = date("Y/m/d");
                             if ($today > $enddate2) {
                                 $enddate2 = $today;
@@ -1029,7 +1028,6 @@ class DuplicateSimpleTaskController extends Controller {
                         array_push($tachestodisplay, $tachetoadd);
                     }
                 }
-                
                 return $this->render('maindbBundle:Default:simpletimereport2.php.twig', array('roles' => $roles,
                             'name' => $user->getNom(),
                             'startdatesearch' => $startdate,

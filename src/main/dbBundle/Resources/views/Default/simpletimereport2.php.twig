@@ -1209,7 +1209,6 @@
                                                         selectElement.appendChild(optionElement);
                                                     }
                                                 }
-
                                                 function getIndex() {
                                                     var valueSelected = document.getElementById("productnormal").value;
                                                     for (var i = 0; i < optionValues.length; i++) {
@@ -1309,6 +1308,11 @@
     {%if clientsa is defined and disableclients is defined and disableclients == 0 and edit is defined and edit == 1%}
         <script>
             var a = "{{clientsa}}";
+            {% if oldcustomerid is defined and oldcustomerid is not null %}
+                var indexWanted = {{oldcustomerid}};
+            {%else%}
+                var indexWanted = -2000;
+            {%endif%}
             a = a.replace(/&quot;/g, '"');
             a = a.replace(/(?:\r\n|\r|\n)/g, '');
             console.log(a);
@@ -1328,6 +1332,27 @@
                     optionElement.title = optionText; // In case we shorten the text to fit into the select
                     optionElement.textContent = optionText;
                     optionElement.innerText = optionText;
+                    selectElement.appendChild(optionElement);
+                }
+            }
+            function setSelectMain(selectElement, arr, indexWanted) {
+                // Remove all previous values from the select
+                while (selectElement.firstChild) {
+                    selectElement.removeChild(selectElement.firstChild);
+                }
+                // Go over all the options in the array and place them inside the select.
+                for (var i = 0; i < arr.length; ++i) {
+                    var optionValue = arr[i][0];
+                    var optionText = arr[i][1];
+                    // Initialize the option to be added
+                    var optionElement = document.createElement('option');
+                    optionElement.value = optionValue;
+                    optionElement.title = optionText; // In case we shorten the text to fit into the select
+                    optionElement.textContent = optionText;
+                    optionElement.innerText = optionText;
+                    if (optionValue == indexWanted) {
+                        optionElement.selected = true;
+                    }
                     selectElement.appendChild(optionElement);
                 }
             }
@@ -1350,7 +1375,7 @@
             }
             function setProduct() {
                 var productSelect = document.getElementById("finalcustomere");
-                setSelect(productSelect, optionValues);
+                setSelectMain(productSelect, optionValues, indexWanted);
                 setPlateformes();
                 // Add a listener on the select element, to update the version options.
                 productSelect.addEventListener("change", setPlateformes);
@@ -1358,10 +1383,15 @@
 
             setProduct();
         </script>
-        {%endif%}
-            {%if produitsavecversions is defined and disableproduits is defined and disableproduits == 0 and edit is defined and edit == 1%}
+    {%endif%}
+    {%if produitsavecversions is defined and disableproduits is defined and disableproduits == 0 and edit is defined and edit == 1%}
         <script>
             var a = "{{produitsavecversions}}";
+            {% if oldprodid is defined and oldprodid is not null %}
+                var indexWanted = 5;
+            {%else%}
+                var indexWanted = -2000;
+            {%endif%}
             a = a.replace(/&quot;/g, '"');
             a = a.replace(/(?:\r\n|\r|\n)/g, '');
             console.log(a);
@@ -1384,7 +1414,28 @@
                     selectElement.appendChild(optionElement);
                 }
             }
-
+            function setSelectMain(selectElement, arr, indexWanted) {
+                // Remove all previous values from the select
+                while (selectElement.firstChild) {
+                    selectElement.removeChild(selectElement.firstChild);
+                }
+                // Go over all the options in the array and place them inside the select.
+                for (var i = 0; i < arr.length; ++i) {
+                    var optionValue = arr[i][0];
+                    var optionText = arr[i][1];
+                    // Initialize the option to be added
+                    var optionElement = document.createElement('option');
+                    optionElement.value = optionValue;
+                    optionElement.title = optionText; // In case we shorten the text to fit into the select
+                    optionElement.textContent = optionText;
+                    optionElement.innerText = optionText;
+                    if (optionValue == indexWanted) {
+                        optionElement.selected = true;
+                    }
+                    selectElement.appendChild(optionElement);
+                }
+            }
+            
             function getIndex() {
                 var valueSelected = document.getElementById("productedit").value;
                 for (var i = 0; i < optionValues.length; i++) {
@@ -1415,7 +1466,7 @@
             }
             function setProduct() {
                 var productSelect = document.getElementById("productedit");
-                setSelect(productSelect, optionValues);
+                setSelectMain(productSelect, optionValues, indexWanted);
                 setVersion();
                 setComposants();
                 setPlateformes();

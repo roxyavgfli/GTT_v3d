@@ -826,9 +826,11 @@ class SimpleTaskControllerFunctions {
                 $oldprod = $repositoryProduit->findOneBy(Array('id' => $taskToEdit->getProduitId()));
                 if ($oldprod) {
                     $oldprod = $oldprod->getNom();
+                    $oldprodid = $taskToEdit->getProduitId();
                 }
                 else {
                     $oldprod = "None";
+                    $oldprodid = null;
                 }
                 $repositoryVersion = $em->getRepository('maindbBundle:version');
                 $oldvers = $repositoryVersion->findOneBy(Array('id' => $taskToEdit->getVersionId()));
@@ -908,6 +910,7 @@ class SimpleTaskControllerFunctions {
                             'natureedit' => $taskToEdit->getNature(),
                             'tacheedit' => $taskToEdit,
                             'produitsavecversions' => json_encode(SimpleTaskControllerFunctions::getArrayProduitsToDisplay($em)),
+                            'oldprodid' => $oldprodid,
                             'oldprod' => $oldprod,
                             'oldvers' => $oldvers,
                             'oldplat' => $oldplat,
