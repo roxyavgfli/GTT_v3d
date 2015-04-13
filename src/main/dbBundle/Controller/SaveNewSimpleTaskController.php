@@ -244,16 +244,16 @@ class SaveNewSimpleTaskController extends Controller {
                 $date = "";
                 $nature = "";
                 $erreurtemps = "";
-                $startdate = date("Y/m/d", strtotime("-1 week"));
-                $endate = "9999/12/30";
-                if ($request->get('startdate') && $request->get('startdate') != "") {
+                $startdate = SimpleTaskControllerFunctions::getStartDate($request, $session);
+                $endate = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
+                /*if ($request->get('startdate') && $request->get('startdate') != "") {
                     $time = $request->get('startdate');
                     $startdate = $time;
                 }
                 if ($request->get('endate') && $request->get('endate') != "") {
                     $time = $request->get('endate');
                     $endate = $time;
-                }
+                }*/
                 $em = $this->getDoctrine()->getManager();
 
                 $naturesearched = "";
@@ -326,8 +326,7 @@ class SaveNewSimpleTaskController extends Controller {
                                     '
                     );
                     $query->setParameter(3, $user->getId());
-                    $startdate2 = $query->getArrayResult();
-                    $startdate2 = date("Y/m/d", strtotime("-1 week"));
+                    $startdate2 = SimpleTaskControllerFunctions::getStartDate($request, $session);
                     if (!$startdate2) {
                         $startdate2 = $user->getDateInscription();
                     }
@@ -339,9 +338,8 @@ class SaveNewSimpleTaskController extends Controller {
                                     '
                     );
                     $query->setParameter(3, $user->getId());
-                    $enddate2 = $query->getArrayResult();
-                    $enddate2 = $enddate2[0][1];
-                    $dateendreport = $enddate2;
+                    $enddate2 = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
+                    /*$dateendreport = $enddate2;
                     $today = $today = date("Y/m/d");
                     if ($today > $enddate2) {
                         $enddate2 = $today;
@@ -356,7 +354,7 @@ class SaveNewSimpleTaskController extends Controller {
                         if ($enddate2 > $dateendreport) {
                             $enddate2 = $dateendreport;
                         }
-                    }
+                    }*/
                     $datestotest = $this->createDateRangeArray($startdate2, $enddate2);
                     ////////////////////////
                     $tachestodisplay = Array();

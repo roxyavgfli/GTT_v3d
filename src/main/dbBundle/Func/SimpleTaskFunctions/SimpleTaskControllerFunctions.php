@@ -11,12 +11,13 @@ class SimpleTaskControllerFunctions {
      * @param EntityManager $em
      * @param Request $request
      * @param Utilisateur $user
+     * @param Session $session The session
      * @return Array
      */
-    static function mainTreatment($em, $request, $user) {
-        $startdate = SimpleTaskControllerFunctions::getStartDate($request);
-        $endate = SimpleTaskControllerFunctions::getEndDate($request, $user, $em);
-        $naturesearched = SimpleTaskControllerFunctions::getNatureSearched($request);
+    static function mainTreatment($em, $request, $user, $session) {
+        $startdate = SimpleTaskControllerFunctions::getStartDate($request, $session);
+        $endate = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
+        $naturesearched = SimpleTaskControllerFunctions::getNatureSearched($request, $session);
         SimpleTaskControllerFunctions::taskDelete($em, $request);
         $dates = SimpleTaskControllerFunctions::createDateRangeArray($startdate, $endate);
         $tasksToDisplay = SimpleTaskControllerFunctions::getTasksToDisplay($naturesearched, $dates, $em, $user);
@@ -51,7 +52,7 @@ class SimpleTaskControllerFunctions {
         }
         return $aryRange;
     }
-    
+
     /**
      * Function used to know if there is still enought time to save a task for this day
      * @param EntityManager $em The entity manager
@@ -60,19 +61,19 @@ class SimpleTaskControllerFunctions {
      * @param integer $userid the user id
      * @return Boolean
      */
-    static function isTimeIsLeftThisDay($em, $dateWanted, $timeWanted, $userid){
+    static function isTimeIsLeftThisDay($em, $dateWanted, $timeWanted, $userid) {
         $repoTask = $em->getRepository('maindbBundle:Tachesimple');
-        $tasksOfDay = $repoTask->findBy(Array('date' => $dateWanted, 'userId' => $userid, 'actif' =>1));
+        $tasksOfDay = $repoTask->findBy(Array('date' => $dateWanted, 'userId' => $userid, 'actif' => 1));
         $totaltime = 0;
-        foreach($tasksOfDay as $task){
+        foreach ($tasksOfDay as $task) {
             $totaltime = $totaltime + $task->getTempsPasse();
         }
-        if ($timeWanted){
-            return ($totaltime <= (1-$timeWanted));
-        }else{
+        if ($timeWanted) {
+            return ($totaltime <= (1 - $timeWanted));
+        }
+        else {
             return ($totaltime < 1);
         }
-        
     }
 
     /**
@@ -93,13 +94,18 @@ class SimpleTaskControllerFunctions {
     /**
      * function to return startdate
      * @param Request $request
+     * @param Session $session the session
      * @return String startdate
      */
-    static function getStartDate($request) {
+    static function getStartDate($request, $session) {
         $startdate = date("Y/m/d", strtotime("-1 week"));
         if ($request->get('startdate') && $request->get('startdate') != "") {
             $time = $request->get('startdate');
+            $session->set('startdatesearch', $time);
             $startdate = $time;
+        }
+        if ($session->has('startdatesearch')) {
+            $startdate = $session->get('startdatesearch');
         }
         return $startdate;
     }
@@ -109,9 +115,10 @@ class SimpleTaskControllerFunctions {
      * @param Request $request
      * @param Utilisateur $user
      * @param EntityManager $em
+     * @param Session $session the session
      * @return String endate
      */
-    static function getEndDate($request, $user, $em) {
+    static function getEndDate($request, $user, $em, $session) {
         $endate = SimpleTaskControllerFunctions::getMaxDateUser($user, $em);
         if ($request->get('endate') && $request->get('endate') != "") {
             $time = $request->get('endate');
@@ -423,7 +430,7 @@ class SimpleTaskControllerFunctions {
             $tachesofday = $repository->findBy(array('actif' => 1, 'userId' => $user->getId(), 'date' => $time));
             $temps = 0.0;
             foreach ($tachesofday as $task) {
-                if ($task->getId()!=$request->get('idToEdit')) {
+                if ($task->getId() != $request->get('idToEdit')) {
                     $temps = $temps + floatval($task->getTempsPasse());
                 }
             }
@@ -433,12 +440,13 @@ class SimpleTaskControllerFunctions {
                 $i = $i + 0.250;
                 array_push($times, strval($i));
             }
-        }else {
-            $times = array(0.25,0.5,0.75,1);
+        }
+        else {
+            $times = array(0.25, 0.5, 0.75, 1);
         }
         return $times;
     }
-    
+
     static function getTimesEdition($em, $request, $user, $taskEdited) {
         $repository = $em->getRepository('maindbBundle:Tachesimple');
         $times = array();
@@ -447,7 +455,7 @@ class SimpleTaskControllerFunctions {
             $tachesofday = $repository->findBy(array('actif' => 1, 'userId' => $user->getId(), 'date' => $time));
             $temps = 0.0;
             foreach ($tachesofday as $task) {
-                if ($task->getId()!=$taskEdited->getId()) {
+                if ($task->getId() != $taskEdited->getId()) {
                     $temps = $temps + floatval($task->getTempsPasse());
                 }
             }
@@ -457,8 +465,9 @@ class SimpleTaskControllerFunctions {
                 $i = $i + 0.250;
                 array_push($times, strval($i));
             }
-        }else {
-            $times = array(0.25,0.5,0.75,1);
+        }
+        else {
+            $times = array(0.25, 0.5, 0.75, 1);
         }
         return $times;
     }
@@ -689,7 +698,7 @@ class SimpleTaskControllerFunctions {
         }
         return $clientsa;
     }
-    
+
     /**
      * Function treating edition
      * @param Request $request The request
@@ -701,14 +710,15 @@ class SimpleTaskControllerFunctions {
      * @param Array $ssphases The subphases
      * @param Array $phases The phases
      * @param Array $natures The natures
+     * @param Session $session The session
      * @return Page The page ton be render
      */
-    function mainFunctionEditionIfEditionToBeMade($request, $em, $user, $roles, $activites2, $clients, $ssphases, $phases, $natures) {
+    function mainFunctionEditionIfEditionToBeMade($request, $em, $user, $roles, $activites2, $clients, $ssphases, $phases, $natures, $session) {
         $equipes = GlobalFunctions::getFromRepository($em, 'Equipe');
         $societes = GlobalFunctions::getFromRepository($em, 'Societe');
         $services = GlobalFunctions::getFromRepository($em, 'Service');
-        $startdate = SimpleTaskControllerFunctions::getStartDate($request);
-        $endate = SimpleTaskControllerFunctions::getEndDate($request, $user, $em);
+        $startdate = SimpleTaskControllerFunctions::getStartDate($request, $session);
+        $endate = SimpleTaskControllerFunctions::getEndDate($request, $user, $em, $session);
         $repositoryVersion = $em->getRepository('maindbBundle:Version');
         $versions = $repositoryVersion->findBy(array('actif' => 1));
         $repositoryProduit = $em->getRepository('maindbBundle:Produit');
@@ -732,7 +742,8 @@ class SimpleTaskControllerFunctions {
             else if ($taskToEdit->getNature() == 'Pre Sale' || $taskToEdit->getNature() == 'Project') {
                 $disableproduits = 1;
                 $disableclients = 0;
-            }else{
+            }
+            else {
                 $disableproduits = 0;
                 $disableclients = 0;
             }
