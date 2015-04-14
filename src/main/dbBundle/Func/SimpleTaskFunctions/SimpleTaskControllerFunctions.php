@@ -836,25 +836,31 @@ class SimpleTaskControllerFunctions {
                 $oldvers = $repositoryVersion->findOneBy(Array('id' => $taskToEdit->getVersionId()));
                 if ($oldvers) {
                     $oldvers = $oldvers->getNumero();
+                    $oldversid = $taskToEdit->getVersionId();
                 }
                 else {
                     $oldvers = "None";
+                    $oldversid = null;
                 }
                 $repositoryPlateforme = $em->getRepository('maindbBundle:plateforme');
                 $oldplat = $repositoryPlateforme->findOneBy(Array('id' => $taskToEdit->getPlateformeId()));
                 if ($oldplat) {
                     $oldplat = $oldplat->getNom();
+                    $oldplatid = $taskToEdit->getPlateformeId();
                 }
                 else {
                     $oldplat = "None";
+                    $oldplatid = null;
                 }
                 $repositoryComposants = $em->getRepository('maindbBundle:Composants');
                 $oldcomp = $repositoryComposants->findOneBy(Array('id' => $taskToEdit->getComposantId()));
                 if ($oldcomp) {
                     $oldcomp = $oldcomp->getNom();
+                    $oldcompid = $taskToEdit->getComposantId();
                 }
                 else {
                     $oldcomp = "None";
+                    $oldcompid = null;
                 }
                 $repositoryClient = $em->getRepository('maindbBundle:Client');
                 $oldcustomer = $repositoryClient->findOneBy(Array('id' => $taskToEdit->getClientId()));
@@ -912,8 +918,11 @@ class SimpleTaskControllerFunctions {
                             'produitsavecversions' => json_encode(SimpleTaskControllerFunctions::getArrayProduitsToDisplay($em)),
                             'oldprodid' => $oldprodid,
                             'oldprod' => $oldprod,
+                            'oldversid' => $oldversid,
                             'oldvers' => $oldvers,
+                            'oldplatid' => $oldplatid,
                             'oldplat' => $oldplat,
+                            'oldcompid' => $oldcompid,
                             'oldcomp' => $oldcomp,
                             'oldpartenaire' => $oldpartenairea,
                             'oldpartenaireid' => $oldpartenaireid,
