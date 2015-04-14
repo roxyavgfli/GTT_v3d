@@ -1308,12 +1308,17 @@
     {%if clientsa is defined and disableclients is defined and disableclients == 0 and edit is defined and edit == 1%}
         <script>
             var a = "{{clientsa}}";
+<<<<<<< HEAD
             {% if oldcustomerid is defined and oldcustomerid is not null %}
                 var indexWanted = {{oldcustomerid}};
             {%else%}
                 var indexWanted = -2000;
             {%endif%}
             a = a.replace(/&quot;/g, '"');
+=======
+            var indexWanted = 1;
+                    a = a.replace(/&quot;/g, '"');
+>>>>>>> dev
             a = a.replace(/(?:\r\n|\r|\n)/g, '');
             console.log(a);
             var optionValues = JSON.parse(a);
@@ -1387,7 +1392,11 @@
     {%if produitsavecversions is defined and disableproduits is defined and disableproduits == 0 and edit is defined and edit == 1%}
         <script>
             var a = "{{produitsavecversions}}";
+<<<<<<< HEAD
             {% if oldprodid is defined and oldprodid is not null %}
+=======
+            {% if oldprod is defined and oldprod is not null %}
+>>>>>>> dev
                 var indexWanted = 5;
             {%else%}
                 var indexWanted = -2000;
